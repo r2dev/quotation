@@ -20,3 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('products', 'ProductController');
+
+Route::resource('quotes', 'QuoteController');
+
+Route::post('/quotes/{id}/product', 'QuoteController@add_product_to_quote')->name('quotes.add_product');

@@ -17,7 +17,7 @@ class CreateQuotesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('qutation_id');
+            $table->string('qutation_id')->default('');
             $table->string('terms')->default('30% Deposit COD');
             $table->integer('lip')->default(0);
             $table->string('pannel')->default('A');

@@ -9,5 +9,11 @@ class Product extends Model
 {
     use SoftDeletes;
     //
+
+//    public function quotes()
+//    {
+//        return $this->belongsToMany('App\Quote', 'quote_product')->withTimestamps();
+//    }
+
     protected $dates = ['deleted_at'];
 }
