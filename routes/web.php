@@ -23,4 +23,6 @@ Route::resource('products', 'ProductController');
 
 Route::resource('quotes', 'QuoteController');
 
+Route::resource('customers', 'CustomerController');
+
 Route::post('/quotes/{id}/product', 'QuoteController@add_product_to_quote')->name('quotes.add_product');
