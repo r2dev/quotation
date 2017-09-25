@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use App\User;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -75,7 +76,7 @@ class CustomerController extends Controller
     {
         //
         $customer = Customer::find($id);
-        $users = $customer->users();
+        $users = $customer->users;
         return view('customer.edit', compact('customer', 'users'));
     }
 
@@ -112,6 +113,23 @@ class CustomerController extends Controller
         $customer->delete();
         $request->session()->flash('status', 'customer removal was successful!');
         return redirect('/customers');
+    }
+
+    public function create_user($id, Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        $customer = Customer::find($id);
+        $customer->users()->create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'customer_id' => $id
+        ]);
+        return redirect(route('customers.edit', ['id' => $id]));
     }
 
 }

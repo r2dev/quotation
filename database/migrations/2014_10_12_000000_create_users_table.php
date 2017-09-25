@@ -21,6 +21,8 @@ class CreateUsersTable extends Migration
             $table->integer('permission')->default(0);
             $table->rememberToken();
             $table->timestamps();
+            $table->integer('customer_id')->unsigned()->nullable();
+            $table->foreign('customer_id')->references('id')->on('customers');
         });
 
         /**
