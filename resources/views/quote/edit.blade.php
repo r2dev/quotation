@@ -23,9 +23,7 @@
                         <tr>
                             <td>{{$product->design}}</td>
                             <td>{{$product->pivot->quantity}}</td>
-
                             <td>{{$product->mr}}</td>
-
                             <td>{{$product->pivot->style}}</td>
                             <td>{{$product->pivot->width}}</td>
                             <td>{{$product->pivot->height}}</td>
@@ -58,6 +56,12 @@
                 <span>Total Price</span><div id="total"> - </div>
                 <input type="submit" value="add"/>
             </form>
+
+            <form action="{{route('quotes.client_confirm_quote', ['id' => $quote->id])}}" method="POST">
+                {{csrf_field()}}
+                <input type="submit" value="client confirm" />
+            </form>
+
         </div>
     </div>
 
@@ -100,7 +104,7 @@
             }
         }
         $.each(window._products, function(index, key) {
-            $('#design').append($('<option></option>').val(key.design).data('idx', index).text(key.design))
+            $('#design').append($('<option></option>').val(key.id).data('idx', index).text(key.design))
         });
         $('#design, #style').change(function(e) {
             priceHandler()

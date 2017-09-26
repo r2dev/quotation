@@ -27,4 +27,6 @@ Route::resource('customers', 'CustomerController');
 
 Route::post('/quotes/{id}/product', 'QuoteController@add_product_to_quote')->name('quotes.add_product');
 
+Route::post('/quotes/{id}/client_confirm', 'QuoteController@client_confirm')->name('quotes.client_confirm_quote');
+
 Route::post('/customers/{id}/users', 'CustomerController@create_user')->name('customers.add_user');

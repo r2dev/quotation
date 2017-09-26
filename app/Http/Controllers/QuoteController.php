@@ -7,6 +7,7 @@ use App\Quote;
 use App\QuoteProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use PDF;
 
 class QuoteController extends Controller
 {
@@ -86,7 +87,7 @@ class QuoteController extends Controller
         $products = Product::all();
         $products_json = $products->toJson();
         $quote_products = $quote->products;
-        return view('quote.edit', compact('quote', 'products', 'quote_products', 'products_json'));
+        return view('quote.edit', compact('quote', 'quote_products', 'products_json'));
 
     }
 
@@ -115,8 +116,14 @@ class QuoteController extends Controller
     public function add_product_to_quote(Request $request, $id)
     {
         $quote = Quote::find($id);
-        $quote->products()->attach($request->design, ['quantity' => $request->quantity]);
+        $quote->products()->attach($request->design, array('quantity' => $request->quantity, 'width' => $request->width, 'height' => $request->height, 'lite' => $request->lite));
         return redirect(route('quotes.edit', ['id' => $quote->id]));
+    }
+
+    public function client_confirm($id)
+    {
+        $pdf = PDF::loadHTML('<h1>Test</h1>');
+        return $pdf->download('invoice.pdf');
     }
 
 }
