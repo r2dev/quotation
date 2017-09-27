@@ -72,6 +72,9 @@ class QuoteController extends Controller
     public function show($id)
     {
         //pass quote
+        $quote = Quote::find($id);
+        $quote_products = $quote->products;
+        return view('quote.show', compact('quote', 'quote_products'));
     }
 
     /**
@@ -84,6 +87,9 @@ class QuoteController extends Controller
     {
 
         $quote = Quote::find($id);
+        if ($quote->customer_confirmed == true) {
+            return redirect(route('quotes.show', ['id' => $quote->id]));
+        }
         $products = Product::all();
         $products_json = $products->toJson();
         $quote_products = $quote->products;
@@ -122,8 +128,16 @@ class QuoteController extends Controller
 
     public function client_confirm($id)
     {
+        $quote = Quote::find($id);
+        $quote->customer_confirmed = true;
+        $quote->save();
+        return redirect(route('quotes.show', ['id' => $quote->id]));
+    }
+
+    public function print_quotation($id)
+    {
         $pdf = PDF::loadHTML('<h1>Test</h1>');
-        return $pdf->download('invoice.pdf');
+        return $pdf->download('quotation_' . $id . '.pdf');
     }
 
 }

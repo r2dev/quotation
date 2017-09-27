@@ -57,11 +57,18 @@
                 <input type="submit" value="add"/>
             </form>
 
-            <form action="{{route('quotes.client_confirm_quote', ['id' => $quote->id])}}" method="POST">
+            <form action="{{route('quotes.print_quotation', ['id' => $quote->id])}}" method="POST">
+                {{csrf_field()}}
+                <input type="submit" value="print quotation" />
+            </form>
+            <form action="{{route('quotes.client_confirm', ['id' => $quote->id])}}" method="post">
                 {{csrf_field()}}
                 <input type="submit" value="client confirm" />
             </form>
-
+            <form action="{{route('quotes.production_confirm', ['id' => $quote->id])}}" method="post">
+                {{csrf_field()}}
+                <input type="submit" value="production confirm" />
+            </form>
         </div>
     </div>
 
