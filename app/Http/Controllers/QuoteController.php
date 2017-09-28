@@ -28,16 +28,13 @@ class QuoteController extends Controller
      */
     public function index()
     {
-        //
-//        if (Auth::user()->permission >= 3) {
-//            $quotes = Quote::paginate(10);
-//        } else if (Auth::user()->permission === 2) {
-//
-//        } else {
-//            $quotes = array();
-//        }
-        $quotes = Auth::user()->quotes()->get();
-
+        if (Auth::user()->permission >= 3) {
+            $quotes = Quote::paginate(10);
+        } else if (Auth::user()->permission === 2) {
+            $quotes = Auth::user()->quotes()->paginate(10);
+        } else {
+            $quotes = array();
+        }
         return view('Quote.index', compact('quotes'));
     }
 
@@ -73,6 +70,7 @@ class QuoteController extends Controller
     {
         //pass quote
         $quote = Quote::find($id);
+        $this->authorize('view', $quote);
         $quote_products = $quote->products;
         return view('quote.show', compact('quote', 'quote_products'));
     }
