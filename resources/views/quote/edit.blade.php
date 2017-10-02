@@ -16,6 +16,7 @@
                         <th>width</th>
                         <th>height</th>
                         <th>lite</th>
+                        <th>action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -23,16 +24,29 @@
                         <tr>
                             <td>{{$product->design}}</td>
                             <td>{{$product->pivot->quantity}}</td>
-                            <td>{{$product->mr}}</td>
+                            @if ($quote->customer_confirmed)
+                                <td>{{$product->pivot->price}}</td>
+                            @else
+                                <td>{{$product->mr}}</td>
+                            @endif
                             <td>{{$product->pivot->style}}</td>
                             <td>{{$product->pivot->width}}</td>
                             <td>{{$product->pivot->height}}</td>
                             <td>{{$product->pivot->lite}}</td>
+                            <td>
+                                <form action="{{route('quotes.remove_product_from_quote', ['id' => $quote->id])}}" method="post">
+                                    {{csrf_field()}}
+                                    {{method_field('DELETE')}}
+                                    <input type="submit" value="remove" />
+                                    <input type="hidden" value="{{$product->pivot->id}}" name="pq_id">
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
             </div>
+            @if ($quote->customer_confirmed == false)
             <form action="{{route('quotes.add_product', ['id' => $quote->id])}}" method="POST">
                 {{csrf_field()}}
                 <select name="design" id="design">
@@ -56,19 +70,44 @@
                 <span>Total Price</span><div id="total"> - </div>
                 <input type="submit" value="add"/>
             </form>
+            @endif
+
 
             <form action="{{route('quotes.print_quotation', ['id' => $quote->id])}}" method="POST">
                 {{csrf_field()}}
                 <input type="submit" value="print quotation" />
             </form>
+
+            @if (Auth::user()->permission < 3 && $quote->customer_confirmed == false)
             <form action="{{route('quotes.client_confirm', ['id' => $quote->id])}}" method="post">
                 {{csrf_field()}}
                 <input type="submit" value="client confirm" />
             </form>
+            @endif
+
+            @if ($quote->customer_confirmed == true && $quote->staff_confirmed == false)
+                <form action="{{route('quotes.client_confirm', ['id' => $quote->id])}}" method="post">
+                    {{csrf_field()}}
+                    <input type="submit" value="withdraw quote" />
+                </form>
+            @endif
+
+            @if ($quote->staff_confirmed == false && Auth::user()->permission >= 3)
             <form action="{{route('quotes.production_confirm', ['id' => $quote->id])}}" method="post">
                 {{csrf_field()}}
                 <input type="submit" value="production confirm" />
             </form>
+            @endif
+            @if ($quote->staff_confirmed == true && Auth::user()->permission >= 3)
+                <form action="{{route('quotes.production_confirm', ['id' => $quote->id])}}" method="post">
+                    {{csrf_field()}}
+                    <input type="submit" value="print production" />
+                </form>
+                <form action="{{route('quotes.production_confirm', ['id' => $quote->id])}}" method="post">
+                    {{csrf_field()}}
+                    <input type="submit" value="print invoice" />
+                </form>
+            @endif
         </div>
     </div>
 

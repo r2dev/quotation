@@ -29,11 +29,9 @@ class QuoteController extends Controller
     public function index()
     {
         if (Auth::user()->permission >= 3) {
-            $quotes = Quote::paginate(10);
-        } else if (Auth::user()->permission === 2) {
-            $quotes = Auth::user()->quotes()->paginate(10);
+            $quotes = Quote::where('customer_confirmed', true)->paginate(10);
         } else {
-            $quotes = array();
+            $quotes = Auth::user()->quotes()->paginate(10);
         }
         return view('Quote.index', compact('quotes'));
     }
@@ -83,11 +81,7 @@ class QuoteController extends Controller
      */
     public function edit($id)
     {
-
         $quote = Quote::find($id);
-        if ($quote->customer_confirmed == true) {
-            return redirect(route('quotes.show', ['id' => $quote->id]));
-        }
         $products = Product::all();
         $products_json = $products->toJson();
         $quote_products = $quote->products;
@@ -124,18 +118,36 @@ class QuoteController extends Controller
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
+    public function remove_product_from_quote(Request $request, $id)
+    {
+        $quote = Quote::find($id);
+        if ($quote->customer_confirmed == false) {
+            QuoteProduct::destroy($request->pq_id);
+            $request->session()->flash('status', 'unable to remove, the quotation has been confirmed');
+        }
+        return redirect(route('quotes.edit', ['id' => $quote->id]));
+    }
+
     public function client_confirm($id)
     {
         $quote = Quote::find($id);
         $quote->customer_confirmed = true;
         $quote->save();
-        return redirect(route('quotes.show', ['id' => $quote->id]));
+        return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
     public function print_quotation($id)
     {
         $pdf = PDF::loadHTML('<h1>Test</h1>');
         return $pdf->download('quotation_' . $id . '.pdf');
+    }
+
+    public function production_confirm($id)
+    {
+        $quote = Quote::find($id);
+        $quote->staff_confirmed = true;
+        $quote->save();
+        return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
 }

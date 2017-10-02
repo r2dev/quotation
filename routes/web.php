@@ -27,6 +27,10 @@ Route::resource('customers', 'CustomerController');
 
 Route::post('/quotes/{id}/product', 'QuoteController@add_product_to_quote')->name('quotes.add_product');
 
+Route::delete('/quotes/{id}/product', 'QuoteController@remove_product_from_quote')->name('quotes.remove_product_from_quote');
+
+//Route::get('/quotes/{id}/product', 'QuoteController@remove_product_from_quote')->name('quotes.remove_product_from_quote');
+
 Route::post('/quotes/{id}/print_quotation', 'QuoteController@print_quotation')->name('quotes.print_quotation');
 
 Route::post('/quotes/{id}/client_confirm', 'QuoteController@client_confirm')->name('quotes.client_confirm');

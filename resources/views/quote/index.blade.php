@@ -4,7 +4,7 @@
         <div class="row">
 
             @foreach ($quotes as $quote)
-                {{$quote->id}}
+                <a href="{{route('quotes.edit', [ 'id' => $quote->id])}}">{{$quote->id}}</a>
             @endforeach
 
 
