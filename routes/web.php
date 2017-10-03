@@ -38,3 +38,8 @@ Route::post('/quotes/{id}/client_confirm', 'QuoteController@client_confirm')->na
 Route::post('/quotes/{id}/production_confirm', 'QuoteController@production_confirm')->name('quotes.production_confirm');
 
 Route::post('/customers/{id}/users', 'CustomerController@create_user')->name('customers.add_user');
+
+Route::post('/styles', 'StyleController@store')->name('styles.store');
+
+Route::delete('/styles/{id}', 'StyleController@destroy')->name('styles.destroy');
+

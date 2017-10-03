@@ -2,74 +2,83 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <table class="table">
+            <table class="table  table-responsive">
                 <thead>
                 <tr>
                     <th>
                         Design Name
                     </th>
-                    <th>
-                        Maple Select
-                    </th>
-                    <th>
-                        Maple Regular
-                    </th>
-                    <th>
-                        Maple Paint
-                    </th>
-                    <th>
-                        Maple MDF
-                    </th>
-                    <th>
-                        Oak Regular
-                    </th>
-                    <th>
-                        Maple Regular MDF
-                    </th>
-                    <th>
-                        Cherry Regular
-                    </th>
+                    @foreach ($styles as $style)
+                        <th>{{$style->style}}</th>
+                    @endforeach
                     <th>
                         action
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-            @foreach ($products as $product)
-                <tr>
-                    <td>{{$product->design}}</td>
-                    <td>{{$product->ms}}</td>
-                    <td>{{$product->mr}}</td>
-                    <td>{{$product->mp}}</td>
-                    <td>{{$product->mmdf}}</td>
-                    <td>{{$product->or}}</td>
-                    <td>{{$product->mrmdf}}</td>
-                    <td>{{$product->cr}}</td>
-                    <td>
-                        <form action="{{route('products.destroy', ['id' => $product->id])}}" method="POST">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="submit" value="delete" />
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
+                @foreach ($products as $product)
+                    <tr>
+                        <td>{{$product->design}}</td>
+                        @foreach ($styles as $style)
+                            <td>{{$style->style}}</td>
+                        @endforeach
+                        <td>
+                            <form action="{{route('products.destroy', ['id' => $product->id])}}" method="POST">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="submit" value="delete"/>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+
                 </tbody>
             </table>
             {!! $products->render() !!}
+            <form action="{{route('products.store')}}" method="POST">
+            <table class="table  table-responsive">
+                <thead>
+                <tr>
+                    <th>
+                        Design Name
+                    </th>
+                    @foreach ($styles as $style)
+                        <th>{{$style->style}}</th>
+                    @endforeach
+                    <th>
+                        action
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+
+                    <td><input name="design" type="text"/></td>
+                    @foreach ($styles as $index => $style)
+                        <td><input name="price[{{$style->id}}]" type="text"></td>
+                    @endforeach
+                    <td>
+                        <input type="submit" value="submit">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </form>
         </div>
 
-        <form action="{{route('products.index')}}" method="post">
-            {{ csrf_field() }}
-            <label>design <input name="design" type="text"/></label>
-            <label>ms <input name="ms" type="text"/></label>
-            <label>mr <input name="mr" type="text"/></label>
-            <label>mp <input name="mp" type="text"/></label>
-            <label>mmdf <input name="mmdf" type="text"/></label>
-            <label>or <input name="or" type="text"/></label>
-            <label>mrmdf <input name="mrmdf" type="text"/></label>
-            <label>cr <input name="cr" type="text"/></label>
-            <input type="submit" value="submit">
-        </form>
+
+        <div>
+            @foreach ($styles as $style)
+                <div>{{$style->style}}</div>
+            @endforeach
+            <form action="{{route('styles.store')}}" method="post">
+                {{csrf_field()}}
+                <label>style <input name="style" type="text" placeholder="style"></label>
+                <input type="submit" value="submit">
+            </form>
+        </div>
+
+
     </div>
 @endsection

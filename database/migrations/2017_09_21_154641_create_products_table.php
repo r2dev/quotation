@@ -16,13 +16,6 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('design');
-            $table->decimal('ms',9, 4)->comment('Maple Select')->default(0);
-            $table->decimal('mr', 9, 4)->comment('Maple Regular')->default(0);
-            $table->decimal('mp', 9, 4)->comment('Maple Paint')->default(0);
-            $table->decimal('mmdf', 9, 4)->comment('Maple MDF')->default(0);
-            $table->decimal('or', 9, 4)->comment('Oak Regular')->default(0);
-            $table->decimal('mrmdf', 9, 4)->comment('Maple Regular MDF')->default(0);
-            $table->decimal('cr', 9, 4)->comment('Cherry Regular')->default(0);
             $table->integer('min_lite')->default(0);
             $table->integer('max_lite')->default(0);
             $table->integer('min_width')->default(0);

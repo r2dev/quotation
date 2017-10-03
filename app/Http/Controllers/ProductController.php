@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\Style;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -26,7 +27,8 @@ class ProductController extends Controller
     {
         //
         $products = Product::paginate(10);
-        return view('product.index', compact('products'));
+        $styles = Style::all();
+        return view('product.index', compact('products', 'styles'));
     }
 
     /**
@@ -46,32 +48,17 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = new Product;
-        if (isset($request->design)) {
-            $product->design = $request->design;
-        }
-        if (isset($request->ms)) {
-            $product->ms = $request->ms;
-        }
-        if (isset($request->mr)) {
-            $product->mr = $request->mr;
-        }
-        if (isset($request->mp)) {
-            $product->mp = $request->mp;
-        }
-        if (isset($request->mmdf)) {
-            $product->mmdf = $request->mmdf;
-        }
-        if (isset($request->or)) {
-            $product->or = $request->or;
-        }
-        if (isset($request->mrmdf)) {
-            $product->mrmdf = $request->mrmdf;
-        }
-        if (isset($request->cr)) {
-            $product->cr = $request->cr;
-        }
-        $product->save();
+//        $product = new Product;
+//        if (isset($request->design)) {
+//            $product->design = $request->design;
+//        }
+//        $price_array = $request->price;
+//        $result = array();
+//        foreach ($price_array as $key=>$price) {
+//            $result[$key] = ['price' => $price];
+//        }
+//        $product->save();
+//        $product->styles()->attach($result);
         return redirect('/products');
     }
 
