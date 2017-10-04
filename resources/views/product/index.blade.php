@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <table class="table  table-responsive">
+            <table class="table">
                 <thead>
                 <tr>
                     <th>
@@ -21,7 +21,11 @@
                     <tr>
                         <td>{{$product->design}}</td>
                         @foreach ($styles as $style)
-                            <td>{{$style->style}}</td>
+                            @if(null != $product->styles()->where('style_id', $style->id)->first())
+                                <td>{{$product->styles()->where('style_id', $style->id)->first()->pivot->price}}</td>
+                            @else
+                                <td>0.0000</td>
+                            @endif
                         @endforeach
                         <td>
                             <form action="{{route('products.destroy', ['id' => $product->id])}}" method="POST">
@@ -37,33 +41,33 @@
             </table>
             {!! $products->render() !!}
             <form action="{{route('products.store')}}" method="POST">
-            <table class="table  table-responsive">
-                <thead>
-                <tr>
-                    <th>
-                        Design Name
-                    </th>
-                    @foreach ($styles as $style)
-                        <th>{{$style->style}}</th>
-                    @endforeach
-                    <th>
-                        action
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
+                <table class="table  table-responsive">
+                    <thead>
+                    <tr>
+                        <th>
+                            Design Name
+                        </th>
+                        @foreach ($styles as $style)
+                            <th>{{$style->style}}</th>
+                        @endforeach
+                        <th>
+                            action
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
 
-                    <td><input name="design" type="text"/></td>
-                    @foreach ($styles as $index => $style)
-                        <td><input name="price[{{$style->id}}]" type="text"></td>
-                    @endforeach
-                    <td>
-                        <input type="submit" value="submit">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                        <td><input name="design" type="text"/>{{csrf_field()}}</td>
+                        @foreach ($styles as $index => $style)
+                            <td><input name="price[{{$style->id}}]" type="text"></td>
+                        @endforeach
+                        <td>
+                            <input type="submit" value="submit">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </form>
         </div>
 

@@ -48,24 +48,30 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-//        $product = new Product;
-//        if (isset($request->design)) {
-//            $product->design = $request->design;
-//        }
-//        $price_array = $request->price;
-//        $result = array();
-//        foreach ($price_array as $key=>$price) {
-//            $result[$key] = ['price' => $price];
-//        }
-//        $product->save();
-//        $product->styles()->attach($result);
+        $product = new Product;
+        if (isset($request->design)) {
+            $product->design = $request->design;
+            $price_array = $request->price;
+            $result = array();
+            foreach ($price_array as $key => $price) {
+                if (isset($price)) {
+                    $result[$key] = ['price' => $price];
+                } else {
+                    $result[$key] = ['price' => 0];
+                }
+
+            }
+            $product->save();
+            $product->styles()->attach($result);
+        }
         return redirect('/products');
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
@@ -76,7 +82,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
@@ -87,7 +93,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id)
@@ -98,7 +104,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
