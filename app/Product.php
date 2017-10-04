@@ -16,7 +16,12 @@ class Product extends Model
 //    }
     public function styles()
     {
-        return $this->belongsToMany('App\Style', 'product_style')->withTimestamps()->withPivot('price');
+        return $this->belongsToMany('App\Style', 'product_style')->withTimestamps()->withPivot('price')->using('App\ProductStyle');
+    }
+
+    public function productStyles()
+    {
+        return $this->hasMany(ProductStyle::class, 'product_id', 'id');
     }
     protected $dates = ['deleted_at'];
 }

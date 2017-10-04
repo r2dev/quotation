@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\ProductStyle;
 use App\Quote;
 use App\QuoteProduct;
+use App\Style;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use PDF;
@@ -82,10 +84,11 @@ class QuoteController extends Controller
     public function edit($id)
     {
         $quote = Quote::find($id);
-        $products = Product::all();
+        $style = Style::all()->toJson();
+        $products = Product::with('productStyles')->get();
         $products_json = $products->toJson();
         $quote_products = $quote->products;
-        return view('quote.edit', compact('quote', 'quote_products', 'products_json'));
+        return view('quote.edit', compact('quote', 'style', 'quote_products', 'products_json', 'style'));
 
     }
 

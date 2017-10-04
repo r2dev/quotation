@@ -20,12 +20,8 @@
                 @foreach ($products as $product)
                     <tr>
                         <td>{{$product->design}}</td>
-                        @foreach ($styles as $style)
-                            @if(null != $product->styles()->where('style_id', $style->id)->first())
-                                <td>{{$product->styles()->where('style_id', $style->id)->first()->pivot->price}}</td>
-                            @else
-                                <td>0.0000</td>
-                            @endif
+                        @foreach ($product->productStyles as $product_style)
+                            <td>{{$product_style->price}}</td>
                         @endforeach
                         <td>
                             <form action="{{route('products.destroy', ['id' => $product->id])}}" method="POST">

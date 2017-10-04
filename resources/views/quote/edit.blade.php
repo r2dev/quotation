@@ -51,16 +51,10 @@
                 {{csrf_field()}}
                 <select name="design" id="design">
                     <option value="" selected disabled hidden>Choose here</option>
+
                 </select>
                 <select name="style" id="style">
                     <option value="" selected disabled hidden>Choose here</option>
-                    <option value="0">Maple Select</option>
-                    <option value="1">Maple Regular</option>
-                    <option value="2">Maple Paint</option>
-                    <option value="3">Maple MDF</option>
-                    <option value="4">Oak Regular</option>
-                    <option value="5">Maple Regular MDF</option>
-                    <option value="6">Cherry Regular</option>
                 </select>
                 <input type="text" name="quantity" placeholder="quantity" value="1"/>
                 <input type="text" name="width" placeholder="width"/>
@@ -116,6 +110,11 @@
 @section('js')
     <script>
         window._products = {!! $products_json !!};
+        window._styles = {!! $style !!};
+        window._styles_format = {}
+        $.map(window._styles, function(value) {
+            window._styles_format[value.id] = value
+        })
         var priceHandler = function() {
             var design = parseInt($('#design').find(":selected").data('idx'), 10)
             var style = parseInt($('#style').val())
@@ -152,8 +151,20 @@
         $.each(window._products, function(index, key) {
             $('#design').append($('<option></option>').val(key.id).data('idx', index).text(key.design))
         });
-        $('#design, #style').change(function(e) {
-            priceHandler()
-        });
+        $('#design').change(function(e) {
+            $('#style').val = ''
+            $('#style').empty()
+            $('#style').append('<option value="" selected disabled hidden>Choose here</option>')
+            var index = parseInt($("#design").find(":selected").data('idx'), 10)
+            $.map(window._products[index].product_styles, function(value, index) {
+                var style_id = value.style_id
+                if (value.price != 0) {
+                    $('#style').append($('<option></option>').val(style_id).text(window._styles_format[style_id].style))
+                }
+            })
+        })
+//        $('#design, #style').change(function(e) {
+//            priceHandler()
+//        });
     </script>
 @endsection
