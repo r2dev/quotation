@@ -34,13 +34,15 @@
                             <td>{{$product->pivot->height}}</td>
                             <td>{{$product->pivot->lite}}</td>
                             <td>
-                                <form action="{{route('quotes.remove_product_from_quote', ['id' => $quote->id])}}"
-                                      method="post">
-                                    {{csrf_field()}}
-                                    {{method_field('DELETE')}}
-                                    <input type="submit" value="remove"/>
-                                    <input type="hidden" value="{{$product->pivot->id}}" name="pq_id">
-                                </form>
+                                @if ($quote->customer_confirmed)
+                                    <form action="{{route('quotes.remove_product_from_quote', ['id' => $quote->id])}}"
+                                          method="post">
+                                        {{csrf_field()}}
+                                        {{method_field('DELETE')}}
+                                        <input type="submit" value="remove"/>
+                                        <input type="hidden" value="{{$product->pivot->id}}" name="pq_id">
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
