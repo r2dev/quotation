@@ -20,8 +20,10 @@ class CreateQuoteProductBridgeTable extends Migration
             $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products');
             $table->decimal('price', 9, 4)->default(0);
-            $table->integer('quantity')->unsigned()->default(0);
             $table->string('style')->default('');
+            $table->integer('quantity')->unsigned()->default(0);
+            $table->integer('style_id')->unsigned();
+            $table->foreign('style_id')->references('id')->on('styles');
             $table->integer('height')->unsigned()->default(0);
             $table->integer('width')->unsigned()->default(0);
             $table->integer('lite')->unsigned()->default(0);

@@ -24,6 +24,7 @@ class CreateProductsTable extends Migration
             $table->integer('max_height')->default(0);
             $table->integer('min_area')->default(0);
             $table->integer('max_area')->default(0);
+            $table-
             $table->timestamps();
             $table->softDeletes();
         });

@@ -24,17 +24,17 @@
                         <tr>
                             <td>{{$product->design}}</td>
                             <td>{{$product->pivot->quantity}}</td>
-                            @if ($quote->customer_confirmed)
+                            @if ($quote->customer_confirmed == true)
                                 <td>{{$product->pivot->price}}</td>
                             @else
-                                <td>{{$product->mr}}</td>
+                                <td>{{$product->styles->find($product->pivot->style_id)->pivot->price}}</td>
                             @endif
-                            <td>{{$product->pivot->style}}</td>
+                            <td>{{$style->find($product->pivot->style_id)->style}}</td>
                             <td>{{$product->pivot->width}}</td>
                             <td>{{$product->pivot->height}}</td>
                             <td>{{$product->pivot->lite}}</td>
                             <td>
-                                @if ($quote->customer_confirmed)
+                                @if ($quote->customer_confirmed == false)
                                     <form action="{{route('quotes.remove_product_from_quote', ['id' => $quote->id])}}"
                                           method="post">
                                         {{csrf_field()}}
@@ -54,7 +54,6 @@
                     {{csrf_field()}}
                     <div class="form-group">
                         <label for="design">Design</label>
-
                         <select name="design" id="design" class="form-control">
                             <option value="" selected disabled hidden>Choose here</option>
                         </select>
@@ -124,8 +123,8 @@
 
 @section('js')
     <script>
-        window._products = {!! $products_json !!};
-        window._styles = {!! $style !!};
+        window._products = {!! $products->toJson() !!};
+        window._styles = {!! $style->toJson() !!};
         window._styles_format = {}
         $.map(window._styles, function (value) {
             window._styles_format[value.id] = value

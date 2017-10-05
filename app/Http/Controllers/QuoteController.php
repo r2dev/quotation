@@ -84,11 +84,10 @@ class QuoteController extends Controller
     public function edit($id)
     {
         $quote = Quote::find($id);
-        $style = Style::all()->toJson();
+        $style = Style::all();
         $products = Product::with('productStyles')->get();
-        $products_json = $products->toJson();
         $quote_products = $quote->products;
-        return view('quote.edit', compact('quote', 'style', 'quote_products', 'products_json', 'style'));
+        return view('quote.edit', compact('quote', 'style', 'quote_products', 'products'));
 
     }
 
@@ -116,8 +115,20 @@ class QuoteController extends Controller
 
     public function add_product_to_quote(Request $request, $id)
     {
+
         $quote = Quote::find($id);
-        $quote->products()->attach($request->design, array('quantity' => $request->quantity, 'width' => $request->width, 'height' => $request->height, 'lite' => $request->lite));
+        if ($quote->customer_confirmed == false) {
+            $quote->products()->attach($request->design, array(
+                'style_id' => $request->style,
+                'quantity' => $request->quantity,
+                'width' => (isset($request->width))? $request->width: 0,
+                'height' => (isset($request->height))? $request->height: 0,
+                'lite' => (isset($request->lite))? $request->lite: 0
+            ));
+            $request->session()->flash('status', 'success');
+        } else {
+            $request->session()->flash('status', 'unable to add');
+        }
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
@@ -126,6 +137,7 @@ class QuoteController extends Controller
         $quote = Quote::find($id);
         if ($quote->customer_confirmed == false) {
             QuoteProduct::destroy($request->pq_id);
+        } else {
             $request->session()->flash('status', 'unable to remove, the quotation has been confirmed');
         }
         return redirect(route('quotes.edit', ['id' => $quote->id]));
