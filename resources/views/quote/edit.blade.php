@@ -27,9 +27,9 @@
                             @if ($quote->customer_confirmed == true)
                                 <td>{{$product->pivot->price}}</td>
                             @else
-                                <td>{{$product->styles->find($product->pivot->style_id)->pivot->price}}</td>
+                                <td>{{$product['price_'. $product->pivot->style_id]}}</td>
                             @endif
-                            <td>{{$style->find($product->pivot->style_id)->style}}</td>
+                            <td>{{$style[$product->pivot->style_id]}}</td>
                             <td>{{$product->pivot->width}}</td>
                             <td>{{$product->pivot->height}}</td>
                             <td>{{$product->pivot->lite}}</td>
@@ -124,11 +124,8 @@
 @section('js')
     <script>
         window._products = {!! $products->toJson() !!};
-        window._styles = {!! $style->toJson() !!};
-        window._styles_format = {}
-        $.map(window._styles, function (value) {
-            window._styles_format[value.id] = value
-        })
+        var ww = ['Maple Select', 'Maple Regular', 'Maple Paint', 'Maple MDF', 'Oak Regular', 'Maple Regular MDF', 'Cherry Regular']
+
         $.each(window._products, function (index, key) {
             $('#design').append($('<option></option>').val(key.id).data('idx', index).text(key.design))
         });
@@ -137,18 +134,16 @@
             $('#style').empty()
             $('#style').append('<option value="" selected disabled hidden>Choose here</option>')
             var index = parseInt($("#design").find(":selected").data('idx'), 10)
-            $.map(window._products[index].product_styles, function (value, index) {
-                var style_id = value.style_id
-                if (value.price != 0) {
-                    $('#style').append($('<option></option>').data('price', value.price).val(style_id).text(window._styles_format[style_id].style))
+            for (var i = 0; i !== 6; i++) {
+                var price = parseFloat(window._products[index]['price_' + i]);
+                if (!isNaN(price) && (price !== 0)) {
+
+                    $('#style').append($('<option></option>').data('price', price).val(i).text(ww[i]))
                 }
-            })
+            }
         })
         $("#style").change(function (e) {
             console.log($("#style").find(":selected").data('price'))
         })
-        //        $('#design, #style').change(function(e) {
-        //            priceHandler()
-        //        });
     </script>
 @endsection

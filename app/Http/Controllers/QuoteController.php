@@ -84,10 +84,10 @@ class QuoteController extends Controller
     public function edit($id)
     {
         $quote = Quote::find($id);
-        $style = Style::all();
-        $products = Product::with('productStyles')->get();
+        $products = Product::all();
         $quote_products = $quote->products;
-        return view('quote.edit', compact('quote', 'style', 'quote_products', 'products'));
+        $style = array('Maple Select', 'Maple Regular', 'Maple Paint', 'Maple MDF', 'Oak Regular', 'Maple Regular MDF', 'Cherry Regular');
+        return view('quote.edit', compact('quote', 'quote_products', 'products', 'style'));
 
     }
 

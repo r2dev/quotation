@@ -16,6 +16,13 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('design');
+            $table->decimal('price_0', 9, 4)->default(0); //Maple Select
+            $table->decimal('price_1', 9, 4)->default(0); //Maple Regular
+            $table->decimal('price_2', 9, 4)->default(0); //Maple Paint
+            $table->decimal('price_3', 9, 4)->default(0); //Maple MDF
+            $table->decimal('price_4', 9, 4)->default(0); //Oak Regular
+            $table->decimal('price_5', 9, 4)->default(0); //Maple Regular MDF
+            $table->decimal('price_6', 9, 4)->default(0); //Cherry Regular
             $table->integer('min_lite')->default(0);
             $table->integer('max_lite')->default(0);
             $table->integer('min_width')->default(0);
@@ -24,7 +31,6 @@ class CreateProductsTable extends Migration
             $table->integer('max_height')->default(0);
             $table->integer('min_area')->default(0);
             $table->integer('max_area')->default(0);
-            $table-
             $table->timestamps();
             $table->softDeletes();
         });

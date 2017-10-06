@@ -26,9 +26,8 @@ class ProductController extends Controller
     public function index()
     {
         //
-        $products = Product::with('productStyles')->paginate(10);
-        $styles = Style::all();
-        return view('product.index', compact('products', 'styles'));
+        $products = Product::paginate(10);
+        return view('product.index', compact('products'));
     }
 
     /**
@@ -52,17 +51,12 @@ class ProductController extends Controller
         if (isset($request->design)) {
             $product->design = $request->design;
             $price_array = $request->price;
-            $result = array();
             foreach ($price_array as $key => $price) {
                 if (isset($price)) {
-                    $result[$key] = ['price' => $price];
-                } else {
-                    $result[$key] = ['price' => 0];
+                    $product['price_' . $key] = $price;
                 }
-
             }
             $product->save();
-            $product->styles()->attach($result);
         }
         return redirect('/products');
 

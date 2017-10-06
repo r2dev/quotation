@@ -8,9 +8,27 @@
                     <th>
                         Design Name
                     </th>
-                    @foreach ($styles as $style)
-                        <th>{{$style->style}}</th>
-                    @endforeach
+                    <th>
+                        Maple Select
+                    </th>
+                    <th>
+                        Maple Regular
+                    </th>
+                    <th>
+                        Maple Paint
+                    </th>
+                    <th>
+                        Maple MDF
+                    </th>
+                    <th>
+                        Oak Regular
+                    </th>
+                    <th>
+                        Maple Regular MDF
+                    </th>
+                    <th>
+                        Cherry Regular
+                    </th>
                     <th>
                         action
                     </th>
@@ -20,9 +38,13 @@
                 @foreach ($products as $product)
                     <tr>
                         <td>{{$product->design}}</td>
-                        @foreach ($product->productStyles as $product_style)
-                            <td>{{$product_style->price}}</td>
-                        @endforeach
+                        <td>{{$product->price_0}}</td>
+                        <td>{{$product->price_1}}</td>
+                        <td>{{$product->price_2}}</td>
+                        <td>{{$product->price_3}}</td>
+                        <td>{{$product->price_4}}</td>
+                        <td>{{$product->price_5}}</td>
+                        <td>{{$product->price_6}}</td>
                         <td>
                             <form action="{{route('products.destroy', ['id' => $product->id])}}" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
@@ -43,9 +65,27 @@
                         <th>
                             Design Name
                         </th>
-                        @foreach ($styles as $style)
-                            <th>{{$style->style}}</th>
-                        @endforeach
+                        <th>
+                            Maple Select
+                        </th>
+                        <th>
+                            Maple Regular
+                        </th>
+                        <th>
+                            Maple Paint
+                        </th>
+                        <th>
+                            Maple MDF
+                        </th>
+                        <th>
+                            Oak Regular
+                        </th>
+                        <th>
+                            Maple Regular MDF
+                        </th>
+                        <th>
+                            Cherry Regular
+                        </th>
                         <th>
                             action
                         </th>
@@ -54,28 +94,20 @@
                     <tbody>
                     <tr>
 
-                        <td><input name="design" type="text"/>{{csrf_field()}}</td>
-                        @foreach ($styles as $index => $style)
-                            <td><input name="price[{{$style->id}}]" type="text"></td>
-                        @endforeach
+                        <td><input name="design" type="text">{{csrf_field()}}</td>
+                        <td><input name="price[0]" type="text"></td>
+                        <td><input name="price[1]" type="text"></td>
+                        <td><input name="price[2]" type="text"></td>
+                        <td><input name="price[3]" type="text"></td>
+                        <td><input name="price[4]" type="text"></td>
+                        <td><input name="price[5]" type="text"></td>
+                        <td><input name="price[6]" type="text"></td>
                         <td>
                             <input type="submit" value="submit">
                         </td>
                     </tr>
                     </tbody>
                 </table>
-            </form>
-        </div>
-
-
-        <div>
-            @foreach ($styles as $style)
-                <div>{{$style->style}}</div>
-            @endforeach
-            <form action="{{route('styles.store')}}" method="post">
-                {{csrf_field()}}
-                <label>style <input name="style" type="text" placeholder="style"></label>
-                <input type="submit" value="submit">
             </form>
         </div>
 
