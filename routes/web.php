@@ -17,8 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/test/{id}', 'QuoteController@print_quotation');
-
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('products', 'ProductController');
@@ -41,9 +39,4 @@ Route::post('/quotes/{id}/production_confirm', 'QuoteController@production_confi
 
 Route::post('/customers/{id}/users', 'CustomerController@create_user')->name('customers.add_user');
 
-Route::post('/styles', 'StyleController@store')->name('styles.store');
-
-Route::delete('/styles/{id}', 'StyleController@destroy')->name('styles.destroy');
-
-
-
+Route::get('/styles', 'QuoteController@test')->name('styles.store');

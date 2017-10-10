@@ -20,7 +20,7 @@ class QuotePolicy
     public function view(User $user, Quote $quote)
     {
         //
-        return $user->id = $quote->user_id || $user->permission >= 3;
+        return $user->id === $quote->user_id || $user->permission >= 3;
     }
 
     /**
@@ -45,7 +45,8 @@ class QuotePolicy
     public function update(User $user, Quote $quote)
     {
         //
-        return $user->id = $quote->user_id || $user->permission >= 3;
+
+        return $user->id === $quote->user_id || $user->permission >= 3;
     }
 
     /**
@@ -58,6 +59,6 @@ class QuotePolicy
     public function delete(User $user, Quote $quote)
     {
         //
-        return $user->id = $quote->user_id || $user->permission >= 3;
+        return $user->id === $quote->user_id || $user->permission >= 3;
     }
 }

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use PDF;
 
+
 class QuoteController extends Controller
 {
     /**
@@ -60,20 +61,6 @@ class QuoteController extends Controller
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //pass quote
-        $quote = Quote::find($id);
-        $this->authorize('view', $quote);
-        $quote_products = $quote->products;
-        return view('quote.show', compact('quote', 'quote_products'));
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -83,7 +70,8 @@ class QuoteController extends Controller
      */
     public function edit($id)
     {
-        $quote = Quote::find($id);
+        $quote = Quote::findOrFail($id);
+        $this->authorize('view', $quote);
         $products = Product::all();
         $quote_products = $quote->products;
         $style = array('Maple Select', 'Maple Regular', 'Maple Paint', 'Maple MDF', 'Oak Regular', 'Maple Regular MDF', 'Cherry Regular');
@@ -116,7 +104,7 @@ class QuoteController extends Controller
     public function add_product_to_quote(Request $request, $id)
     {
 
-        $quote = Quote::find($id);
+        $quote = Quote::findOrFail($id);
         if ($quote->customer_confirmed == false) {
             $quote->products()->attach($request->design, array(
                 'style_id' => $request->style,
@@ -134,7 +122,7 @@ class QuoteController extends Controller
 
     public function remove_product_from_quote(Request $request, $id)
     {
-        $quote = Quote::find($id);
+        $quote = Quote::findOrFail($id);
         if ($quote->customer_confirmed == false) {
             QuoteProduct::destroy($request->pq_id);
         } else {
@@ -145,15 +133,16 @@ class QuoteController extends Controller
 
     public function client_confirm($id)
     {
-        $quote = Quote::find($id);
+        $quote = Quote::findOrFail($id);
         $quote->customer_confirmed = true;
+//        QuoteProduct::where('quote_id', $id)->update()
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
     public function print_quotation($id)
     {
-        $quote = Quote::with(['user', 'user.customer'])->find($id);
+        $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
         $pdf = PDF::loadView('pdf.quotation', compact('quote'));
 
 //$quote = Quote::find($id);
