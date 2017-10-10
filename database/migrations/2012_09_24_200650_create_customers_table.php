@@ -17,6 +17,7 @@ class CreateCustomersTable extends Migration
             $table->increments('id');
             $table->string('name')->default("");
             $table->integer('discount')->default(0);
+            $table->integer('cash')->default(0);
             $table->string('address')->default('');
             $table->string('telephone')->default('');
             $table->string('fax')->default('');

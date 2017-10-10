@@ -8,6 +8,7 @@
                 <input type="hidden" name="_method" value="PUT">
                 <label>name <input name="name" type="text" value="{{$customer->name}}"/></label>
                 <label>discount <input name="discount" type="text" value="{{$customer->discount}}"></label>
+                <label>cash<input name="cash" type="text" value="{{$customer->cash}}"></label>
                 <label>address <input name="address" type="text" value="{{$customer->address}}"></label>
                 <label>telephone <input name="telephone" type="text" value="{{$customer->telephone}}"></label>
                 <label>fax <input name="fax" type="text" value="{{$customer->fax}}"></label>

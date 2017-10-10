@@ -109,6 +109,9 @@ class CustomerController extends Controller
         if (isset($request->email)) {
             $customer->email = $request->email;
         }
+        if (isset($request->cash)) {
+            $customer->cash = $request->cash;
+        }
         $customer->save();
         $request->session()->flash('status', 'customer update was successful');
         return redirect(route('customers.edit', ['id' => $customer->id]));
