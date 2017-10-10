@@ -90,11 +90,25 @@ class CustomerController extends Controller
     {
         //
         $customer = Customer::find($id);
-        $customer->name = $request->name;
-        $customer->discount = $request->discount;
-        $customer->address = $request->address;
-        $customer->telephone = $request->telephone;
-        $customer->email = $request->email;
+
+        if (isset($request->name)) {
+            $customer->name = $request->name;
+        }
+        if (isset($request->discount)) {
+            $customer->discount = $request->discount;
+        }
+        if (isset($request->address)) {
+            $customer->address = $request->address;
+        }
+        if (isset($request->telephone)) {
+            $customer->telephone = $request->telephone;
+        }
+        if (isset($request->fax)) {
+            $customer->fax = $request->fax;
+        }
+        if (isset($request->email)) {
+            $customer->email = $request->email;
+        }
         $customer->save();
         $request->session()->flash('status', 'customer update was successful');
         return redirect(route('customers.edit', ['id' => $customer->id]));

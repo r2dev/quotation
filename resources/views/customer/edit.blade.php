@@ -7,11 +7,11 @@
                 {{ csrf_field() }}
                 <input type="hidden" name="_method" value="PUT">
                 <label>name <input name="name" type="text" value="{{$customer->name}}"/></label>
-                <label>discount <input name="discount" type="number" value="{{$customer->discount}}"></label>
-                <label>address <input name="discount" type="number" value="{{$customer->address}}"></label>
-                <label>telephone <input name="discount" type="number" value="{{$customer->telephone}}"></label>
-                <label>fax <input name="discount" type="number" value="{{$customer->fax}}"></label>
-                <label>email <input name="discount" type="number" value="{{$customer->email}}"></label>
+                <label>discount <input name="discount" type="text" value="{{$customer->discount}}"></label>
+                <label>address <input name="address" type="text" value="{{$customer->address}}"></label>
+                <label>telephone <input name="telephone" type="text" value="{{$customer->telephone}}"></label>
+                <label>fax <input name="fax" type="text" value="{{$customer->fax}}"></label>
+                <label>email <input name="email" type="text" value="{{$customer->email}}"></label>
                 <input type="submit" value="submit">
             </form>
 

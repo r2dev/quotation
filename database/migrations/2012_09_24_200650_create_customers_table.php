@@ -22,6 +22,7 @@ class CreateCustomersTable extends Migration
             $table->string('fax')->default('');
             $table->string('email')->default('');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

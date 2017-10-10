@@ -153,8 +153,26 @@ class QuoteController extends Controller
 
     public function print_quotation($id)
     {
-        $pdf = PDF::loadHTML('<h1>Test</h1>');
-        return $pdf->download('quotation_' . $id . '.pdf');
+        $quote = Quote::with(['user', 'user.customer'])->find($id);
+        $pdf = PDF::loadView('pdf.quotation', compact('quote'));
+
+//$quote = Quote::find($id);
+
+//        $quote->user();
+//        var_dump($quote->user->customer->name);
+        return $pdf->stream('quotation_' . $id . '.pdf');
+    }
+
+    public function print_invoice($id)
+    {
+        $pdf = PDF::loadView('pdf.invoice');
+        return $pdf->download('invoice_' . $id . '.pdf');
+    }
+
+    public function print_production($id)
+    {
+        $pdf = PDF::loadView('pdf.production');
+        return $pdf->download('product_' . $id . '.pdf');
     }
 
     public function production_confirm($id)

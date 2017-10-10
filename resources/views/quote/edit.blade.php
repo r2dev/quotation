@@ -100,13 +100,13 @@
                 </form>
             @endif
 
-            @if ($quote->staff_confirmed == false && Auth::user()->permission >= 3)
+            @if ($quote->staff_confirmed == false && $quote->customer_confirmed == true && Auth::user()->permission >= 3)
                 <form action="{{route('quotes.production_confirm', ['id' => $quote->id])}}" method="post">
                     {{csrf_field()}}
                     <input type="submit" value="production confirm"/>
                 </form>
             @endif
-            @if ($quote->staff_confirmed == true && Auth::user()->permission >= 3)
+            @if ($quote->staff_confirmed == true && $quote->customer_confirmed == true && Auth::user()->permission >= 3)
                 <form action="{{route('quotes.production_confirm', ['id' => $quote->id])}}" method="post">
                     {{csrf_field()}}
                     <input type="submit" value="print production"/>
