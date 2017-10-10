@@ -70,6 +70,9 @@
                 <div class="top-right links">
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ route('customers.index') }}">Customer</a>
+                        <a href="{{ route('products.index') }}">Products</a>
+                        <a href="{{ route('quotes.index') }}">Quotes</a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
                         <a href="{{ route('register') }}">Register</a>

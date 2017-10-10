@@ -58,6 +58,9 @@
                                                      document.getElementById('logout-form').submit();">
                                             Logout
                                         </a>
+                                        <a href="{{ route('customers.index') }}">Customer</a>
+                                        <a href="{{ route('products.index') }}">Products</a>
+                                        <a href="{{ route('quotes.index') }}">Quotes</a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}

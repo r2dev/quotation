@@ -352,7 +352,7 @@
     </thead>
     <tbody>
     {{$total_sqf = 0}}
-    {{$total_}}
+    {{$total_price = 0}}
     @foreach( $quote->products as $product)
         <tr>
             <td>{{$product->pivot->quantity}}</td>
