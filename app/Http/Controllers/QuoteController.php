@@ -124,6 +124,7 @@ class QuoteController extends Controller
         $quote = Quote::findOrFail($id);
         if ($quote->customer_confirmed == false) {
             QuoteProduct::destroy($request->pq_id);
+            $request->session()->flash('status', 'remove product from quotation');
         } else {
             $request->session()->flash('status', 'unable to remove, the quotation has been confirmed');
         }

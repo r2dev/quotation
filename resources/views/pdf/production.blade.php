@@ -298,14 +298,14 @@
         <td colspan="3">
             STYLE
             @isset($quote->style)
-                {{$quote->style}}
+            {{$quote->style}}
             @endif
         </td>
         <td colspan="4">SPECIES</td>
         <td colspan="3">
             PROFILE TYPE
             @isset($quote->style)
-                {{$quote->style}}
+            {{$quote->style}}
             @endif
         </td>
     </tr>
@@ -326,157 +326,72 @@
             Moulding <br>
             {{$quote->moulding}}
         </td>
-        <td rowspan="2" colspan="3">PROFILE SIZE</td>
+        <td rowspan="2" colspan="3">
+            PROFILE SIZE
+            {{$quote->profile_size}}
+        </td>
     </tr>
     <tr>
         <td colspan="6">Order #:</td>
     </tr>
-</table>
-
-
-<table class="order-data-addresses">
     <tr>
-        <td class="address billing-address">
-            40 Ferrier st Unit B Markham On L3R 2Z5<br/>
-            Tel; 905.475.0880 / 905.475.0887<br/>
-            Fax: 905.475.6640 / 905.475.6041<br/>
-            Email: info@galaxydoors.ca<br/>
-            @isset ($quote->user->customer)
-                <table>
-                    <tr>
-                        <th>Customer</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            @if(null !== $quote->user->customer->name)
-                                {{ $quote->user->customer->name }}<br/>
-                            @endif
-                            @if (null !== $quote->user->customer->telephone)
-                                {{ $quote->user->customer->telephone }}<br/>
-                            @endif
-                            @if(null !== $quote->user->customer->fax)
-                                {{ $quote->user->customer->fax }}<br/>
-                            @endif
-                            @if ( null !== $quote->user->customer->email)
-                                {{ $quote->user->customer->email }}<br/>
-                            @endif
-                        </td>
-                    </tr>
-                </table>
-            @endisset
-        </td>
-        <td class="order-data">
-            <table>
-                <tr class="order-number">
-                    <th>Quotation #:</th>
-                    <td>{{ $quote->id }}</td>
-                </tr>
-                <tr class="order-date">
-                    <th>Quotation Date:</th>
-                    <td>{{ $quote->created_at }}</td>
-                </tr>
-                <tr class="order-style">
-                    <th>Door Style:</th>
-                    <td>{{ $quote->style }}}</td>
-                </tr>
-                <tr>
-                    <th>Material & Grade:</th>
-                    <td>Maple Paint</td>
-                </tr>
-                <tr>
-                    <th>Porfile Size</th>
-                    <td>2 3/4</td>
-                </tr>
-                <tr>
-                    <th>Lip:</th>
-                    <td>None</td>
-                </tr>
-                <tr>
-                    <th>
-                        Moulding:
-                    </th>
-                    <td>None</td>
-                </tr>
-                <tr>
-                    <th>Total Sqf:</th>
-                    <td>74.19</td>
-                </tr>
-                <tr>
-                    <th>TERMS:</th>
-                    <td>COD</td>
-                </tr>
-            </table>
-        </td>
+        <td colspan="9">DOOR SIZE</td>
+        <td colspan="7">PANEL SIZE</td>
     </tr>
-</table>
-<table class="order-details">
-    <thead>
     <tr>
-        <th class="quantity">Quantity</th>
-        <th class="description">description</th>
-        <th class="lite">Lite</th>
-        <th class="width">width</th>
-        <th class="height">height</th>
-        <th class="total">Total Sqf</th>
-        <th class="unit">Unit Price</th>
-        <th class="amount">Amount</th>
+        <td colspan="1">Qty</td>
+        <td colspan="3">Style</td>
+        <td colspan="2">W</td>
+        <td>in</td>
+        <td colspan="2">H</td>
+        <td>Qty</td>
+        <td colspan="2">W</td>
+        <td colspan="2">in</td>
+        <td colspan="2">H</td>
     </tr>
-    </thead>
-    <tbody>
+    <tr>
+        <td></td>
+        <td colspan="3">PROFILE SIZE</td>
+        <td colspan="5">PROFILE SIZE</td>
+        <td colspan="4">{{$quote->pannel}}</td>
+        <td colspan="2">PANEL</td>
+        <td></td>
+    </tr>
     @foreach( $quote->products as $product)
         <tr>
             <td>{{$product->pivot->quantity}}</td>
-            <td>{{$product->design}}</td>
-            <td>{{$product->pivot->lite}}</td>
-            <td>{{$product->pivot->width}}</td>
-            <td>{{$product->pivot->height}}</td>
-            <td>{{$product->pivot->width . $product->pivot->height}}</td>
-            <td>{{$product['price_'. $product->pivot->style_id]}}</td>
-            <td>{{$product->pivot->width . $product->pivot->height . $product['price_'. $product->pivot->style_id]}}</td>
+            <td colspan="3">{{$product->design}}</td>
+            <td colspan="2">{{$product->pivot->width}}</td>
+            <td>X</td>
+            <td colspan="2">{{$product->pivot->height}}</td>
+            <td>{{$product->pivot->quantity}}</td>
+            <td colspan="2"></td>
+            <td colspan="2">X</td>
+            <td colspan="2"></td>
         </tr>
     @endforeach
-
-    </tbody>
-    <tfoot>
-    <tr class="no-borders">
-        <td class="no-borders">
-            <div class="customer-notes">
-            </div>
-        </td>
-        <td class="no-borders">
-            <div class="customer-notes">
-            </div>
-        </td>
-        <td class="no-borders">
-            <div class="customer-notes">
-            </div>
-        </td>
-        <td class="no-borders">
-            <div class="customer-notes">
-            </div>
-        </td>
-        <td class="no-borders">
-            <div class="customer-notes">
-            </div>
-        </td>
-        <td class="no-borders" colspan="3">
-            <table class="totals">
-                <tfoot>
-                <tr class="cart_subtotal">
-                    <td class="no-borders"></td>
-                    <th class="description">Subtotal</th>
-                    <td class="price"><span class="totals-price"><span class="amount">$ 50.00</span></span></td>
-                </tr>
-                <tr class="order_total">
-                    <td class="no-borders"></td>
-                    <th class="description">Total</th>
-                    <td class="price"><span class="totals-price"><span class="amount">$ 50.00</span></span></td>
-                </tr>
-                </tfoot>
-            </table>
-        </td>
+    <tr>
+        <td>33</td>
+        <td colspan="8">Total</td>
+        <td>31</td>
+        <td colspan="6">Total</td>
     </tr>
-    </tfoot>
+    <tr>
+        <td colspan="3">ASSEMBLY DATE:</td>
+        <td colspan="6"></td>
+        <td colspan="3">Entered by:</td>
+        <td colspan="4"></td>
+    </tr>
+    <tr>
+        <td colspan="3">REQUIRED DATE:</td>
+        <td colspan="6"></td>
+        <td colspan="3">Reviewd by:</td>
+        <td colspan="4"></td>
+    </tr>
+    <tr>
+        <td colspan="9">Received: </td>
+        <td colspan="7">Date: </td>
+    </tr>
 </table>
 </body>
 </html>
