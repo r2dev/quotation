@@ -58,6 +58,7 @@
                 </tbody>
             </table>
             {!! $products->render() !!}
+            @if (Auth::user()->permission >= 3)
             <form action="{{route('products.store')}}" method="POST">
                 <table class="table  table-responsive">
                     <thead>
@@ -109,6 +110,7 @@
                     </tbody>
                 </table>
             </form>
+                @endif
         </div>
 
 

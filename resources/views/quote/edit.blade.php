@@ -107,11 +107,11 @@
                 </form>
             @endif
             @if ($quote->staff_confirmed == true && $quote->customer_confirmed == true && Auth::user()->permission >= 3)
-                <form action="{{route('quotes.production_confirm', ['id' => $quote->id])}}" method="post">
+                <form action="{{route('quotes.print_production', ['id' => $quote->id])}}" method="post">
                     {{csrf_field()}}
                     <input type="submit" value="print production"/>
                 </form>
-                <form action="{{route('quotes.production_confirm', ['id' => $quote->id])}}" method="post">
+                <form action="{{route('quotes.print_production', ['id' => $quote->id])}}" method="post">
                     {{csrf_field()}}
                     <input type="submit" value="print invoice"/>
                 </form>
@@ -123,8 +123,8 @@
 
 @section('js')
     <script>
-        window._products = {!! $products->toJson() !!};
-        var ww = ['Maple Select', 'Maple Regular', 'Maple Paint', 'Maple MDF', 'Oak Regular', 'Maple Regular MDF', 'Cherry Regular']
+        window._products = @json($products);
+        var ww = @json($style);
 
         $.each(window._products, function (index, key) {
             $('#design').append($('<option></option>').val(key.id).data('idx', index).text(key.design))

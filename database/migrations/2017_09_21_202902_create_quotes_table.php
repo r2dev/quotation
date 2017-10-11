@@ -19,8 +19,10 @@ class CreateQuotesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('qutation_id')->default('');
             $table->string('terms')->default('30% Deposit COD');
-            $table->integer('lip')->default(0);
-            $table->string('pannel')->default('A');
+            $table->string('style')->default('');
+            $table->string('pannel')->default('');
+            $table->string('lip')->default('NONE');
+            $table->string('moulding')->default('NONE');
             $table->boolean('customer_confirmed')->default(false);
             $table->boolean('staff_confirmed')->default(false);
             $table->timestamps();

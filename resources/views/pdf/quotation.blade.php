@@ -279,19 +279,29 @@
             Tel; 905.475.0880 / 905.475.0887<br/>
             Fax: 905.475.6640 / 905.475.6041<br/>
             Email: info@galaxydoors.ca<br/>
-            <table>
-                <tr>
-                    <th>Customer</th>
-                </tr>
-                <tr>
-                    <td>
-                        {{ $quote->user->customer->name }}<br/>
-                        Tel; {{ $quote->user->customer->tel }}<br/>
-                        Fax: {{ $quote->user->customer->fax }}<br/>
-                        Email: {{ $quote->user->customer->email }}<br/>
-                    </td>
-                </tr>
-            </table>
+            @isset ($quote->user->customer)
+                <table>
+                    <tr>
+                        <th>Customer</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @if(null !== $quote->user->customer->name)
+                                {{ $quote->user->customer->name }}<br/>
+                            @endif
+                            @if (null !== $quote->user->customer->telephone)
+                                {{ $quote->user->customer->telephone }}<br/>
+                            @endif
+                            @if(null !== $quote->user->customer->fax)
+                                {{ $quote->user->customer->fax }}<br/>
+                            @endif
+                            @if ( null !== $quote->user->customer->email)
+                                {{ $quote->user->customer->email }}<br/>
+                            @endif
+                        </td>
+                    </tr>
+                </table>
+            @endisset
         </td>
         <td class="order-data">
             <table>
@@ -351,8 +361,6 @@
     </tr>
     </thead>
     <tbody>
-    {{$total_sqf = 0}}
-    {{$total_price = 0}}
     @foreach( $quote->products as $product)
         <tr>
             <td>{{$product->pivot->quantity}}</td>
@@ -360,9 +368,9 @@
             <td>{{$product->pivot->lite}}</td>
             <td>{{$product->pivot->width}}</td>
             <td>{{$product->pivot->height}}</td>
-            <td>{{$product->pivot->width * $product->pivot->height}}</td>
+            <td>{{$product->pivot->width . $product->pivot->height}}</td>
             <td>{{$product['price_'. $product->pivot->style_id]}}</td>
-            <td>{{$product->pivot->width * $product->pivot->height * $product['price_'. $product->pivot->style_id] + 8 * $product->pivot->lite}}</td>
+            <td>{{$product->pivot->width . $product->pivot->height . $product['price_'. $product->pivot->style_id]}}</td>
         </tr>
     @endforeach
 

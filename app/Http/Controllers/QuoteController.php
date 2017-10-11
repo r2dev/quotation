@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Product;
-use App\ProductStyle;
 use App\Quote;
 use App\QuoteProduct;
-use App\Style;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 
@@ -65,7 +64,7 @@ class QuoteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
@@ -82,7 +81,7 @@ class QuoteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function update($id)
@@ -94,7 +93,7 @@ class QuoteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
@@ -109,9 +108,9 @@ class QuoteController extends Controller
             $quote->products()->attach($request->design, array(
                 'style_id' => $request->style,
                 'quantity' => $request->quantity,
-                'width' => (isset($request->width))? $request->width: 0,
-                'height' => (isset($request->height))? $request->height: 0,
-                'lite' => (isset($request->lite))? $request->lite: 0
+                'width' => (isset($request->width)) ? $request->width : 0,
+                'height' => (isset($request->height)) ? $request->height : 0,
+                'lite' => (isset($request->lite)) ? $request->lite : 0
             ));
             $request->session()->flash('status', 'success');
         } else {
@@ -135,7 +134,10 @@ class QuoteController extends Controller
     {
         $quote = Quote::findOrFail($id);
         $quote->customer_confirmed = true;
-//        QuoteProduct::where('quote_id', $id)->update()
+        $products = $quote->products;
+        foreach ($products as $product) {
+            $quote->products()->updateExistingPivot($product->id, ['price' => $product['price_' . $product->pivot->style_id]]);
+        }
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
@@ -144,11 +146,6 @@ class QuoteController extends Controller
     {
         $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
         $pdf = PDF::loadView('pdf.quotation', compact('quote'));
-
-//$quote = Quote::find($id);
-
-//        $quote->user();
-//        var_dump($quote->user->customer->name);
         return $pdf->stream('quotation_' . $id . '.pdf');
     }
 
@@ -160,8 +157,9 @@ class QuoteController extends Controller
 
     public function print_production($id)
     {
-        $pdf = PDF::loadView('pdf.production');
-        return $pdf->download('product_' . $id . '.pdf');
+        $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
+        $pdf = PDF::loadView('pdf.production', compact('quote'));
+        return $pdf->stream('product_' . $id . '.pdf');
     }
 
     public function production_confirm($id)
