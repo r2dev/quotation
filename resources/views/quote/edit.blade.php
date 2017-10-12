@@ -41,9 +41,11 @@
                             </td>
                             <td>
                                 @if ($quote->customer_confirmed == true)
-                                    {{$amount = number_format($area * $product->pivot->quantity * $product->pivot->price + $product->pivot->lite * 8, 2)}}
+                                    <?php $amount = ($area * $product->pivot->price + $product->pivot->lite * 8) * $product->pivot->quantity; ?>
+                                    {{number_format($amount, 2)}}
                                 @else
-                                    {{$amount = number_format($area * $product->pivot->quantity * $product['price_'. $product->pivot->style_id] + $product->pivot->lite * 8, 2)}}
+                                    <?php $amount = ($area * $product['price_' . $product->pivot->style_id] + $product->pivot->lite * 8) * $product->pivot->quantity; ?>
+                                    {{number_format($amount, 2)}}
                                 @endif
                             </td>
                             <td>
@@ -62,7 +64,7 @@
                     @endforeach
                     </tbody>
                 </table>
-                {{$sum}}
+                {{number_format($sum, 2)}}
             </div>
             @if ($quote->customer_confirmed == false)
                 <form action="{{route('quotes.add_product', ['id' => $quote->id])}}" method="POST">

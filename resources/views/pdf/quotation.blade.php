@@ -280,27 +280,27 @@
             Fax: 905.475.6640 / 905.475.6041<br/>
             Email: info@galaxydoors.ca<br/>
             @isset ($quote->user->customer)
-                <table>
-                    <tr>
-                        <th>Customer</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            @if(null !== $quote->user->customer->name)
-                                {{ $quote->user->customer->name }}<br/>
-                            @endif
-                            @if (null !== $quote->user->customer->telephone)
-                                {{ $quote->user->customer->telephone }}<br/>
-                            @endif
-                            @if(null !== $quote->user->customer->fax)
-                                {{ $quote->user->customer->fax }}<br/>
-                            @endif
-                            @if ( null !== $quote->user->customer->email)
-                                {{ $quote->user->customer->email }}<br/>
-                            @endif
-                        </td>
-                    </tr>
-                </table>
+            <table>
+                <tr>
+                    <th>Customer</th>
+                </tr>
+                <tr>
+                    <td>
+                        @if(null !== $quote->user->customer->name)
+                            {{ $quote->user->customer->name }}<br/>
+                        @endif
+                        @if (null !== $quote->user->customer->telephone)
+                            {{ $quote->user->customer->telephone }}<br/>
+                        @endif
+                        @if(null !== $quote->user->customer->fax)
+                            {{ $quote->user->customer->fax }}<br/>
+                        @endif
+                        @if ( null !== $quote->user->customer->email)
+                            {{ $quote->user->customer->email }}<br/>
+                        @endif
+                    </td>
+                </tr>
+            </table>
             @endisset
         </td>
         <td class="order-data">
@@ -369,14 +369,23 @@
             <td>{{$product->pivot->lite}}</td>
             <td>{{$product->pivot->width}}</td>
             <td>{{$product->pivot->height}}</td>
-            <td>{{ $area = total_area($product->pivot->width, $product->pivot->height) * $product->pivot->quantity}}</td>
-            <td>{{$product['price_'. $product->pivot->style_id]}}</td>
+            <td>
+                <?php $unit_area = total_area($product->pivot->width, $product->pivot->height); ?>
+                {{ $unit_area * $product->pivot->quantity}}
+            </td>
             <td>
                 @if ($quote->customer_confirmed == true)
-                    {{$amount = number_format($area * $product->pivot->quantity * $product->pivot->price + $product->pivot->lite * 8, 2)}}
+                    <?php $unit_price = ($unit_area * $product->pivot->price + $product->pivot->lite * 8); ?>
+                    {{number_format($unit_price, 2)}}
                 @else
-                    {{$amount = number_format($area * $product->pivot->quantity * $product['price_'. $product->pivot->style_id] + $product->pivot->lite * 8, 2)}}
+                    <?php $unit_price = ($unit_area * $product['price_' . $product->pivot->style_id] + $product->pivot->lite * 8); ?>
+                    {{number_format($unit_price, 2)}}
                 @endif
+
+            </td>
+            <td>
+                <?php $amount = $unit_price * $product->pivot->quantity ?>
+                {{number_format($amount, 2)}}
             </td>
         </tr>
         <?php $sum += $amount ?>
