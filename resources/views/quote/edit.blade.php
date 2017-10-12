@@ -16,23 +16,36 @@
                         <th>width</th>
                         <th>height</th>
                         <th>lite</th>
+                        <th>area</th>
+                        <th>amount</th>
                         <th>action</th>
                     </tr>
                     </thead>
                     <tbody>
+                    <?php $sum = 0 ?>
                     @foreach ($quote_products as $product)
                         <tr>
                             <td>{{$product->design}}</td>
                             <td>{{$product->pivot->quantity}}</td>
                             @if ($quote->customer_confirmed == true)
-                                <td>{{$product->pivot->price}}</td>
+                                <td>{{number_format($product->pivot->price, 2)}}</td>
                             @else
-                                <td>{{$product['price_'. $product->pivot->style_id]}}</td>
+                                <td>{{number_format($product['price_'. $product->pivot->style_id], 2)}}</td>
                             @endif
                             <td>{{$style[$product->pivot->style_id]}}</td>
                             <td>{{$product->pivot->width}}</td>
                             <td>{{$product->pivot->height}}</td>
                             <td>{{$product->pivot->lite}}</td>
+                            <td>
+                                {{ $area = total_area($product->pivot->width, $product->pivot->height) * $product->pivot->quantity}}
+                            </td>
+                            <td>
+                                @if ($quote->customer_confirmed == true)
+                                    {{$amount = number_format($area * $product->pivot->quantity * $product->pivot->price + $product->pivot->lite * 8, 2)}}
+                                @else
+                                    {{$amount = number_format($area * $product->pivot->quantity * $product['price_'. $product->pivot->style_id] + $product->pivot->lite * 8, 2)}}
+                                @endif
+                            </td>
                             <td>
                                 @if ($quote->customer_confirmed == false)
                                     <form action="{{route('quotes.remove_product_from_quote', ['id' => $quote->id])}}"
@@ -45,9 +58,11 @@
                                 @endif
                             </td>
                         </tr>
+                        <?php $sum += $amount ?>
                     @endforeach
                     </tbody>
                 </table>
+                {{$sum}}
             </div>
             @if ($quote->customer_confirmed == false)
                 <form action="{{route('quotes.add_product', ['id' => $quote->id])}}" method="POST">
@@ -70,11 +85,11 @@
                     <input type="text" name="lite" placeholder="lite"/>
                     <div class="row">
                         <span>Unit price</span>
-                        <div id="price"> - </div>
+                        <div id="price"> -</div>
                     </div>
                     <div class="row">
                         <span>Total Price</span>
-                        <div id="total"> - </div>
+                        <div id="total"> -</div>
                     </div>
                     <input type="submit" value="add"/>
                 </form>

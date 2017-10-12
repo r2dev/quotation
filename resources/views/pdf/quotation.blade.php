@@ -361,6 +361,7 @@
     </tr>
     </thead>
     <tbody>
+    <?php $sum = 0 ?>
     @foreach( $quote->products as $product)
         <tr>
             <td>{{$product->pivot->quantity}}</td>
@@ -368,10 +369,17 @@
             <td>{{$product->pivot->lite}}</td>
             <td>{{$product->pivot->width}}</td>
             <td>{{$product->pivot->height}}</td>
-            <td>{{$product->pivot->width . $product->pivot->height}}</td>
+            <td>{{ $area = total_area($product->pivot->width, $product->pivot->height) * $product->pivot->quantity}}</td>
             <td>{{$product['price_'. $product->pivot->style_id]}}</td>
-            <td>{{$product->pivot->width . $product->pivot->height . $product['price_'. $product->pivot->style_id]}}</td>
+            <td>
+                @if ($quote->customer_confirmed == true)
+                    {{$amount = number_format($area * $product->pivot->quantity * $product->pivot->price + $product->pivot->lite * 8, 2)}}
+                @else
+                    {{$amount = number_format($area * $product->pivot->quantity * $product['price_'. $product->pivot->style_id] + $product->pivot->lite * 8, 2)}}
+                @endif
+            </td>
         </tr>
+        <?php $sum += $amount ?>
     @endforeach
 
     </tbody>
@@ -403,12 +411,12 @@
                 <tr class="cart_subtotal">
                     <td class="no-borders"></td>
                     <th class="description">Subtotal</th>
-                    <td class="price"><span class="totals-price"><span class="amount">$ 50.00</span></span></td>
+                    <td class="price"><span class="totals-price"><span class="amount">$ {{$sum}}</span></span></td>
                 </tr>
                 <tr class="order_total">
                     <td class="no-borders"></td>
                     <th class="description">Total</th>
-                    <td class="price"><span class="totals-price"><span class="amount">$ 50.00</span></span></td>
+                    <td class="price"><span class="totals-price"><span class="amount">$ {{$sum}}</span></span></td>
                 </tr>
                 </tfoot>
             </table>
