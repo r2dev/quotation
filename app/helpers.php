@@ -65,10 +65,12 @@ function fraction_multiply($fraction1,$fraction2)
 }
 
 function brachylogy_fraction(&$numerator,&$denominator){
-    $a = ($numerator < $denominator) ? $numerator : $denominator;
+    $numerator_tmp = abs($numerator);
+    $denominator_tmp = abs($denominator);
+    $a = ($numerator_tmp < $denominator_tmp) ? $numerator_tmp : $denominator_tmp;
     while(1)
     {
-        if($numerator % $a == 0 && $denominator % $a == 0)
+        if($numerator_tmp % $a == 0 && $denominator_tmp % $a == 0)
         {
             break;
         }
