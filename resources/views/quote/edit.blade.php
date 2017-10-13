@@ -11,7 +11,7 @@
                 <input type="submit" value="submit" >
             </form>
             <div>
-                <table class="table">
+                <table class="table table-responsive">
                     <thead>
                     <tr>
                         <th>name</th>
@@ -87,9 +87,9 @@
                         </select>
                     </div>
                     <input type="text" name="quantity" placeholder="quantity" value="1"/>
-                    <input type="text" name="width" placeholder="width"/>
-                    <input type="text" name="height" placeholder="height"/>
-                    <input type="text" name="lite" placeholder="lite"/>
+                    <super-input value="" name="width" placeholder="width"></super-input>
+                    <super-input value="" name="height" placeholder="height"></super-input>
+                    <input type="text" name="lite" placeholder="lite" value="0"/>
                     <div class="row">
                         <span>Unit price</span>
                         <div id="price"> -</div>
