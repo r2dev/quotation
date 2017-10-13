@@ -80,9 +80,22 @@ function brachylogy_fraction(&$numerator,&$denominator){
 
 function fraction_to_str($fraction)
 {
-    $str1 = intval($fraction[0] / $fraction[1]);
-    $str2  = $fraction[0] % $fraction[1];
-    return $str1." ".$str2.'/'.$fraction[1];
+    if($fraction[1] == 1)
+    {
+        return intval($fraction[0] / $fraction[1]);
+    }else
+    {
+
+        $str1 = intval($fraction[0] / $fraction[1]);
+        $str2  = $fraction[0] % $fraction[1];
+        if($str1 == 0)
+        {
+            return $str2.'/'.$fraction[1];
+        }else
+        {
+            return $str1." ".$str2.'/'.$fraction[1];
+        }
+    }
 }
 
 function str_to_fraction($str){
