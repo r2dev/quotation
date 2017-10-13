@@ -5,6 +5,11 @@
         <div class="row">
 
             {{$quote->id}}
+            <form method="post" action="{{route('quotes.change_profile_size', ['id' => $quote->id])}}">
+                <input type="text" name="size" value="{{$quote->profile_size}}">
+                {{csrf_field()}}
+                <input type="submit" value="submit" >
+            </form>
             <div>
                 <table class="table">
                     <thead>

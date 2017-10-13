@@ -131,6 +131,17 @@ class QuoteController extends Controller
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
+    public function change_profile_size(Request $request, $id)
+    {
+        $quote = Quote::findOrFail($id);
+        if ($quote->customer_confirmed == false && isset($request->size)) {
+            $quote->profile_size = $request->size;
+            $quote->save();
+            $request->session()->flash('status', 'update profile successful');
+        }
+        return redirect(route('quotes.edit', ['id' => $quote->id]));
+    }
+
     public function client_confirm($id)
     {
         $quote = Quote::findOrFail($id);
