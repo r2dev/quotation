@@ -30,21 +30,21 @@ function total_area($width = '', $height = '')
 
 function calculate_width($width = '',$param1 = '',$param2 = '',$panelparam = '')
 {
-    $fraction1 = $this->str_to_fraction($width);
-    $param1_fraction = $this->str_to_fraction($param1);
-    $param2_fraction = $this->str_to_fraction($param2);
-    $panelparam_fraction = $this->str_to_fraction($panelparam);
-    $tmp_fraction1 = $this->fraction_multiply($param1_fraction,$param2_fraction);
-    $tmp_fraction2 = $this->fraction_subtract($fraction1,$tmp_fraction1);
-    $final_fraction = $this->fraction_add($tmp_fraction2,$panelparam_fraction);
-    return $this->fraction_to_str($final_fraction);
+    $fraction1 = str_to_fraction($width);
+    $param1_fraction = str_to_fraction($param1);
+    $param2_fraction =str_to_fraction($param2);
+    $panelparam_fraction = str_to_fraction($panelparam);
+    $tmp_fraction1 = fraction_multiply($param1_fraction,$param2_fraction);
+    $tmp_fraction2 = fraction_subtract($fraction1,$tmp_fraction1);
+    $final_fraction = fraction_add($tmp_fraction2,$panelparam_fraction);
+    return fraction_to_str($final_fraction);
 }
 
 function fraction_add($fraction1,$fraction2)
 {
     $numerator_tmp = $fraction1[0] * $fraction2[1] + $fraction2[0] * $fraction1[1];
     $denominator_tmp = $fraction1[1] * $fraction2[1];
-    $this->brachylogy_fraction($numerator_tmp,$denominator_tmp);
+    brachylogy_fraction($numerator_tmp,$denominator_tmp);
     return array($numerator_tmp,$denominator_tmp);
 }
 
@@ -52,7 +52,7 @@ function fraction_subtract($fraction1,$fraction2)
 {
     $numerator_tmp = $fraction1[0] * $fraction2[1] - $fraction2[0] * $fraction1[1];
     $denominator_tmp = $fraction1[1] * $fraction2[1];
-    $this->brachylogy_fraction($numerator_tmp,$denominator_tmp);
+    brachylogy_fraction($numerator_tmp,$denominator_tmp);
     return array($numerator_tmp,$denominator_tmp);
 }
 
@@ -60,7 +60,7 @@ function fraction_multiply($fraction1,$fraction2)
 {
     $numerator_tmp = $fraction1[0] * $fraction2[0];
     $denominator_tmp = $fraction1[1] * $fraction2[1];
-    $this->brachylogy_fraction($numerator_tmp,$denominator_tmp);
+    brachylogy_fraction($numerator_tmp,$denominator_tmp);
     return array($numerator_tmp,$denominator_tmp);
 }
 
@@ -115,7 +115,7 @@ function str_to_fraction($str){
         {
             $numerator = intval($tmp_array1[1]);
             $denominator = pow(10,strlen($tmp_array1[1]));
-            $this->brachylogy_fraction($numerator,$denominator);
+            brachylogy_fraction($numerator,$denominator);
             $numerator = $numerator + $denominator * intval($tmp_array1[0]);
         }else
         {
@@ -123,4 +123,21 @@ function str_to_fraction($str){
         }
     }
     return array($numerator,$denominator);
+}
+
+
+function classActivePath($path)
+{
+    return Request::is($path) ? ' class="active"' : '';
+}
+
+function classActiveSegment($segment, $value)
+{
+    if(!is_array($value)) {
+        return Request::segment($segment) == $value ? ' class="active"' : '';
+    }
+    foreach ($value as $v) {
+        if(Request::segment($segment) == $v) return ' class="active"';
+    }
+    return '';
 }

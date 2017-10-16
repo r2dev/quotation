@@ -365,9 +365,9 @@
             <td>X</td>
             <td colspan="2">{{$product->pivot->height}}</td>
             <td>{{$product->pivot->quantity}}</td>
-            <td colspan="2"></td>
+            <td colspan="2">{{calculate_width($product->pivot->width, $quote->profile_size, 0.25, 1)}}</td>
             <td colspan="2">X</td>
-            <td colspan="2"></td>
+            <td colspan="2">{{calculate_width($product->pivot->height, $quote->profile_size, 0.25, 1)}}</td>
         </tr>
     @endforeach
     <tr>

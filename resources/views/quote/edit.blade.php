@@ -6,8 +6,8 @@
 
             {{$quote->id}}
             <form method="post" action="{{route('quotes.change_profile_size', ['id' => $quote->id])}}">
-                <input type="text" name="size" value="{{$quote->profile_size}}">
                 {{csrf_field()}}
+                <super-input value="{{$quote->profile_size}}" name="size" placeholder="width"></super-input>
                 <input type="submit" value="submit" >
             </form>
             <div>
@@ -76,7 +76,7 @@
                     {{csrf_field()}}
                     <div class="form-group">
                         <label for="design">Design</label>
-                        <select name="design" id="design" class="form-control">
+                        <select name="design" id="design" class="form-control" data-live-search="true">
                             <option value="" selected disabled hidden>Choose here</option>
                         </select>
                     </div>
@@ -144,13 +144,15 @@
 @endsection
 
 @section('js')
+    <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
     <script>
         window._products = @json($products);
         var ww = @json($style);
 
         $.each(window._products, function (index, key) {
-            $('#design').append($('<option></option>').val(key.id).data('idx', index).text(key.design))
+            $('#design').append($('<option></option>', {'data-tokens': key.design}).val(key.id).data('idx', index).text(key.design))
         });
+
         $('#design').change(function (e) {
             $('#style').val = ''
             $('#style').empty()

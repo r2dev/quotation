@@ -40,7 +40,7 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right ">
                         <!-- Authentication Links -->
                         @guest
                             <li><a href="{{ route('login') }}">Login</a></li>
@@ -61,7 +61,6 @@
                                         <a href="{{ route('customers.index') }}">Customer</a>
                                         <a href="{{ route('products.index') }}">Products</a>
                                         <a href="{{ route('quotes.index') }}">Quotes</a>
-
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
@@ -73,8 +72,48 @@
                 </div>
             </div>
         </nav>
+        <div class="container-fluid">
+            <div class="row">
+                @if (Auth::check())
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                        <li {!! classActivePath('home') !!}>
+                            <a href="{{route('home')}}">
+                                Home
+                            </a>
+                        </li>
+                        <li {!! classActiveSegment(1, 'customers') !!}>
+                            <a href="{{route('customers.index')}}">
+                                Customers
+                            </a>
 
-        @yield('content')
+                        </li>
+                        <li {!! classActiveSegment(1, 'products') !!}>
+                            <a href="{{route('products.index')}}">
+                                Products
+                            </a>
+                        </li>
+                        <li {!! classActiveSegment(1, 'quotes') !!}>
+                            <a href="{{route('quotes.index')}}">
+                                Quotes
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+                    <div class="col-sm-9 col-smoffset-3 col-md-10 col-md-offset-2 main">
+                        @yield('content')
+                    </div>
+                @else
+                <div class="col-sm-12">
+                    @yield('content')
+                </div>
+                    @endif
+
+
+            </div>
+        </div>
+
     </div>
 
     <!-- Scripts -->

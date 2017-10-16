@@ -23,11 +23,15 @@ class ProductController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $products = Product::paginate(10);
-        return view('product.index', compact('products'));
+        $limit = 10;
+        if (isset($request->limit) && is_numeric($request->limit)) {
+            $limit = intval($request->limit);
+        }
+        $products = Product::paginate($limit);
+        return view('product.index', compact('products', 'limit'));
     }
 
     /**

@@ -7,7 +7,6 @@ use App\Quote;
 use App\QuoteProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use PDF;
 
 
@@ -31,7 +30,7 @@ class QuoteController extends Controller
     public function index()
     {
         if (Auth::user()->permission >= 3) {
-            $quotes = Quote::where('customer_confirmed', true)->paginate(10);
+            $quotes = Quote::where('customer_confirmed', true)->orWhere('user_id', Auth::user()->id)->paginate(10);
         } else {
             $quotes = Auth::user()->quotes()->paginate(10);
         }
@@ -157,7 +156,26 @@ class QuoteController extends Controller
     public function print_quotation($id)
     {
         $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
-        $pdf = PDF::loadView('pdf.quotation', compact('quote'));
+        $sum = 0;
+        $sum_sqf = 0;
+        $products = array();
+        foreach($quote->products as $product) {
+            $unit_area = total_area($product->pivot->width, $product->pivot->height);
+            if ($quote->customer_confirmed == true) {
+                $unit_price = ($unit_area * $product->pivot->price + $product->pivot->lite * 8);
+            } else {
+                $unit_price = ($unit_area * $product['price_' . $product->pivot->style_id] + $product->pivot->lite * 8);
+            }
+            $amount = $unit_price * $product->pivot->quantity;
+            $product->total_area = $unit_area * $product->pivot->quantity;
+            $product->unit_price = $unit_price;
+            $product->amount = $amount;
+            array_push($products, $product);
+            $sum += $amount;
+            $sum_sqf += $unit_area * $product->pivot->quantity;
+        }
+        $sum = round($sum, 2);
+        $pdf = PDF::loadView('pdf.quotation', compact('quote', 'sum', 'products', '$sum_sqf'));
         return $pdf->stream('quotation_' . $id . '.pdf');
     }
 

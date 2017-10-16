@@ -8,6 +8,9 @@
                     <th>
                          Name
                     </th>
+                    <th>
+                        Action
+                    </th>
 
                 </tr>
                 </thead>
@@ -29,7 +32,7 @@
                 @endforeach
                 </tbody>
             </table>
-            {!! $customers->render() !!}
+            {{ $customers->appends(['limit' => $limit])->links() }}
         </div>
 
         <form action="{{route('customers.index')}}" method="post">

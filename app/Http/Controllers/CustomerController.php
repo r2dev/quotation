@@ -23,11 +23,15 @@ class CustomerController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $customers = Customer::paginate(10);
-        return view('customer.index', compact('customers'));
+        $limit = 10;
+        if (isset($request->limit) && is_numeric($request->limit)) {
+            $limit = intval($request->limit);
+        }
+        $customers = Customer::paginate($limit);
+        return view('customer.index', compact('customers', 'limit'));
     }
 
     /**

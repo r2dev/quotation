@@ -57,7 +57,7 @@
 
                 </tbody>
             </table>
-            {!! $products->render() !!}
+            {!! $products->appends(['limit' => $limit])->links() !!}
             @if (Auth::user()->permission >= 3)
             <form action="{{route('products.store')}}" method="POST">
                 <table class="table  table-responsive">

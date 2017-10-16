@@ -337,7 +337,7 @@
                 </tr>
                 <tr>
                     <th>Total Sqf:</th>
-                    <td>74.19</td>
+                    <td>{{$sum}}</td>
                 </tr>
                 <tr>
                     <th>TERMS:</th>
@@ -361,7 +361,7 @@
     </tr>
     </thead>
     <tbody>
-    <?php $sum = 0 ?>
+
     @foreach( $quote->products as $product)
         <tr>
             <td>{{$product->pivot->quantity}}</td>
@@ -370,63 +370,55 @@
             <td>{{$product->pivot->width}}</td>
             <td>{{$product->pivot->height}}</td>
             <td>
-                <?php $unit_area = total_area($product->pivot->width, $product->pivot->height); ?>
-                {{ $unit_area * $product->pivot->quantity}}
+                {{ $product->total_area}}
             </td>
             <td>
-                @if ($quote->customer_confirmed == true)
-                    <?php $unit_price = ($unit_area * $product->pivot->price + $product->pivot->lite * 8); ?>
-                    {{number_format($unit_price, 2)}}
-                @else
-                    <?php $unit_price = ($unit_area * $product['price_' . $product->pivot->style_id] + $product->pivot->lite * 8); ?>
-                    {{number_format($unit_price, 2)}}
-                @endif
-
+                {{number_format($product->unit_price, 2)}}
             </td>
             <td>
-                <?php $amount = $unit_price * $product->pivot->quantity ?>
-                {{number_format($amount, 2)}}
+                {{number_format($product->amount, 2)}}
             </td>
         </tr>
-        <?php $sum += $amount ?>
     @endforeach
-
     </tbody>
     <tfoot>
     <tr class="no-borders">
-        <td class="no-borders">
+        <td class="no-borders" colspan="5">
             <div class="customer-notes">
+                Excepted Completion Time: Flat panel 10 days, Raised panel and MD 14 days.<br>
+                Please Verify and sign below to confirm the order
             </div>
         </td>
-        <td class="no-borders">
-            <div class="customer-notes">
-            </div>
-        </td>
-        <td class="no-borders">
-            <div class="customer-notes">
-            </div>
-        </td>
-        <td class="no-borders">
-            <div class="customer-notes">
-            </div>
-        </td>
-        <td class="no-borders">
-            <div class="customer-notes">
-            </div>
-        </td>
+
         <td class="no-borders" colspan="3">
             <table class="totals">
                 <tfoot>
-                <tr class="cart_subtotal">
-                    <td class="no-borders"></td>
-                    <th class="description">Subtotal</th>
+                <tr >
+                    <td>Discount</td>
+                    <th class="description">{{ $quote->user->customer->discount }}%</th>
+                    <td class="price">${{round($sum / 100 * $quote->user->customer->discount, 2)}}</td>
+                </tr>
+                <tr>
+                    <td >Other Charges</td>
+                    <th class="description"></th>
                     <td class="price"><span class="totals-price"><span class="amount">$ {{$sum}}</span></span></td>
+                </tr>
+                <tr>
+                    <td >Subtotal</td>
+                    <th class="description"></th>
+                    <td class="price"><span class="totals-price"><span class="amount">$ {{round($sum / 100 * (100 - $quote->user->customer->discount), 2)}}</span></span></td>
+                </tr>
+                <tr>
+                    <td>HST (# 816451504)</td>
+                    <th class="description"></th>
+                    <td class="price"><span class="totals-price"><span class="amount">$ {{round($sum / 100 * (100 - $quote->user->customer->discount) * 0.13, 2)}}</span></span></td>
                 </tr>
                 <tr class="order_total">
-                    <td class="no-borders"></td>
-                    <th class="description">Total</th>
-                    <td class="price"><span class="totals-price"><span class="amount">$ {{$sum}}</span></span></td>
+                    <td>Total</td>
+                    <th class="description"></th>
+                    <td class="price"><span class="totals-price"><span class="amount">$ {{round($sum / 100 * (100 - $quote->user->customer->discount) * 1.13, 2)}}</span></span></td>
                 </tr>
+
                 </tfoot>
             </table>
         </td>
