@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Invoice</title>
+    <title>Production</title>
     <style type="text/css">
 
         @page {
@@ -259,15 +259,43 @@
         .pagenum, .pagecount {
             font-family: sans-serif;
         }
+
+        .slim-border {
+            border: 1px solid #000;
+        }
+
+        .bold-border {
+            border: 2px solid #000;
+        }
+
+        .align-center {
+            text-align: center;
+        }
+
+        .border-right {
+            border-right: 2px solid #000;
+        }
+
+        .border-bottom {
+            border-bottom: 2px solid #000;
+        }
+
+        .no-border-left {
+            border-left: 0;
+        }
+
+        .no-border-right {
+            border-right: 0;
+        }
     </style>
 </head>
 <body class="invoice">
 <table style="width: 100%;">
     <tr>
-        <td style="text-align: center;">GALAXY DOORS LTD.</td>
+        <td style="text-align: center; font-size: 16px; height: 20px;">GALAXY DOORS LTD.</td>
     </tr>
     <tr>
-        <td style="text-align: center;">PRODUCTION FORM</td>
+        <td style="text-align: center; font-size: 14px;">PRODUCTION FORM</td>
     </tr>
 </table>
 
@@ -291,68 +319,71 @@
         <td class="sixteen"></td>
     </tr>
     <tr>
-        <td colspan="6">
-            @if(null !== $quote->user->customer->name)
-                {{ $quote->user->customer->name }}
+        <td colspan="6" class="slim-border">
+            @if(null !== $quote->user->customer)
+                <h3>{{ $quote->user->customer->name }}</h3>
+                {{ $quote->user->customer->address }}
+                {{ $quote->user->customer->telephone }}
+
             @endif</td>
-        <td colspan="3">
-            STYLE
+        <td colspan="3" class="slim-border align-center">
+            <h3>STYLE</h3>
             @isset($quote->style)
             {{$quote->style}}
             @endif
         </td>
-        <td colspan="4">SPECIES</td>
-        <td colspan="3">
-            PROFILE TYPE
+        <td colspan="4" class="slim-border align-center">SPECIES</td>
+        <td colspan="3" class="slim-border align-center">
+            <h3>PROFILE TYPE</h3>
             @isset($quote->style)
             {{$quote->style}}
             @endif
         </td>
     </tr>
     <tr>
-        <td colspan="6">
+        <td colspan="6" class="slim-border">
             Quotation:
             {{$quote->id}}
         </td>
-        <td rowspan="2" colspan="3">
-            Panel
+        <td rowspan="2" colspan="3" class="slim-border align-center">
+            <h3>Panel</h3>
             {{$quote->pannel}}
         </td>
-        <td rowspan="2" colspan="3">
-            LIP <br>
+        <td rowspan="2" colspan="3" class="slim-border align-center">
+            <h3>LIP </h3><br>
             {{$quote->lip}}
         </td>
-        <td rowspan="2" colspan="1">
-            Moulding <br>
+        <td rowspan="2" colspan="1" class="slim-border align-center">
+            <h3>Moulding</h3> <br>
             {{$quote->moulding}}
         </td>
-        <td rowspan="2" colspan="3">
-            PROFILE SIZE
+        <td rowspan="2" colspan="3" class="slim-border align-center">
+            <h3>PROFILE SIZE</h3>
             {{$quote->profile_size}}
         </td>
     </tr>
     <tr>
-        <td colspan="6">Order #:</td>
+        <td colspan="6" class="slim-border">Order #:</td>
     </tr>
     <tr>
-        <td colspan="9">DOOR SIZE</td>
-        <td colspan="7">PANEL SIZE</td>
+        <td colspan="9" class="align-center">DOOR SIZE</td>
+        <td colspan="7" class="align-center">PANEL SIZE</td>
     </tr>
     <tr>
-        <td colspan="1">Qty</td>
-        <td colspan="3">Style</td>
-        <td colspan="2">W</td>
-        <td>in</td>
-        <td colspan="2">H</td>
-        <td>Qty</td>
-        <td colspan="2">W</td>
-        <td colspan="2">in</td>
-        <td colspan="2">H</td>
+        <td colspan="1" class="border-bottom">Qty</td>
+        <td colspan="3" class="border-bottom">Style</td>
+        <td colspan="2" class="border-bottom">W</td>
+        <td class="border-bottom">in</td>
+        <td colspan="2" class="border-bottom">H</td>
+        <td class="border-bottom">Qty</td>
+        <td colspan="2" class="border-bottom">W</td>
+        <td colspan="2" class="border-bottom">in</td>
+        <td colspan="2" class="border-bottom">H</td>
     </tr>
     <tr>
         <td></td>
-        <td colspan="3">PROFILE SIZE</td>
-        <td colspan="5">PROFILE SIZE</td>
+        <td colspan="3">{{$quote->profile_size}}</td>
+        <td colspan="5" class="border-right">PROFILE SIZE</td>
         <td colspan="4">{{$quote->pannel}}</td>
         <td colspan="2">PANEL</td>
         <td></td>
@@ -363,7 +394,7 @@
             <td colspan="3">{{$product->design}}</td>
             <td colspan="2">{{$product->pivot->width}}</td>
             <td>X</td>
-            <td colspan="2">{{$product->pivot->height}}</td>
+            <td colspan="2" class="border-right">{{$product->pivot->height}}</td>
             <td>{{$product->pivot->quantity}}</td>
             <td colspan="2">{{calculate_width($product->pivot->width, $quote->profile_size, 0.25, 1)}}</td>
             <td colspan="2">X</td>
@@ -371,26 +402,42 @@
         </tr>
     @endforeach
     <tr>
-        <td>33</td>
-        <td colspan="8">Total</td>
-        <td>31</td>
-        <td colspan="6">Total</td>
+        <td colspan="9" style="height: <?php echo (20 - $quote->products->count()) * 30 ?>px" class="border-right"></td>
+        <td colspan="7" style="height: <?php echo (20 - $quote->products->count()) * 30 ?>px"></td>
     </tr>
     <tr>
-        <td colspan="3">ASSEMBLY DATE:</td>
+        <td class="bold-border no-border-right">33</td>
+        <td class="bold-border no-border-left" colspan="8">Total</td>
+        <td class="bold-border no-border-right">31</td>
+        <td class="bold-border no-border-left" colspan="6">Total</td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <h3>
+                ASSEMBLY DATE:
+            </h3>
+        </td>
         <td colspan="6"></td>
-        <td colspan="3">Entered by:</td>
+        <td colspan="3">
+            <h3>
+                Entered by:
+            </h3>
+        </td>
         <td colspan="4"></td>
     </tr>
     <tr>
-        <td colspan="3">REQUIRED DATE:</td>
+        <td colspan="3">
+            <h3>
+                REQUIRED DATE:
+            </h3>
+        </td>
         <td colspan="6"></td>
-        <td colspan="3">Reviewd by:</td>
+        <td colspan="3"><h3>Reviewd by:</h3></td>
         <td colspan="4"></td>
     </tr>
     <tr>
-        <td colspan="9">Received: </td>
-        <td colspan="7">Date: </td>
+        <td colspan="9"><h3>Received: </h3></td>
+        <td colspan="7"><h3>Date: </h3></td>
     </tr>
 </table>
 </body>
