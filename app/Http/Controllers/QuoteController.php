@@ -181,7 +181,26 @@ class QuoteController extends Controller
 
     public function print_invoice($id)
     {
-        
+        $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
+        $sum = 0;
+        $sum_sqf = 0;
+        $products = array();
+        foreach($quote->products as $product) {
+            $unit_area = total_area($product->pivot->width, $product->pivot->height);
+            if ($quote->customer_confirmed == true) {
+                $unit_price = ($unit_area * $product->pivot->price + $product->pivot->lite * 8);
+            } else {
+                $unit_price = ($unit_area * $product['price_' . $product->pivot->style_id] + $product->pivot->lite * 8);
+            }
+            $amount = $unit_price * $product->pivot->quantity;
+            $product->total_area = $unit_area * $product->pivot->quantity;
+            $product->unit_price = $unit_price;
+            $product->amount = $amount;
+            array_push($products, $product);
+            $sum += $amount;
+            $sum_sqf += $unit_area * $product->pivot->quantity;
+        }
+        $sum = round($sum, 2);
         $pdf = PDF::loadView('pdf.invoice', compact('quote', 'sum', 'products', '$sum_sqf'));
         return $pdf->download('invoice_' . $id . '.pdf');
     }

@@ -37,6 +37,8 @@ Route::post('/quotes/{id}/print_quotation', 'QuoteController@print_quotation')->
 
 Route::post('/quotes/{id}/print_production', 'QuoteController@print_production')->name('quotes.print_production');
 
+Route::post('/quotes/{id}/print_invoice', 'QuoteController@print_invoice')->name('quotes.print_invoice');
+
 Route::post('/quotes/{id}/change_profile_size', 'QuoteController@change_profile_size')->name('quotes.change_profile_size');
 
 Route::post('/customers/{id}/users', 'CustomerController@create_user')->name('customers.add_user');

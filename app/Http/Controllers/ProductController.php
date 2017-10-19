@@ -30,20 +30,7 @@ class ProductController extends Controller
         if (isset($request->limit) && is_numeric($request->limit)) {
             $limit = intval($request->limit);
         }
-        $products = array();
-        foreach (Product::paginate($limit) as $product) {
-            $product->prices = array(
-                $product->price_0,
-                $product->price_1,
-                $product->price_2,
-                $product->price_3,
-                $product->price_4,
-                $product->price_5,
-                $product->price_6,
-                $product->price_7
-            );
-            array_push($products, $product);
-        }
+        $products = Product::paginate($limit);
 
         return view('product.index', compact('products', 'limit'));
     }
@@ -114,7 +101,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product['price_'. $request->index] = $request->value;
         $product->save();
-        return $product['price_'. $request->index];
+        return response()->json($product['price_'. $request->index]);
     }
 
     /**
