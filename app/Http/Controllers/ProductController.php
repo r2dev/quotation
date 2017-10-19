@@ -94,9 +94,13 @@ class ProductController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
         //
+        $product = Product::findOrFail($id);
+        $product['price_'. $request->index] = $request->value;
+        $product->save();
+        return $product['price_'. $request->index];
     }
 
     /**
