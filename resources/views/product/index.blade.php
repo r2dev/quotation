@@ -39,26 +39,7 @@
                     </thead>
                     <tbody>
                     @foreach ($products as $product)
-                        <tr>
-                            <td>{{$product->design}}</td>
-                            <td>{{number_format($product->price_0, 2)}}</td>
-                            <td>{{number_format($product->price_1, 2)}}</td>
-                            <td>{{number_format($product->price_2, 2)}}</td>
-                            <td>{{number_format($product->price_3, 2)}}</td>
-                            <td>{{number_format($product->price_4, 2)}}</td>
-                            <td>{{number_format($product->price_5, 2)}}</td>
-                            <td>{{number_format($product->price_6, 2)}}</td>
-                            @if (Auth::user()->permission >= 3)
-
-                                <td>
-                                    <form action="{{route('products.destroy', ['id' => $product->id])}}" method="POST">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" value="delete"/>
-                                    </form>
-                                </td>
-                            @endif
-                        </tr>
+                        <tr is="change-row" design="{{$product->design}}" values="{{json_encode(array($product->price_0))}}"></tr>
                     @endforeach
 
                     </tbody>

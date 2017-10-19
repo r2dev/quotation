@@ -30,7 +30,21 @@ class ProductController extends Controller
         if (isset($request->limit) && is_numeric($request->limit)) {
             $limit = intval($request->limit);
         }
-        $products = Product::paginate($limit);
+        $products = array();
+        foreach (Product::paginate($limit) as $product) {
+            $product->prices = array(
+                $product->price_0,
+                $product->price_1,
+                $product->price_2,
+                $product->price_3,
+                $product->price_4,
+                $product->price_5,
+                $product->price_6,
+                $product->price_7
+            );
+            array_push($products, $product);
+        }
+
         return view('product.index', compact('products', 'limit'));
     }
 

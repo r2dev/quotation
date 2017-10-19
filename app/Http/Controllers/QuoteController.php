@@ -181,7 +181,8 @@ class QuoteController extends Controller
 
     public function print_invoice($id)
     {
-        $pdf = PDF::loadView('pdf.invoice');
+        
+        $pdf = PDF::loadView('pdf.invoice', compact('quote', 'sum', 'products', '$sum_sqf'));
         return $pdf->download('invoice_' . $id . '.pdf');
     }
 

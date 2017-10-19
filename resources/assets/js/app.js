@@ -16,7 +16,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('super-input', require('./components/SuperInput.vue'));
-
+Vue.component('change-row', require('./components/ChangeableRow.vue'));
 const app = new Vue({
     el: '#app'
 });
