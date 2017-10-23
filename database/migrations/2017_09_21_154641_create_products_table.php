@@ -23,14 +23,8 @@ class CreateProductsTable extends Migration
             $table->decimal('price_4', 9, 4)->default(0); //Oak Regular
             $table->decimal('price_5', 9, 4)->default(0); //Maple Regular MDF
             $table->decimal('price_6', 9, 4)->default(0); //Cherry Regular
-            $table->integer('min_lite')->default(0);
-            $table->integer('max_lite')->default(0);
-            $table->integer('min_width')->default(0);
-            $table->integer('max_width')->default(0);
-            $table->integer('min_height')->default(0);
-            $table->integer('max_height')->default(0);
-            $table->integer('min_area')->default(0);
-            $table->integer('max_area')->default(0);
+            $table->boolean('frame')->default(false);
+            $table->string('profile_size')->default(3);
             $table->timestamps();
             $table->softDeletes();
         });

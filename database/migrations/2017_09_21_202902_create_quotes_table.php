@@ -23,7 +23,6 @@ class CreateQuotesTable extends Migration
             $table->string('panel')->default('');
             $table->string('lip')->default('NONE');
             $table->string('moulding')->default('NONE');
-            $table->string('profile_size')->default('0');
             $table->boolean('customer_confirmed')->default(false);
             $table->boolean('staff_confirmed')->default(false);
             $table->timestamps();

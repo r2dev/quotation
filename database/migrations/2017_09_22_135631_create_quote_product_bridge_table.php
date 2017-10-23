@@ -26,6 +26,7 @@ class CreateQuoteProductBridgeTable extends Migration
             $table->string('height')->default('0');
             $table->string('width')->default('0');
             $table->integer('lite')->unsigned()->default(0);
+            $table->string('adjustment')->default('0');
             $table->timestamps();
         });
     }
