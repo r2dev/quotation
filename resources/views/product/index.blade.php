@@ -39,25 +39,40 @@
                     </thead>
                     <tbody>
                     @foreach ($products as $index => $product)
-                        @if (Auth::user()->permission >= 3)
-                        <tr is="changeable-row"
+                    @if (Auth::user()->permission >= 3)
+                            <!--<tr is="changeable-row"
                             :product="{{$product}}"
                             del="{{route('products.destroy', ['id' => $product->id])}}"
                             token="{{csrf_token()}}"
                             update_url="{{route('products.update', ['id' => $product->id])}}"
                         >
 
-                        </tr>
-                        @else
-                            <td>{{$product->design}}</td>
-                            <td>{{$product->price_0}}</td>
-                            <td>{{$product->price_1}}</td>
-                            <td>{{$product->price_2}}</td>
-                            <td>{{$product->price_3}}</td>
-                            <td>{{$product->price_4}}</td>
-                            <td>{{$product->price_5}}</td>
-                            <td>{{$product->price_6}}</td>
-                        @endif
+                        </tr>!-->
+                    <td>{{$product->design}}</td>
+                    <td>{{$product->price_0}}</td>
+                    <td>{{$product->price_1}}</td>
+                    <td>{{$product->price_2}}</td>
+                    <td>{{$product->price_3}}</td>
+                    <td>{{$product->price_4}}</td>
+                    <td>{{$product->price_5}}</td>
+                    <td>{{$product->price_6}}</td>
+                    <td>
+                        <form action="{{route('products.destroy', ['id' => $product->id])}}" method="POST">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="submit" value="delete"/>
+                        </form>
+                    </td>
+                    @else
+                        <td>{{$product->design}}</td>
+                        <td>{{$product->price_0}}</td>
+                        <td>{{$product->price_1}}</td>
+                        <td>{{$product->price_2}}</td>
+                        <td>{{$product->price_3}}</td>
+                        <td>{{$product->price_4}}</td>
+                        <td>{{$product->price_5}}</td>
+                        <td>{{$product->price_6}}</td>
+                    @endif
                     @endforeach
 
                     </tbody>

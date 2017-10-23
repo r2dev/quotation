@@ -396,9 +396,13 @@
             <td>X</td>
             <td colspan="2" class="border-right">{{$product->pivot->height}}</td>
             <td>{{$product->pivot->quantity}}</td>
-            <td colspan="2">{{calculate_width($product->pivot->width, $quote->profile_size, 0.25, 1)}}</td>
-            <td colspan="2">X</td>
-            <td colspan="2">{{calculate_width($product->pivot->height, $quote->profile_size, 0.25, 1)}}</td>
+            @if ($product->frame === 0)
+                <td colspan="2">{{calculate_width($product->pivot->width, $quote->profile_size, 2, 1)}}</td>
+                <td colspan="2">X</td>
+                <td colspan="2">{{calculate_width($product->pivot->height, $quote->profile_size, 2, 1)}}</td>
+            @else
+                <td colspan="6"></td>
+            @endif
         </tr>
     @endforeach
     <tr>
