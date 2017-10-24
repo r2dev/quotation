@@ -9,27 +9,11 @@
                         <th>
                             Design Name
                         </th>
-                        <th>
-                            Maple Select
-                        </th>
-                        <th>
-                            Maple Regular
-                        </th>
-                        <th>
-                            Maple Paint
-                        </th>
-                        <th>
-                            Maple MDF
-                        </th>
-                        <th>
-                            Oak Regular
-                        </th>
-                        <th>
-                            Maple Regular MDF
-                        </th>
-                        <th>
-                            Cherry Regular
-                        </th>
+                        @foreach ($styles as $style)
+                            <th>
+                                {{$style}}
+                            </th>
+                        @endforeach
                         @if (Auth::user()->permission >= 3)
                             <th>
                                 action
@@ -39,40 +23,23 @@
                     </thead>
                     <tbody>
                     @foreach ($products as $index => $product)
-                    @if (Auth::user()->permission >= 3)
-                            <!--<tr is="changeable-row"
-                            :product="{{$product}}"
-                            del="{{route('products.destroy', ['id' => $product->id])}}"
-                            token="{{csrf_token()}}"
-                            update_url="{{route('products.update', ['id' => $product->id])}}"
-                        >
-
-                        </tr>!-->
-                    <td>{{$product->design}}</td>
-                    <td>{{$product->price_0}}</td>
-                    <td>{{$product->price_1}}</td>
-                    <td>{{$product->price_2}}</td>
-                    <td>{{$product->price_3}}</td>
-                    <td>{{$product->price_4}}</td>
-                    <td>{{$product->price_5}}</td>
-                    <td>{{$product->price_6}}</td>
-                    <td>
-                        <form action="{{route('products.destroy', ['id' => $product->id])}}" method="POST">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="submit" value="delete"/>
-                        </form>
-                    </td>
-                    @else
-                        <td>{{$product->design}}</td>
-                        <td>{{$product->price_0}}</td>
-                        <td>{{$product->price_1}}</td>
-                        <td>{{$product->price_2}}</td>
-                        <td>{{$product->price_3}}</td>
-                        <td>{{$product->price_4}}</td>
-                        <td>{{$product->price_5}}</td>
-                        <td>{{$product->price_6}}</td>
-                    @endif
+                        <tr>
+                            @if (Auth::user()->permission >= 3)
+                                    <tr is="changeable-row"
+                                        :product="{{$product}}"
+                                        del="{{route('products.destroy', ['id' => $product->id])}}"
+                                        token="{{csrf_token()}}"
+                                        update_url="{{route('products.update', ['id' => $product->id])}}"
+                                        :size="{{count($styles)}}"
+                                    >
+                                    </tr>
+                            @else
+                                <td>{{$product->design}}</td>
+                                @for ($i = 0; $i < count($styles); $i++)
+                                    <td>{{(float)$product['price_' . $i]}}</td>
+                                @endfor
+                            @endif
+                        </tr>
                     @endforeach
 
                     </tbody>
@@ -83,41 +50,17 @@
                 <div class="col-sm-12 col">
                     @if (Auth::user()->permission >= 3)
                         <form action="{{route('products.store')}}" method="POST">
-
                             <div class="form-group">
                                 <label for="design_name">Design Name</label>
                                 <input type="text" name="design" id="design_name" class="form-control">
                                 {{csrf_field()}}
                             </div>
+                            @foreach ($styles as $index => $style)
                             <div class="form-group">
-                                <label for="maple_select">Maple Select</label>
-                                <input type="text" name="price[0]" id="maple_select" class="form-control">
+                                <label for="{{$style}}">{{$style}}</label>
+                                <input type="text" name="price[{{$index}}]" id="{{$style}}" class="form-control">
                             </div>
-                            <div class="form-group">
-                                <label for="maple_regular">Maple Regular</label>
-                                <input type="text" name="price[1]" id="maple_regular" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="maple_paint">Maple Paint</label>
-                                <input type="text" name="price[2]" id="maple_paint" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="maple_mdf">Maple MDF</label>
-                                <input type="text" name="price[3]" id="maple_mdf" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="oak_regular">Oak Regular</label>
-                                <input type="text" name="price[4]" id="oak_regular" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="maple_regular_mdf">Maple Regular MDF</label>
-                                <input type="text" name="price[5]" id="maple_regular_mdf" class="form-control">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cherry_regular">Cherry Regular</label>
-                                <input type="text" name="price[6]" id="cherry_regular" class="form-control">
-                            </div>
+                            @endforeach
                             <button class="btn btn-default">Submit</button>
                         </form>
                     @endif

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\Style;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class ProductController extends Controller
 {
@@ -26,13 +27,13 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         //
-        $limit = 10;
+        $limit = 30;
         if (isset($request->limit) && is_numeric($request->limit)) {
             $limit = intval($request->limit);
         }
         $products = Product::paginate($limit);
-
-        return view('product.index', compact('products', 'limit'));
+        $styles = $this->styles;
+        return view('product.index', compact('products', 'limit', 'styles'));
     }
 
     /**
@@ -86,7 +87,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -99,9 +100,22 @@ class ProductController extends Controller
     {
         //
         $product = Product::findOrFail($id);
-        $product['price_'. $request->index] = $request->value;
-        $product->save();
-        return response()->json($product['price_'. $request->index]);
+        if ($request->index === -2) {
+            $request->validate([
+               'value'  =>  'unique:products,design'
+            ]);
+            $product['design'] = $request->value;
+            $product->save();
+            return response()->json($product['design']);
+        } else if ($request->index >= 0) {
+            $product['price_' . $request->index] = $request->value;
+            $product->save();
+            return response()->json($product['price_'. $request->index]);
+        }
+
+        return response()->json('failed', 500);
+
+        
     }
 
     /**

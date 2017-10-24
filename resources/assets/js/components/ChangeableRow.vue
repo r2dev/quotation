@@ -1,7 +1,14 @@
 <template>
     <tr>
-        <td>{{product.design}}</td>
-        <td v-for="n in 7" v-on:dblclick="changeMode(n - 1, product['price_' + (n - 1)])" >
+        <td v-on:dblclick="changeDesignMode">
+            <div v-if="!designMode">
+                {{product.design}}
+            </div>
+            <div v-else>
+                <input v-model.trim="tempDesignValue" type="text" @blur="updateDesign" ref="design" />
+            </div>
+        </td>
+        <td v-for="n in size" v-on:dblclick="changeMode(n - 1, product['price_' + (n - 1)])" >
             <div v-if="mode !== n - 1">    
                 {{product['price_' + (n - 1)]}}
             </div>
@@ -23,14 +30,20 @@
     export default {
         data: function() {
             return {
-                mode: -1, //false: show true:change
+                mode: -1, //-1: show other:change,
+                designMode: false, // false: show true: change
                 tempValue: 0,
-                defaultValue: 0
+                defaultValue: 0,
+                tempDesignValue: '',
+                defaultDesignValue: ''
             }
         },
         updated: function() {
             if (this.mode !== -1) {
                 this.$refs.input[0].focus()
+            }
+            if (this.designMode) {
+                this.$refs.design.focus()
             }
         },
         props: {
@@ -45,6 +58,9 @@
             },
             update_url: {
                 type: String
+            },
+            size: {
+                type: Number
             }
         },
         methods: {
@@ -63,10 +79,32 @@
                         index: index
                     })
                     .then(function(response) {
-                        
+
                     })
                     .catch(function() {
                         that.product['price_' + index] = that.defaultValue
+                    })
+                }
+            },
+            changeDesignMode: function() {
+                this.designMode = true
+                this.tempDesignValue = this.product['design']
+                this.defaultDesignValue = this.product['design']
+            },
+            updateDesign: function() {
+                this.designMode = false
+                this.product['design'] = this.tempDesignValue
+                const that = this
+                if (this.tempDesignValue !== this.defaultDesignValue) {
+                    axios.put(that.update_url, {
+                        value: that.tempDesignValue,
+                        index: -2
+                    })
+                    .then(function(response) {
+
+                    })
+                    .catch(function() {
+                        that.product['design'] = that.defaultDesignValue
                     })
                 }
             }

@@ -103687,19 +103687,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            mode: -1, //false: show true:change
+            mode: -1, //-1: show other:change,
+            designMode: false, // false: show true: change
             tempValue: 0,
-            defaultValue: 0
+            defaultValue: 0,
+            tempDesignValue: '',
+            defaultDesignValue: ''
         };
     },
     updated: function updated() {
         if (this.mode !== -1) {
             this.$refs.input[0].focus();
+        }
+        if (this.designMode) {
+            this.$refs.design.focus();
         }
     },
     props: {
@@ -103714,6 +103727,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         update_url: {
             type: String
+        },
+        size: {
+            type: Number
         }
     },
     methods: {
@@ -103734,6 +103750,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     that.product['price_' + index] = that.defaultValue;
                 });
             }
+        },
+        changeDesignMode: function changeDesignMode() {
+            this.designMode = true;
+            this.tempDesignValue = this.product['design'];
+            this.defaultDesignValue = this.product['design'];
+        },
+        updateDesign: function updateDesign() {
+            this.designMode = false;
+            this.product['design'] = this.tempDesignValue;
+            var that = this;
+            if (this.tempDesignValue !== this.defaultDesignValue) {
+                __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put(that.update_url, {
+                    value: that.tempDesignValue,
+                    index: -2
+                }).then(function (response) {}).catch(function () {
+                    that.product['design'] = that.defaultDesignValue;
+                });
+            }
         }
     }
 });
@@ -103749,9 +103783,46 @@ var render = function() {
   return _c(
     "tr",
     [
-      _c("td", [_vm._v(_vm._s(_vm.product.design))]),
+      _c("td", { on: { dblclick: _vm.changeDesignMode } }, [
+        !_vm.designMode
+          ? _c("div", [
+              _vm._v(
+                "\n            " + _vm._s(_vm.product.design) + "\n        "
+              )
+            ])
+          : _c("div", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model.trim",
+                    value: _vm.tempDesignValue,
+                    expression: "tempDesignValue",
+                    modifiers: { trim: true }
+                  }
+                ],
+                ref: "design",
+                attrs: { type: "text" },
+                domProps: { value: _vm.tempDesignValue },
+                on: {
+                  blur: [
+                    _vm.updateDesign,
+                    function($event) {
+                      _vm.$forceUpdate()
+                    }
+                  ],
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.tempDesignValue = $event.target.value.trim()
+                  }
+                }
+              })
+            ])
+      ]),
       _vm._v(" "),
-      _vm._l(7, function(n) {
+      _vm._l(_vm.size, function(n) {
         return _c(
           "td",
           {
