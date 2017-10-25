@@ -30,6 +30,7 @@ class CreateProductsTable extends Migration
             $table->decimal('price_11', 9, 4)->default(0);
             $table->decimal('price_12', 9, 4)->default(0);
             $table->boolean('frame')->default(false);
+            $table->boolean('door')->default(true);
             $table->string('profile_size')->default('3');
             $table->timestamps();
             $table->softDeletes();
