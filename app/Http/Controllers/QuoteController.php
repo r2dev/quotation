@@ -204,11 +204,15 @@ class QuoteController extends Controller
         $pdf = PDF::loadView('pdf.invoice', compact('quote', 'sum', 'products', '$sum_sqf'));
         return $pdf->download('invoice_' . $id . '.pdf');
     }
-
+    
     public function print_production($id)
     {
         $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
-        $pdf = PDF::loadView('pdf.production', compact('quote'));
+        $products = $quote->products->sortByDesc(function($product, $key) {
+            return parse_number($product['pivot']['height']);
+        });
+//        usort($products, array($this, 'cmp'));
+        $pdf = PDF::loadView('pdf.production', compact('quote', 'products'));
         return $pdf->stream('product_' . $id . '.pdf');
     }
 

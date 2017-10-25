@@ -3,19 +3,7 @@
 
     <div class="container">
         <div class="row">
-
             {{$quote->id}}
-            @if ($quote->customer_confirmed == false)
-                <form method="post" action="{{route('quotes.change_profile_size', ['id' => $quote->id])}}">
-                    {{csrf_field()}}
-                    <super-input value="{{$quote->profile_size}}" name="size" placeholder="width"></super-input>
-                    <input type="submit" value="submit">
-                </form>
-            @else
-                <label>profile size</label>
-                <span>{{$quote->profile_size}}</span>
-            @endif
-
             <div class="table-responsive">
                 <table class="table">
                     <thead>

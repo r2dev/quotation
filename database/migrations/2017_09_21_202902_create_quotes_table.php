@@ -25,6 +25,7 @@ class CreateQuotesTable extends Migration
             $table->string('moulding')->default('NONE');
             $table->boolean('customer_confirmed')->default(false);
             $table->boolean('staff_confirmed')->default(false);
+            $table->boolean('cm')->default(false);
             $table->timestamps();
         });
     }

@@ -388,7 +388,7 @@
         <td colspan="2">PANEL</td>
         <td></td>
     </tr>
-    @foreach( $quote->products as $product)
+    @foreach( $products as $product)
         <tr>
             <td>{{$product->pivot->quantity}}</td>
             <td colspan="3">{{$product->design}}</td>
@@ -397,9 +397,15 @@
             <td colspan="2" class="border-right">{{$product->pivot->height}}</td>
             <td>{{$product->pivot->quantity}}</td>
             @if ($product->frame === 0)
-                <td colspan="2">{{calculate_width($product->pivot->width, $quote->profile_size, 2, 1)}}</td>
-                <td colspan="2">X</td>
-                <td colspan="2">{{calculate_width($product->pivot->height, $quote->profile_size, 2, 1)}}</td>
+                @if ($product->df === 0)
+                    <td colspan="2">{{calculate_width($product->pivot->width, $product->profile_size, 2, $product->rule)}}</td>
+                    <td colspan="2">X</td>
+                    <td colspan="2">{{calculate_width($product->pivot->height, $product->profile_size, 2, $product->rule)}}</td>
+                @else
+                    <td colspan="2">{{calculate_width($product->pivot->height, $product->profile_size, 2, $product->rule)}}</td>
+                    <td colspan="2">X</td>
+                    <td colspan="2">{{calculate_width($product->pivot->width, $product->profile_size, 2, $product->rule)}}</td>
+                @endif
             @else
                 <td colspan="6"></td>
             @endif
