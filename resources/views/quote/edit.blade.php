@@ -23,8 +23,21 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <?php $sum = 0 ?>
+                    <?php $sum = 0; ?>
+                    <?php $check = false; ?>
                     @foreach ($quote_products as $product)
+                        <?php
+                            $check = true;
+                            if ($quote->customer_confirmed == true) {
+                                if ($product->pivot->price === 0) {
+                                    $check = false;
+                                }
+                            } else {
+                                if ($product['price_' . $product->pivot->style_id] === 0) {
+                                    $check = false;
+                                }
+                            }
+                        ?>
                         <tr>
                             <td>{{$product->design}}</td>
                             <td>{{$product->pivot->quantity}}</td>
@@ -96,11 +109,12 @@
                 </form>
             @endif
 
-
+            @if ($check)
             <form action="{{route('quotes.print_quotation', ['id' => $quote->id])}}" method="POST">
                 {{csrf_field()}}
                 <input type="submit" value="print quotation" class="btn btn-primary"/>
             </form>
+            @endif
 
             @if (Auth::user()->permission < 3 && $quote->customer_confirmed == false)
                 <form action="{{route('quotes.client_confirm', ['id' => $quote->id])}}" method="post">
