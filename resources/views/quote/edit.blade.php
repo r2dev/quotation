@@ -4,6 +4,22 @@
     <div class="container">
         <div class="row">
             {{$quote->id}}
+            @if ($quote->customer_confirmed == false && Auth::user()->permission >= 3)
+                <form action="{{route('quotes.change_company', ['id' => $quote->id])}}" method="post">
+                    {{csrf_field()}}
+                    <select name="company">
+                        <option value="" selected disabled hidden>Choose here</option>
+                        @foreach ($customers as $customer)
+                            @if ($quote->customer_id == $customer->id)
+                                <option value="{{$customer->id}}" selected>{{$customer->name}} </option>
+                            @else
+                                <option value="{{$customer->id}}" >{{$customer->name}} </option>
+                            @endif
+                        @endforeach
+                    </select>
+                    <input type="submit" value="change"/>
+                </form>
+            @endif
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -27,16 +43,16 @@
                     <?php $check = false; ?>
                     @foreach ($quote_products as $product)
                         <?php
-                            $check = true;
-                            if ($quote->customer_confirmed == true) {
-                                if ($product->pivot->price === 0) {
-                                    $check = false;
-                                }
-                            } else {
-                                if ($product['price_' . $product->pivot->style_id] === 0) {
-                                    $check = false;
-                                }
+                        $check = true;
+                        if ($quote->customer_confirmed == true) {
+                            if ($product->pivot->price === 0) {
+                                $check = false;
                             }
+                        } else {
+                            if ($product['price_' . $product->pivot->style_id] === 0) {
+                                $check = false;
+                            }
+                        }
                         ?>
                         <tr>
                             <td>{{$product->design}}</td>
@@ -46,7 +62,7 @@
                             @else
                                 <td>{{number_format($product['price_'. $product->pivot->style_id], 2)}}</td>
                             @endif
-                            <td>{{$style[$product->pivot->style_id]}}</td>
+                            <td>{{$styles[$product->pivot->style_id]}}</td>
                             <td>{{$product->pivot->width}}</td>
                             <td>{{$product->pivot->height}}</td>
                             <td>{{$product->pivot->lite}}</td>
@@ -79,44 +95,33 @@
                         </tr>
                         <?php $sum += $amount ?>
                     @endforeach
-                        <tr>
-                            <td colspan="8"></td>
-                            <td colspan="2">{{number_format($sum, 2)}}</td>
-                        </tr>
+                    <tr>
+                        <td colspan="8"></td>
+                        <td colspan="2">{{number_format($sum, 2)}}</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
+
             @if ($quote->customer_confirmed == false)
-                <form action="{{route('quotes.add_product', ['id' => $quote->id])}}" method="POST">
-                    {{csrf_field()}}
-                    <div class="form-group">
-                        <label for="design">Design</label>
-                        <select name="design" id="design" class="form-control" data-live-search="true">
-                            <option value="" selected disabled hidden>Choose here</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="style">Style</label>
-                        <select name="style" id="style" class="form-control">
-                            <option value="" selected disabled hidden>Choose here</option>
-                        </select>
-                    </div>
-                    <input type="text" name="quantity" placeholder="quantity" value="1"/>
-                    <super-input value="" name="width" placeholder="width"></super-input>
-                    <super-input value="" name="height" placeholder="height"></super-input>
-                    <input type="text" name="lite" placeholder="lite" value="0"/>
-                    <input class="btn btn-success" type="submit" value="add"/>
+                <form action="{{route('quotes.add_product', ['id' => $quote->id])}}" method="post">
+                    <extendable-form-table
+                            :products="{{$products}}"
+                            :styles='@json($styles)'
+                    >
+
+                    </extendable-form-table>
                 </form>
             @endif
 
             @if ($check)
-            <form action="{{route('quotes.print_quotation', ['id' => $quote->id])}}" method="POST">
-                {{csrf_field()}}
-                <input type="submit" value="print quotation" class="btn btn-primary"/>
-            </form>
+                <form action="{{route('quotes.print_quotation', ['id' => $quote->id])}}" method="POST">
+                    {{csrf_field()}}
+                    <input type="submit" value="print quotation" class="btn btn-primary"/>
+                </form>
             @endif
 
-            @if (Auth::user()->permission < 3 && $quote->customer_confirmed == false)
+            @if ($quote->customer_confirmed == false)
                 <form action="{{route('quotes.client_confirm', ['id' => $quote->id])}}" method="post">
                     {{csrf_field()}}
                     <input type="submit" value="client confirm" class="btn btn-success"/>
@@ -124,7 +129,7 @@
             @endif
 
             @if ($quote->customer_confirmed == true && $quote->staff_confirmed == false)
-                <form action="{{route('quotes.client_confirm', ['id' => $quote->id])}}" method="post">
+                <form action="{{route('quotes.client_confirm_withdraw', ['id' => $quote->id])}}" method="post">
                     {{csrf_field()}}
                     <input type="submit" value="withdraw quote" class="btn btn-danger"/>
                 </form>
@@ -152,33 +157,4 @@
         </div>
     </div>
 
-@endsection
-
-@section('js')
-    <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
-    <script>
-        window._products = @json($products);
-        var ww = @json($style);
-
-        $.each(window._products, function (index, key) {
-            $('#design').append($('<option></option>', {'data-tokens': key.design}).val(key.id).data('idx', index).text(key.design))
-        });
-
-        $('#design').change(function (e) {
-            $('#style').val = ''
-            $('#style').empty()
-            $('#style').append('<option value="" selected disabled hidden>Choose here</option>')
-            var index = parseInt($("#design").find(":selected").data('idx'), 10)
-            for (var i = 0; i !== 6; i++) {
-                var price = parseFloat(window._products[index]['price_' + i]);
-                if (!isNaN(price) && (price !== 0)) {
-
-                    $('#style').append($('<option></option>').data('price', price).val(i).text(ww[i]))
-                }
-            }
-        })
-        $("#style").change(function (e) {
-            console.log($("#style").find(":selected").data('price'))
-        })
-    </script>
 @endsection

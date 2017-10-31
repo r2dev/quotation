@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
 use App\Product;
 use App\Quote;
 use App\QuoteProduct;
@@ -71,9 +72,12 @@ class QuoteController extends Controller
         $quote = Quote::findOrFail($id);
         $this->authorize('view', $quote);
         $products = Product::all();
+        if (Auth::user()->permission >= 3) {
+            $customers = Customer::all();
+        }
         $quote_products = $quote->products;
-        $style = array('Maple Select', 'Maple Regular', 'Maple Paint', 'Maple MDF', 'Oak Regular', 'Maple Regular MDF', 'Cherry Regular');
-        return view('quote.edit', compact('quote', 'quote_products', 'products', 'style'));
+        $styles = $this->styles;
+        return view('quote.edit', compact('quote', 'quote_products', 'products', 'styles', 'customers'));
 
     }
 
@@ -97,6 +101,18 @@ class QuoteController extends Controller
      */
     public function destroy($id)
     {
+    }
+
+    public function change_company(Request $request, $id)
+    {
+        $quote = Quote::findOrFail($id);
+
+        if ($quote->customer_confirmed == false) {
+            $quote->customer_id = $request->company;
+            $quote->save();
+            $request->session()->flash('status', 'success');
+        }
+        return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
     public function add_product_to_quote(Request $request, $id)
@@ -149,6 +165,23 @@ class QuoteController extends Controller
         foreach ($products as $product) {
             $quote->products()->updateExistingPivot($product->id, ['price' => $product['price_' . $product->pivot->style_id]]);
         }
+        $quote->save();
+        return redirect(route('quotes.edit', ['id' => $quote->id]));
+    }
+
+    public function client_confirm_withdraw($id)
+    {
+
+        $quote = Quote::findOrFail($id);
+        $quote->customer_confirmed = false;
+        $quote->save();
+        return redirect(route('quotes.edit', ['id' => $quote->id]));
+    }
+
+    public function production_confirm_withdraw($id)
+    {
+        $quote = Quote::findOrFail($id);
+        $quote->staff_confirmed = false;
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }

@@ -26,6 +26,8 @@ class CreateQuotesTable extends Migration
             $table->boolean('customer_confirmed')->default(false);
             $table->boolean('staff_confirmed')->default(false);
             $table->boolean('cm')->default(false);
+            $table->integer('customer_id')->unsigned()->nullable();
+            $table->foreign('customer_id')->references('id')->on('customers');
             $table->timestamps();
         });
     }

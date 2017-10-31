@@ -25369,7 +25369,6 @@ module.exports = __webpack_require__(598);
 /* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -25386,11 +25385,12 @@ window.Vue = __webpack_require__(184);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('super-input', __webpack_require__(187));
-Vue.component('changeable-row', __webpack_require__(590));
+Vue.component("super-input", __webpack_require__(187));
+Vue.component("changeable-row", __webpack_require__(590));
+Vue.component("extendable-form-table", __webpack_require__(607));
 
 var app = new Vue({
-  el: '#app'
+  el: "#app"
 });
 
 /***/ }),
@@ -66904,9 +66904,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1daeb17a", Component.options)
+    hotAPI.createRecord("data-v-2b982de0", Component.options)
   } else {
-    hotAPI.reload("data-v-1daeb17a", Component.options)
+    hotAPI.reload("data-v-2b982de0", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
@@ -66955,6 +66955,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         placeholder: {
             type: String,
             default: ''
+        },
+        tabindex: {
+            type: Number,
+            default: -1
         }
     },
     computed: {
@@ -103203,7 +103207,11 @@ var render = function() {
           expression: "message"
         }
       ],
-      attrs: { type: "text", placeholder: _vm.placeholder },
+      attrs: {
+        type: "text",
+        placeholder: _vm.placeholder,
+        tabindex: _vm.tabindex
+      },
       domProps: { value: _vm.message },
       on: {
         input: function($event) {
@@ -103227,7 +103235,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1daeb17a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-2b982de0", module.exports)
   }
 }
 
@@ -103250,7 +103258,7 @@ var __vue_template__ = __webpack_require__(597)
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-485eeb28"
+var __vue_scopeId__ = "data-v-60ced97f"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -103271,9 +103279,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-485eeb28", Component.options)
+    hotAPI.createRecord("data-v-60ced97f", Component.options)
   } else {
-    hotAPI.reload("data-v-485eeb28", Component.options)
+    hotAPI.reload("data-v-60ced97f", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
@@ -103294,13 +103302,13 @@ var content = __webpack_require__(592);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(594)("23256484", content, false);
+var update = __webpack_require__(594)("509f271b", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-485eeb28\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./ChangeableRow.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-485eeb28\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./ChangeableRow.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-60ced97f\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./ChangeableRow.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-60ced97f\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./ChangeableRow.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -103318,7 +103326,7 @@ exports = module.exports = __webpack_require__(593)(undefined);
 
 
 // module
-exports.push([module.i, "\n.input-update[data-v-485eeb28] {\n    width: 6rem;\n}\n", ""]);
+exports.push([module.i, "\n.input-update[data-v-60ced97f] {\n    width: 6rem;\n}\n", ""]);
 
 // exports
 
@@ -103903,7 +103911,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-485eeb28", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-60ced97f", module.exports)
   }
 }
 
@@ -103912,6 +103920,284 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 599 */,
+/* 600 */,
+/* 601 */,
+/* 602 */,
+/* 603 */,
+/* 604 */,
+/* 605 */,
+/* 606 */,
+/* 607 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(100)
+/* script */
+var __vue_script__ = __webpack_require__(610)
+/* template */
+var __vue_template__ = __webpack_require__(612)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\ExtendableFormTable.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6f464925", Component.options)
+  } else {
+    hotAPI.reload("data-v-6f464925", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 608 */,
+/* 609 */,
+/* 610 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SuperInput__ = __webpack_require__(187);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__SuperInput___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__SuperInput__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            row: 5
+        };
+    },
+    components: {
+        'SuperInput': __WEBPACK_IMPORTED_MODULE_0__SuperInput___default.a
+    },
+    methods: {
+        addRows: function addRows() {
+            this.row += 5;
+        }
+    },
+    props: {
+        products: {
+            type: Object
+        },
+        styles: {
+            type: Object
+        }
+    }
+});
+
+/***/ }),
+/* 611 */,
+/* 612 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "table-responsive" }, [
+    _c(
+      "table",
+      { staticClass: "table" },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._l(_vm.row, function(n) {
+          return _c("tr", [
+            _c("td", [
+              _c(
+                "select",
+                { attrs: { tabindex: n } },
+                _vm._l(_vm.products, function(product) {
+                  return _c("option", [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(product.design) +
+                        "\n                    "
+                    )
+                  ])
+                })
+              )
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c(
+                "select",
+                { attrs: { tabindex: n + _vm.row } },
+                _vm._l(_vm.styles, function(style) {
+                  return _c("option", [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(style) +
+                        "\n                    "
+                    )
+                  ])
+                })
+              )
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                attrs: { tabindex: n + 2 * _vm.row, type: "number", value: "1" }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "td",
+              [
+                _c("SuperInput", {
+                  attrs: {
+                    value: "",
+                    name: "width",
+                    placeholder: "width",
+                    tabindex: n + 3 * _vm.row
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              [
+                _c("SuperInput", {
+                  attrs: {
+                    value: "",
+                    name: "width",
+                    placeholder: "width",
+                    tabindex: n + 4 * _vm.row
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                attrs: { type: "number", value: "1", tabindex: n + 5 * _vm.row }
+              })
+            ])
+          ])
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c("button", { attrs: { type: "button" }, on: { click: _vm.addRows } }, [
+      _vm._v("+")
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("\n                Design\n            ")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("\n                Style\n            ")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("\n                Quantity\n            ")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("\n                Width\n            ")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("\n                Height\n            ")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("\n                Lite\n            ")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6f464925", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

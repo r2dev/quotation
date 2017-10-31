@@ -1,6 +1,6 @@
 <template>
     <span>
-        <input type="text" v-model="message" :placeholder="placeholder">
+        <input type="text" v-model="message" :placeholder="placeholder" :tabindex="tabindex">
         <input type="hidden" :value="trueValue" :name="name">
     </span>
 </template>
@@ -29,6 +29,10 @@ export default {
         placeholder: {
             type: String,
             default: ''
+        },
+        tabindex: {
+            type: Number,
+            default: -1
         }
     },
     computed: {

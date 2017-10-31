@@ -279,7 +279,7 @@
             Tel; 905.475.0880 / 905.475.0887<br/>
             Fax: 905.475.6640 / 905.475.6041<br/>
             Email: info@galaxydoors.ca<br/>
-            @isset ($quote->user->customer)
+            @if (isset($quote->user->customer))
             <table>
                 <tr>
                     <th>Customer</th>
@@ -301,7 +301,30 @@
                     </td>
                 </tr>
             </table>
-            @endisset
+            @else
+            <table>
+                <tr>
+                    <th>Customer</th>
+                </tr>
+                <tr>
+                    <td>
+                        @if(null !== $quote->customer->name)
+                            {{ $quote->customer->name }}<br/>
+                        @endif
+                        @if (null !== $quote->customer->telephone)
+                            {{ $quote->customer->telephone }}<br/>
+                        @endif
+                        @if(null !== $quote->customer->fax)
+                            {{ $quote->customer->fax }}<br/>
+                        @endif
+                        @if ( null !== $quote->customer->email)
+                            {{ $quote->customer->email }}<br/>
+                        @endif
+                    </td>
+                </tr>
+            </table>
+            @endif
+
         </td>
         <td class="order-data">
             <table>
@@ -395,8 +418,15 @@
                 <tfoot>
                 <tr >
                     <td>Discount</td>
-                    <th class="description">{{ $quote->user->customer->discount }}%</th>
-                    <td class="price">${{round($sum / 100 * $quote->user->customer->discount, 2)}}</td>
+                    @if (isset($quote->user->customer))
+                        <?php $discount = $quote->user->customer->discount ?>
+
+                    @else
+                        <?php $discount = $quote->user->discount ?>
+                    @endif
+                    <th class="description">{{ $discount }}%</th>
+                    <td class="price">${{round($sum / 100 * $discount, 2)}}</td>
+
                 </tr>
                 <tr>
                     <td >Other Charges</td>
@@ -406,17 +436,17 @@
                 <tr>
                     <td >Subtotal</td>
                     <th class="description"></th>
-                    <td class="price"><span class="totals-price"><span class="amount">$ {{round($sum / 100 * (100 - $quote->user->customer->discount), 2)}}</span></span></td>
+                    <td class="price"><span class="totals-price"><span class="amount">$ {{round($sum / 100 * (100 - $discount), 2)}}</span></span></td>
                 </tr>
                 <tr>
                     <td>HST (# 816451504)</td>
                     <th class="description"></th>
-                    <td class="price"><span class="totals-price"><span class="amount">$ {{round($sum / 100 * (100 - $quote->user->customer->discount) * 0.13, 2)}}</span></span></td>
+                    <td class="price"><span class="totals-price"><span class="amount">$ {{round($sum / 100 * (100 - $discount) * 0.13, 2)}}</span></span></td>
                 </tr>
                 <tr class="order_total">
                     <td>Total</td>
                     <th class="description"></th>
-                    <td class="price"><span class="totals-price"><span class="amount">$ {{round($sum / 100 * (100 - $quote->user->customer->discount) * 1.13, 2)}}</span></span></td>
+                    <td class="price"><span class="totals-price"><span class="amount">$ {{round($sum / 100 * (100 - $discount) * 1.13, 2)}}</span></span></td>
                 </tr>
 
                 </tfoot>
