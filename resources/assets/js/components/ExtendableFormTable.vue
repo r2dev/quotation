@@ -23,8 +23,8 @@
             </tr>
             <tr v-for="n in row">
                 <td>
-                    <select :tabindex="n">
-                        <option v-for="product in products">
+                    <select :tabindex="n" name="designs[]">
+                        <option v-for="product in products" :value="product.value">
                             {{product.design}}
                         </option>
                     </select>
@@ -51,6 +51,7 @@
             </tr>
         </table>
         <button type="button" @click="addRows">+</button>
+        <input type="submit" value="submit" />
     </div>
 </template>
 <script>

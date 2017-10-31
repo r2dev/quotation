@@ -134,6 +134,19 @@ class QuoteController extends Controller
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
+    public function add_products_to_quote(Request $request, $id)
+    {
+        $quote = Quote::findOrFail($id);
+        $designs = array();
+        if ($quote->customer_confirmed == false) {
+            foreach($request->designs as $design) {
+                array_push($designs, $design);
+            }
+        }
+        
+        return redirect(route('quotes.edit', ['id' => $quote->id]));
+    }
+
     public function remove_product_from_quote(Request $request, $id)
     {
         $quote = Quote::findOrFail($id);

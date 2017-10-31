@@ -25,7 +25,7 @@ Route::resource('quotes', 'QuoteController');
 
 Route::resource('customers', 'CustomerController');
 
-Route::post('/quotes/{id}/product', 'QuoteController@add_product_to_quote')->name('quotes.add_product');
+Route::post('/quotes/{id}/product', 'QuoteController@add_products_to_quote')->name('quotes.add_products');
 
 Route::delete('/quotes/{id}/product', 'QuoteController@remove_product_from_quote')->name('quotes.remove_product_from_quote');
 

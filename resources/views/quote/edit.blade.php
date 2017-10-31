@@ -13,7 +13,7 @@
                             @if ($quote->customer_id == $customer->id)
                                 <option value="{{$customer->id}}" selected>{{$customer->name}} </option>
                             @else
-                                <option value="{{$customer->id}}" >{{$customer->name}} </option>
+                                <option value="{{$customer->id}}">{{$customer->name}} </option>
                             @endif
                         @endforeach
                     </select>
@@ -104,12 +104,12 @@
             </div>
 
             @if ($quote->customer_confirmed == false)
-                <form action="{{route('quotes.add_product', ['id' => $quote->id])}}" method="post">
+                <form action="{{route('quotes.add_products', ['id' => $quote->id])}}" method="post">
+                    {{csrf_field()}}
                     <extendable-form-table
                             :products="{{$products}}"
                             :styles='@json($styles)'
                     >
-
                     </extendable-form-table>
                 </form>
             @endif
