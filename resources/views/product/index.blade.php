@@ -16,6 +16,18 @@
                         @endforeach
                         @if (Auth::user()->permission >= 3)
                             <th>
+                                frame
+                            </th>
+                            <th>
+                                draw front
+                            </th>
+                            <th>
+                                rule
+                            </th>
+                            <th>
+                                profile size
+                            </th>
+                            <th>
                                 action
                             </th>
                         @endif

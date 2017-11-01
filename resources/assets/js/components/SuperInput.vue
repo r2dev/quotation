@@ -1,6 +1,6 @@
 <template>
     <span>
-        <input type="text" v-model="message" :placeholder="placeholder" :tabindex="tabindex">
+        <input type="text" v-model="message" :placeholder="placeholder" :tabindex="tabindex" @blur="handleBlur" ref="input">
         <input type="hidden" :value="trueValue" :name="name">
     </span>
 </template>
@@ -33,6 +33,14 @@ export default {
         tabindex: {
             type: Number,
             default: -1
+        }
+    },
+    methods: {
+        handleBlur: function() {
+            this.$emit('blur', this.trueValue);
+        },
+        focus: function() {
+            this.$refs.input.focus();
         }
     },
     computed: {

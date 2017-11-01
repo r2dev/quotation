@@ -107,6 +107,14 @@ class ProductController extends Controller
             $product['design'] = $request->value;
             $product->save();
             return response()->json($product['design']);
+        } else if ($request->index === -3) {
+            $product['rule'] = $request->value;
+            $product->save();
+            return response()->json($product['rule']);
+        } else if ($request->index === -4) {
+            $product['profile_size'] = $request->value;
+            $product->save();
+            return response()->json($product['profile_size']);
         } else if ($request->index >= 0) {
             $product['price_' . $request->index] = $request->value;
             $product->save();
