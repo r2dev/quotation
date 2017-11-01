@@ -8,6 +8,7 @@ use App\Quote;
 use App\QuoteProduct;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use PDF;
 
 
@@ -137,13 +138,34 @@ class QuoteController extends Controller
     public function add_products_to_quote(Request $request, $id)
     {
         $quote = Quote::findOrFail($id);
-        $designs = array();
+        $attachResult = array();
         if ($quote->customer_confirmed == false) {
-            foreach($request->designs as $design) {
-                array_push($designs, $design);
+            foreach ($request->product as $index => $product) {
+                $validator = Validator::make($product, [
+                    'design' => 'required',
+                    'style' => 'required',
+                    'quantity' => 'required|min:1|numeric',
+                    'width' => 'required',
+                    'height' => 'required',
+                    'lite' => 'required|min:0|numeric',
+                ]);
+                if ($validator->passes()) {
+                    $attachResult[$product['design']] = [
+                        'style_id' => $product['style'],
+                        'quantity' => $product['quantity'],
+                        'width' => $product['width'],
+                        'height' => $product['height'],
+                        'lite' => $product['lite']
+
+                    ];
+                }
+//               array_push($attachResult, $validator->passes());
             }
         }
-        
+//        dd($attachResult);
+        if (count($attachResult)!= 0) {
+            $quote->products()->attach($attachResult);
+        }
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
@@ -205,7 +227,7 @@ class QuoteController extends Controller
         $sum = 0;
         $sum_sqf = 0;
         $products = array();
-        foreach($quote->products as $product) {
+        foreach ($quote->products as $product) {
             $unit_area = total_area($product->pivot->width, $product->pivot->height);
             if ($quote->customer_confirmed == true) {
                 $unit_price = ($unit_area * $product->pivot->price + $product->pivot->lite * 8);
@@ -231,7 +253,7 @@ class QuoteController extends Controller
         $sum = 0;
         $sum_sqf = 0;
         $products = array();
-        foreach($quote->products as $product) {
+        foreach ($quote->products as $product) {
             $unit_area = total_area($product->pivot->width, $product->pivot->height);
             if ($quote->customer_confirmed == true) {
                 $unit_price = ($unit_area * $product->pivot->price + $product->pivot->lite * 8);
@@ -250,11 +272,11 @@ class QuoteController extends Controller
         $pdf = PDF::loadView('pdf.invoice', compact('quote', 'sum', 'products', '$sum_sqf'));
         return $pdf->download('invoice_' . $id . '.pdf');
     }
-    
+
     public function print_production($id)
     {
         $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
-        $products = $quote->products->sortByDesc(function($product, $key) {
+        $products = $quote->products->sortByDesc(function ($product, $key) {
             return parse_number($product['pivot']['height']);
         });
 //        usort($products, array($this, 'cmp'));

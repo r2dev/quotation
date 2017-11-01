@@ -21,32 +21,34 @@
                     Lite
                 </th>
             </tr>
-            <tr v-for="n in row">
+            <tr v-for="(n, index) in row">
                 <td>
-                    <select :tabindex="n" name="designs[]">
-                        <option v-for="product in products" :value="product.value">
+                    <select :tabindex="n" :name="'product[' + index + '][design]'">
+                        <option value="" selected  hidden>Choose here</option>
+                        <option v-for="product in products" :value="product.id">
                             {{product.design}}
                         </option>
                     </select>
                 </td>
                 <td>
-                    <select :tabindex="n + row">
-                        <option v-for="style in styles">
+                    <select :tabindex="n + row" :name="'product[' + index + '][style]'">
+                        <option value="" selected hidden>Choose here</option> 
+                        <option v-for="(style, index) in styles" :value="index">
                             {{style}}
                         </option>
                     </select>
                 </td>
                 <td>
-                    <input :tabindex="n + 2 * row" type="number" value="1">
+                    <input :tabindex="n + 2 * row" type="number" value="1" :name="'product[' + index + '][quantity]'">
                 </td>
                 <td>
-                    <SuperInput value="" name="width" placeholder="width" :tabindex="n + 3 * row"></SuperInput>
+                    <SuperInput value="" placeholder="width" :tabindex="n + 3 * row" :name="'product[' + index + '][width]'"></SuperInput>
                 </td>
                 <td>
-                    <SuperInput value="" name="width" placeholder="width" :tabindex="n + 4 * row"></SuperInput>
+                    <SuperInput value="" placeholder="height" :tabindex="n + 4 * row" :name="'product[' + index + '][height]'"></SuperInput>
                 </td>
                 <td>
-                    <input type="number" value="1" :tabindex="n + 5 * row">
+                    <input type="number" value="0" :tabindex="n + 5 * row" :name="'product[' + index + '][lite]'">
                 </td>
             </tr>
         </table>
@@ -72,10 +74,10 @@ export default {
     },
     props: {
         products: {
-            type: Object
+            type: Array
         },
         styles: {
-            type: Object
+            type: Array
         }
     }
 }
