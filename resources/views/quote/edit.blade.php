@@ -115,11 +115,17 @@
                                 </td>
                             @endif
                         </tr>
-                        <?php $sum += $amount ?>
+                        @if (!$undefined)
+                            <?php $sum += $amount ?>
+                        @endif
                     @endforeach
                     <tr>
                         <td colspan="8"></td>
-                        <td colspan="2">{{number_format($sum, 2)}}</td>
+                        @if (!$undefined)
+                            <td colspan="2">{{number_format($sum, 2)}}</td>
+                        @else
+                            <td></td>
+                        @endif
                     </tr>
                     </tbody>
                 </table>

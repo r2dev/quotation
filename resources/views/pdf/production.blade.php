@@ -402,7 +402,10 @@
                     <td colspan="2">X</td>
                     <td colspan="2">{{calculate_width($product->pivot->height, $product->profile_size, 2, $product->rule)}}</td>
                 @else
-                    <td colspan="2">{{calculate_width($product->pivot->height, $product->profile_size, 2, $product->rule)}}</td>
+                    <td colspan="2">
+                        {{$product->pivot->height}} {{$product->profile_size}} {{$product->rule}}
+                        {{calculate_width($product->pivot->height, $product->profile_size, 2, $product->rule)}}
+                    </td>
                     <td colspan="2">X</td>
                     <td colspan="2">{{calculate_width($product->pivot->width, $product->profile_size, 2, $product->rule)}}</td>
                 @endif

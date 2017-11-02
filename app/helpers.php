@@ -101,6 +101,7 @@ function fraction_to_str($fraction)
 }
 
 function str_to_fraction($str){
+
     $numerator = 1;
     $denominator = 1;
     $arraylist = explode(" ",$str);
@@ -119,7 +120,15 @@ function str_to_fraction($str){
             $numerator = $numerator + $denominator * intval($tmp_array1[0]);
         }else
         {
-            $numerator = intval($tmp_array1[0]);
+
+            $tmp_array = explode("/",$tmp_array1[0]);
+            if(count($tmp_array) > 1)
+            {
+                $numerator = intval($tmp_array[0]);
+                $denominator = intval($tmp_array[1]);
+            }else{
+                $numerator = intval($tmp_array1[0]);
+            }
         }
     }
     return array($numerator,$denominator);

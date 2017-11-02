@@ -70,11 +70,6 @@ class QuoteController extends Controller
      */
     public function edit($id)
     {
-        $test = QuoteProduct::with('product')->where('quote_id', $id)->get();
-        foreach ($test as $t) {
-            echo($t->product->price_3);
-        }
-        dd();
         $quote = Quote::findOrFail($id);
         $this->authorize('view', $quote);
         $products = Product::all();
@@ -207,10 +202,13 @@ class QuoteController extends Controller
     {
         $quote = Quote::findOrFail($id);
         $quote->customer_confirmed = true;
+//        $products = QuoteProduct::with('product')->where('quote_id', $id)->all();
         $products = $quote->products;
         foreach ($products as $product) {
-//            QuoteProduct::where('quote_id', $id)->update(['price', ])
             $quote->products()->updateExistingPivot($product->id, ['price' => $product['price_' . $product->pivot->style_id]]);
+//            $product->price = $product->product['price_' . $product->style_id];
+//
+//            $product->save();
         }
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
