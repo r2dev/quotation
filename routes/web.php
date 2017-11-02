@@ -45,7 +45,10 @@ Route::post('/quotes/{id}/change_profile_size', 'QuoteController@change_profile_
 
 Route::post('/quotes/{id}/change_company', 'QuoteController@change_company')->name('quotes.change_company');
 
+Route::post('/quotes/{id}/price/{pid}', 'QuoteController@update_price')->name('quotes.update_price');
+
 Route::post('/customers/{id}/users', 'CustomerController@create_user')->name('customers.add_user');
+
 
 Route::get('/styles', 'QuoteController@test')->name('styles.store');
 

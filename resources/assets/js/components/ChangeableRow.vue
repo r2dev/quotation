@@ -150,7 +150,7 @@ export default {
         updateRule: function(trueValue) {
             this.ruleMode = false
             const that = this
-            if (!math.equal(math.eval(this.defaultRuleValue), math.eval(trueValue))) {
+            if (trueValue.length !== 0 && !math.equal(math.fraction(this.defaultRuleValue), math.fraction(trueValue))) {
                 this.product['rule'] = trueValue
                 axios.put(that.update_url, {
                     value: trueValue,
@@ -170,7 +170,7 @@ export default {
         updateProfile: function(trueValue) {
             this.profileMode = false
             const that = this
-            if (!math.equal(math.eval(this.defaultProfileValue), math.eval(trueValue))) {
+            if (trueValue.length !== 0 && !math.equal(math.fraction(this.defaultProfileValue), math.fraction(trueValue))) {
                 this.product['profile_size'] = trueValue
                 axios.put(that.update_url, {
                     value: trueValue,

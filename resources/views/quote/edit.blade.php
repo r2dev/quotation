@@ -40,27 +40,38 @@
                     </thead>
                     <tbody>
                     <?php $sum = 0; ?>
-                    <?php $check = false; ?>
+                    <?php $undefined = false; ?>
                     @foreach ($quote_products as $product)
-                        <?php
-                        $check = true;
-                        if ($quote->customer_confirmed == true) {
-                            if ($product->pivot->price === 0) {
-                                $check = false;
-                            }
-                        } else {
-                            if ($product['price_' . $product->pivot->style_id] === 0) {
-                                $check = false;
-                            }
-                        }
-                        ?>
                         <tr>
                             <td>{{$product->design}}</td>
                             <td>{{$product->pivot->quantity}}</td>
                             @if ($quote->customer_confirmed == true)
-                                <td>{{number_format($product->pivot->price, 2)}}</td>
+                                @if ($product->pivot->price != 0)
+                                    <td>{{number_format($product->pivot->price, 2)}}</td>
+                                @else
+                                    <?php $undefined = true ?>
+                                    @if (Auth::user()->permission >= 3)
+                                        <td>
+                                            <form action="{{route('quotes.update_price', ['id' => $quote->id, 'pid' => $product->id])}}"
+                                                  method="post">
+                                                {{csrf_field()}}
+                                                <input type="text" name="value"/>
+                                                <input type="submit" value="update"/>
+                                            </form>
+                                        </td>
+                                    @else
+                                        <td>undefined</td>
+                                    @endif
+                                @endif
                             @else
-                                <td>{{number_format($product['price_'. $product->pivot->style_id], 2)}}</td>
+                                @if ($product['price_'. $product->pivot->style_id] != 0)
+                                    <td>{{number_format($product['price_'. $product->pivot->style_id], 2)}}</td>
+                                @elseif ($product->pivot->price != 0)
+                                    <td>{{number_format($product->pivot->price, 2)}}</td>
+                                @else
+                                    <?php $undefined = true ?>
+                                    <td>undefined</td>
+                                @endif
                             @endif
                             <td>{{$styles[$product->pivot->style_id]}}</td>
                             <td>{{$product->pivot->width}}</td>
@@ -72,11 +83,22 @@
                             </td>
                             <td>
                                 @if ($quote->customer_confirmed == true)
-                                    <?php $amount = ($unit_area * $product->pivot->price + $product->pivot->lite * 8) * $product->pivot->quantity; ?>
-                                    {{number_format($amount, 2)}}
+                                    @if ($product->pivot->price != 0)
+                                        <?php $amount = ($unit_area * $product->pivot->price + $product->pivot->lite * 8) * $product->pivot->quantity; ?>
+                                        {{number_format($amount, 2)}}
+                                    @else
+                                        undefined
+                                    @endif
                                 @else
-                                    <?php $amount = ($unit_area * $product['price_' . $product->pivot->style_id] + $product->pivot->lite * 8) * $product->pivot->quantity; ?>
-                                    {{number_format($amount, 2)}}
+                                    @if ($product['price_'. $product->pivot->style_id] != 0)
+                                        <?php $amount = ($unit_area * $product['price_' . $product->pivot->style_id] + $product->pivot->lite * 8) * $product->pivot->quantity; ?>
+                                        {{number_format($amount, 2)}}
+                                    @elseif ($product->pivot->price != 0)
+                                        <?php $amount = ($unit_area * $product->pivot->price + $product->pivot->lite * 8) * $product->pivot->quantity; ?>
+                                        {{number_format($amount, 2)}}
+                                    @else
+                                        undefined
+                                    @endif
                                 @endif
                             </td>
                             @if ($quote->customer_confirmed == false)
@@ -114,7 +136,7 @@
                 </form>
             @endif
 
-            @if ($check)
+            @if (!$undefined)
                 <form action="{{route('quotes.print_quotation', ['id' => $quote->id])}}" method="POST">
                     {{csrf_field()}}
                     <input type="submit" value="print quotation" class="btn btn-primary"/>

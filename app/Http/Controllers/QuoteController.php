@@ -169,6 +169,12 @@ class QuoteController extends Controller
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
+    public function update_price(Request $request, $id, $pid)
+    {
+        $quote = Quote::findOrFail($id);
+        $quote->products()->updateExistingPivot($pid, ['price' => $request->value]);
+        return redirect(route('quotes.edit', ['id' => $quote->id]));
+    }
     public function remove_product_from_quote(Request $request, $id)
     {
         $quote = Quote::findOrFail($id);
