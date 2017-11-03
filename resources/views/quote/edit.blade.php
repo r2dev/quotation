@@ -52,7 +52,7 @@
                                     <?php $undefined = true ?>
                                     @if (Auth::user()->permission >= 3)
                                         <td>
-                                            <form action="{{route('quotes.update_price', ['id' => $quote->id, 'pid' => $product->id])}}"
+                                            <form action="{{route('quotes.update_price', ['id' => $quote->id, 'product_id' => $product->id, 'style_id' => $product->pivot->style_id])}}"
                                                   method="post">
                                                 {{csrf_field()}}
                                                 <input type="text" name="value"/>
