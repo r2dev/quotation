@@ -52,8 +52,8 @@
                 </td>
             </tr>
         </table>
-        <button type="button" @click="addRows">+</button>
-        <input type="submit" value="submit" />
+        <button class="btn btn-primary" type="button" @click="addRows">+</button>
+        <input class="btn btn-primary" type="submit" value="submit" />
     </div>
 </template>
 <script>
