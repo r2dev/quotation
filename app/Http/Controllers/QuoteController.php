@@ -208,7 +208,9 @@ class QuoteController extends Controller
 //        $products = $quote->products;
         foreach ($products as $product) {
 //            dd($product->style_id);
-            DB::table('quote_product')->where('id', $product->id)->update(array('price' => $product->product['price_' . $product->style_id]));
+            if ($product->product['price_' . $product->style_id] != 0) {
+                DB::table('quote_product')->where('id', $product->id)->update(array('price' => $product->product['price_' . $product->style_id]));
+            }
         }
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
@@ -218,6 +220,9 @@ class QuoteController extends Controller
     {
 
         $quote = Quote::findOrFail($id);
+        if ($quote->staff_confirmed === true) {
+            return redirect(route('quotes.edit', ['id' => $quote->id]));
+        }
         $quote->customer_confirmed = false;
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
