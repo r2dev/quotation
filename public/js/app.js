@@ -14047,9 +14047,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1daeb17a", Component.options)
+    hotAPI.createRecord("data-v-2b982de0", Component.options)
   } else {
-    hotAPI.reload("data-v-1daeb17a", Component.options)
+    hotAPI.reload("data-v-2b982de0", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
@@ -67009,6 +67009,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         handleBlur: function handleBlur() {
             this.$emit('blur', this.trueValue);
         },
+        handleEnter: function handleEnter() {
+            this.$emit('enter');
+        },
         focus: function focus() {
             this.$refs.input.focus();
         }
@@ -103224,6 +103227,15 @@ var render = function() {
       domProps: { value: _vm.message },
       on: {
         blur: _vm.handleBlur,
+        keyup: function($event) {
+          if (
+            !("button" in $event) &&
+            _vm._k($event.keyCode, "enter", 13, $event.key)
+          ) {
+            return null
+          }
+          _vm.handleEnter($event)
+        },
         input: function($event) {
           if ($event.target.composing) {
             return
@@ -103245,7 +103257,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1daeb17a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-2b982de0", module.exports)
   }
 }
 
@@ -103268,7 +103280,7 @@ var __vue_template__ = __webpack_require__(597)
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-485eeb28"
+var __vue_scopeId__ = "data-v-60ced97f"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -103289,9 +103301,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-485eeb28", Component.options)
+    hotAPI.createRecord("data-v-60ced97f", Component.options)
   } else {
-    hotAPI.reload("data-v-485eeb28", Component.options)
+    hotAPI.reload("data-v-60ced97f", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
@@ -103312,13 +103324,13 @@ var content = __webpack_require__(592);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(594)("23256484", content, false);
+var update = __webpack_require__(594)("509f271b", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-485eeb28\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./ChangeableRow.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-485eeb28\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./ChangeableRow.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-60ced97f\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./ChangeableRow.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-60ced97f\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0&bustCache!./ChangeableRow.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -103336,7 +103348,7 @@ exports = module.exports = __webpack_require__(593)(undefined);
 
 
 // module
-exports.push([module.i, "\n.input-update[data-v-485eeb28] {\r\n    width: 6rem;\n}\r\n", ""]);
+exports.push([module.i, "\n.input-update[data-v-60ced97f] {\r\n    width: 6rem;\n}\r\n", ""]);
 
 // exports
 
@@ -104048,7 +104060,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-485eeb28", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-60ced97f", module.exports)
   }
 }
 
@@ -104088,9 +104100,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2768d452", Component.options)
+    hotAPI.createRecord("data-v-6f464925", Component.options)
   } else {
-    hotAPI.reload("data-v-2768d452", Component.options)
+    hotAPI.reload("data-v-6f464925", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
@@ -104166,22 +104178,98 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    created: function created() {
+        this.focusFlag = null;
+        this.passValue = [];
+    },
     data: function data() {
         return {
-            row: 5
+            row: 1,
+            style_select: ''
         };
+    },
+    updated: function updated() {
+        if (this.focusFlag) {
+            this.$refs[this.focusFlag][0].focus();
+            this.focusFlag = null;
+        }
+        if (this.passValue.length === 2) {
+            $(this.$refs['input_' + this.passValue[1] + '_0'][0]).val(this.passValue[0]);
+        }
     },
     components: {
         'SuperInput': __WEBPACK_IMPORTED_MODULE_0__SuperInput___default.a
     },
     methods: {
-        addRows: function addRows() {
-            this.row += 5;
+        handleEnter: function handleEnter(index, target) {
+            if (index === this.row - 1) {
+                this.row += 1;
+                console.log('focus that after render', index + 1, target);
+                this.focusFlag = 'input_' + (index + 1) + '_' + target;
+                if ($(this.$refs['input_' + index + '_0']).val()) {
+                    this.passValue = [$(this.$refs['input_' + index + '_0']).val(), index + 1];
+                }
+            } else {
+                //focus that
+                console.log('focus that', index + 1, target);
+                this.$refs['input_' + (index + 1) + '_' + target][0].focus();
+            }
+        },
+        addRows: function addRows(row) {
+            this.row += row;
         }
     },
+
     props: {
         products: {
             type: Array
@@ -104189,7 +104277,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         styles: {
             type: Array
         }
+    },
+    mounted: function mounted() {
+        $(window).keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
     }
+
 });
 
 /***/ }),
@@ -104208,12 +104305,28 @@ var render = function() {
         _vm._m(0),
         _vm._v(" "),
         _vm._l(_vm.row, function(n, index) {
-          return _c("tr", [
+          return _c("tr", { key: index }, [
             _c("td", [
               _c(
                 "select",
                 {
-                  attrs: { tabindex: n, name: "product[" + index + "][design]" }
+                  ref: "input_" + index + "_" + 0,
+                  refInFor: true,
+                  attrs: {
+                    tabindex: n + index * 5,
+                    name: "product[" + index + "][design]"
+                  },
+                  on: {
+                    keyup: function($event) {
+                      if (
+                        !("button" in $event) &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key)
+                      ) {
+                        return null
+                      }
+                      _vm.handleEnter(index, 0)
+                    }
+                  }
                 },
                 [
                   _c(
@@ -104223,13 +104336,17 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _vm._l(_vm.products, function(product) {
-                    return _c("option", { domProps: { value: product.id } }, [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(product.design) +
-                          "\n                    "
-                      )
-                    ])
+                    return _c(
+                      "option",
+                      { key: product.id, domProps: { value: product.id } },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(product.design) +
+                            "\n                    "
+                        )
+                      ]
+                    )
                   })
                 ],
                 2
@@ -104240,9 +104357,43 @@ var render = function() {
               _c(
                 "select",
                 {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.style_select,
+                      expression: "style_select"
+                    }
+                  ],
+                  ref: "input_" + index + "_" + 1,
+                  refInFor: true,
                   attrs: {
-                    tabindex: n + _vm.row,
+                    tabindex: n + index * 5 + 1,
                     name: "product[" + index + "][style]"
+                  },
+                  on: {
+                    keyup: function($event) {
+                      if (
+                        !("button" in $event) &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key)
+                      ) {
+                        return null
+                      }
+                      _vm.handleEnter(index, 1)
+                    },
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.style_select = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
                   }
                 },
                 [
@@ -104253,13 +104404,17 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _vm._l(_vm.styles, function(style, index) {
-                    return _c("option", { domProps: { value: index } }, [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(style) +
-                          "\n                    "
-                      )
-                    ])
+                    return _c(
+                      "option",
+                      { key: index, domProps: { value: index } },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(style) +
+                            "\n                    "
+                        )
+                      ]
+                    )
                   })
                 ],
                 2
@@ -104268,11 +104423,24 @@ var render = function() {
             _vm._v(" "),
             _c("td", [
               _c("input", {
+                ref: "input_" + index + "_" + 2,
+                refInFor: true,
                 attrs: {
-                  tabindex: n + 2 * _vm.row,
+                  tabindex: n + index * 5 + 2,
                   type: "number",
                   value: "1",
                   name: "product[" + index + "][quantity]"
+                },
+                on: {
+                  keyup: function($event) {
+                    if (
+                      !("button" in $event) &&
+                      _vm._k($event.keyCode, "enter", 13, $event.key)
+                    ) {
+                      return null
+                    }
+                    _vm.handleEnter(index, 2)
+                  }
                 }
               })
             ]),
@@ -104281,11 +104449,18 @@ var render = function() {
               "td",
               [
                 _c("SuperInput", {
+                  ref: "input_" + index + "_" + 3,
+                  refInFor: true,
                   attrs: {
                     value: "",
                     placeholder: "width",
-                    tabindex: n + 3 * _vm.row,
+                    tabindex: n + index * 5 + 3,
                     name: "product[" + index + "][width]"
+                  },
+                  on: {
+                    enter: function($event) {
+                      _vm.handleEnter(index, 3)
+                    }
                   }
                 })
               ],
@@ -104296,11 +104471,18 @@ var render = function() {
               "td",
               [
                 _c("SuperInput", {
+                  ref: "input_" + index + "_" + 4,
+                  refInFor: true,
                   attrs: {
                     value: "",
                     placeholder: "height",
-                    tabindex: n + 4 * _vm.row,
+                    tabindex: n + index * 5 + 4,
                     name: "product[" + index + "][height]"
+                  },
+                  on: {
+                    enter: function($event) {
+                      _vm.handleEnter(index, 4)
+                    }
                   }
                 })
               ],
@@ -104308,24 +104490,65 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("td", [
-              _c("input", {
-                attrs: {
-                  type: "number",
-                  value: "0",
-                  tabindex: n + 5 * _vm.row,
-                  name: "product[" + index + "][lite]"
-                }
-              })
+              index === _vm.row - 1
+                ? _c("input", {
+                    ref: "input_" + index + "_" + 5,
+                    refInFor: true,
+                    attrs: {
+                      type: "number",
+                      value: "0",
+                      tabindex: n + index * 5 + 5,
+                      name: "product[" + index + "][lite]"
+                    },
+                    on: {
+                      keyup: function($event) {
+                        if (
+                          !("button" in $event) &&
+                          _vm._k($event.keyCode, "enter", 13, $event.key)
+                        ) {
+                          return null
+                        }
+                        _vm.handleEnter(index, 5)
+                      },
+                      keydown: function($event) {
+                        if (
+                          !("button" in $event) &&
+                          _vm._k($event.keyCode, "tab", 9, $event.key)
+                        ) {
+                          return null
+                        }
+                        $event.preventDefault()
+                        _vm.handleEnter(index, 0)
+                      }
+                    }
+                  })
+                : _c("input", {
+                    ref: "input_" + index + "_" + 5,
+                    refInFor: true,
+                    attrs: {
+                      type: "number",
+                      value: "0",
+                      tabindex: n + index * 5 + 5,
+                      name: "product[" + index + "][lite]"
+                    },
+                    on: {
+                      keyup: function($event) {
+                        if (
+                          !("button" in $event) &&
+                          _vm._k($event.keyCode, "enter", 13, $event.key)
+                        ) {
+                          return null
+                        }
+                        _vm.handleEnter(index, 5)
+                      }
+                    }
+                  })
             ])
           ])
         })
       ],
       2
     ),
-    _vm._v(" "),
-    _c("button", { attrs: { type: "button" }, on: { click: _vm.addRows } }, [
-      _vm._v("+")
-    ]),
     _vm._v(" "),
     _c("input", { attrs: { type: "submit", value: "submit" } })
   ])
@@ -104355,7 +104578,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2768d452", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-6f464925", module.exports)
   }
 }
 
