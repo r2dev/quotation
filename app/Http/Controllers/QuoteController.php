@@ -152,18 +152,18 @@ class QuoteController extends Controller
                 ]);
                 if ($validator->passes()) {
                     array_push($attachResult, array(
-                       'product_id' =>  $product['design'],
-                       'quote_id'   =>  $id,
-                       'style_id'   =>  $product['style'],
-                       'quantity'   =>  $product['quantity'],
-                       'width'      =>  $product['width'],
-                       'height'     =>  $product['height'],
-                       'lite'       =>  $product['lite']
+                        'product_id' => $product['design'],
+                        'quote_id' => $id,
+                        'style_id' => $product['style'],
+                        'quantity' => $product['quantity'],
+                        'width' => $product['width'],
+                        'height' => $product['height'],
+                        'lite' => $product['lite']
                     ));
                 }
             }
         }
-        if (count($attachResult)!= 0) {
+        if (count($attachResult) != 0) {
             QuoteProduct::insert($attachResult);
         }
         return redirect(route('quotes.edit', ['id' => $quote->id]));
@@ -171,12 +171,15 @@ class QuoteController extends Controller
 
     public function update_price(Request $request, $id, $product_id, $style_id)
     {
-//        $quote = Quote::findOrFail($id);
+        $quote = Quote::findOrFail($id);
 //        $quote->products()->updateExistingPivot($pid, ['price' => $request->value]);
 //        $products = QuoteProduct::with('products')->where('quote_id', $id)->where('id', $pid)->get();
-        DB::table('quote_product')->where('quote_id', $id)->where('product_id', $product_id)->where('style_id', $style_id)->update(array('price' => $request->value));
+        if ($quote->customer_confirmed == true && $quote->staff_confirmed == false && Auth::user()->permission >= 3) {
+            DB::table('quote_product')->where('quote_id', $id)->where('product_id', $product_id)->where('style_id', $style_id)->update(array('price' => $request->value));
+        }
         return redirect(route('quotes.edit', ['id' => $id]));
     }
+
     public function remove_product_from_quote(Request $request, $id)
     {
         $quote = Quote::findOrFail($id);
@@ -208,7 +211,9 @@ class QuoteController extends Controller
 //        $products = $quote->products;
         foreach ($products as $product) {
 //            dd($product->style_id);
-            DB::table('quote_product')->where('id', $product->id)->update(array('price' => $product->product['price_' . $product->style_id]));
+            if ($product->product['price_' . $product->style_id] != 0) {
+                DB::table('quote_product')->where('id', $product->id)->update(array('price' => $product->product['price_' . $product->style_id]));
+            }
         }
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
@@ -218,6 +223,9 @@ class QuoteController extends Controller
     {
 
         $quote = Quote::findOrFail($id);
+        if ($quote->staff_confirmed === true) {
+            return redirect(route('quotes.edit', ['id' => $quote->id]));
+        }
         $quote->customer_confirmed = false;
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
