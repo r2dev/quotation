@@ -99,7 +99,7 @@
                 </td>
             </tr>
         </table>
-        <button class="btn btn-primary" type="button" @click="addRows">+</button>
+        <button class="btn btn-primary" type="button" @click="addRows(5)">+</button>
         <input class="btn btn-primary" type="submit" value="submit" />
     </div>
 </template>
