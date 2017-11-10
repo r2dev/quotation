@@ -20,6 +20,7 @@ Vue.component(
   "extendable-form-table",
   require("./components/ExtendableFormTable.vue")
 );
+Vue.component("advanced-select", require("./components/AdvancedSelect.vue"));
 
 const app = new Vue({
   el: "#app"

@@ -23,7 +23,7 @@
             </tr>
             <tr v-for="(n, index) in row" :key="index">
                 <td>
-                    <select
+                    <!-- <select
                         :tabindex="n + index * 5"
                         :name="'product[' + index + '][design]'"
                         @keyup.enter="handleEnter(index, 0)"
@@ -33,7 +33,14 @@
                         <option v-for="product in products" :value="product.id" :key="product.id">
                             {{product.design}}
                         </option>
-                    </select>
+                    </select> -->
+                    <AdvancedSelect
+                        :resource="products"
+                        @enter="handleEnter(index, 0)"
+                        :ref="'input_' + index + '_' + 0"
+                        :tabindex="n + index * 5"
+                        :name="'product[' + index + '][design]'"
+                    />
                 </td>
                 <td>
                     <select
@@ -105,6 +112,7 @@
 </template>
 <script>
 import SuperInput from './SuperInput'
+import AdvancedSelect from './AdvancedSelect'
 export default {
     created: function() {
         this.focusFlag = null
@@ -126,7 +134,8 @@ export default {
         }
     },
     components: {
-        'SuperInput': SuperInput
+        'SuperInput': SuperInput,
+        'AdvancedSelect': AdvancedSelect
     },
     methods: {
         handleEnter: function(index, target) {
@@ -158,12 +167,12 @@ export default {
         }
     },
     mounted: function() {
-        $(window).keydown(function(event) {
-            if (event.keyCode == 13) {
-                event.preventDefault();
-                return false;
-            }
-        })
+        // $(window).keydown(function(event) {
+        //     if (event.keyCode == 13) {
+        //         event.preventDefault();
+        //         return false;
+        //     }
+        // })
     }
 
 }
