@@ -112,26 +112,20 @@ class QuoteController extends Controller
         if ($quote->customer_confirmed == false) {
             $quote->customer_id = $request->company;
             $quote->save();
-            $request->session()->flash('status', 'success');
+            $request->session()->flash('status', 'update company success');
         }
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
-    public function add_product_to_quote(Request $request, $id)
+    public function change_style(Request $request, $id)
     {
-
         $quote = Quote::findOrFail($id);
         if ($quote->customer_confirmed == false) {
-            $quote->products()->attach($request->design, array(
-                'style_id' => $request->style,
-                'quantity' => $request->quantity,
-                'width' => (isset($request->width)) ? $request->width : 0,
-                'height' => (isset($request->height)) ? $request->height : 0,
-                'lite' => (isset($request->lite)) ? $request->lite : 0
-            ));
-            $request->session()->flash('status', 'success');
-        } else {
-            $request->session()->flash('status', 'unable to add');
+            //@todo update pivot table price and style (no test)
+            DB::table('quote_product')->where('quote_id', $id)->where('style_id','<>', $request->style_id)->update(array('price' => 0, 'style_id' => $request->style_id));
+            $quote->style_id = $request->style_id;
+            $quote->save();
+            $request->session()->flash('status', 'update material success');
         }
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
@@ -188,17 +182,6 @@ class QuoteController extends Controller
             $request->session()->flash('status', 'remove product from quotation');
         } else {
             $request->session()->flash('status', 'unable to remove, the quotation has been confirmed');
-        }
-        return redirect(route('quotes.edit', ['id' => $quote->id]));
-    }
-
-    public function change_profile_size(Request $request, $id)
-    {
-        $quote = Quote::findOrFail($id);
-        if ($quote->customer_confirmed == false && isset($request->size)) {
-            $quote->profile_size = $request->size;
-            $quote->save();
-            $request->session()->flash('status', 'update profile successful');
         }
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
@@ -309,5 +292,8 @@ class QuoteController extends Controller
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
+
+
+
 
 }

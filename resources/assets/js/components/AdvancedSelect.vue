@@ -1,7 +1,7 @@
 <template>
 <div ref="container">
-    <select ref="select" v-model="select" :name="name">
-        <option value="" selected hidden>Choose here</option>
+    <select ref="select" v-model="select" :name="name" :tabindex="tabindex">
+        <option value=""></option>
         <option v-for="(value, index) in resource" :key="index" :value="value.id">{{value.design}}</option>
     </select>
     </div>
@@ -11,28 +11,31 @@
 import '../vendor/select2.js';
 import '../vendor/select2.min.css';
 export default {
-    created: function() {
-        this.preventDropdown = false
-    },
     mounted: function() {
         const that = this
         const input = $(this.$refs.select)
         const container = $(this.$refs.container)
-        input.select2()
-        // console.log($('.select2-selection', $(this.$refs.container)))
+        input.select2({
+            placeholder: 'Choose A Product'
+        })
         $('.select2-selection', container).on('keypress', function(e) {
             if (e.keyCode === 13) {
-                that.$emit('enter')
+                that.$emit('enter', that.select)
                 e.preventDefault();
                 // return false;
             }
         });
+
+        $(input).on('select2:select', function(e) {
+            that.select = e.params.data.id
+        })
     },
     data: function() {
         return {
-            select: ''
+            select: this.value
         }
     },
+    
     beforeDestroy: function() {
         $(this.$refs.select).select2('destroy')
     },
@@ -56,10 +59,7 @@ export default {
     },
     methods: {
         focus: function() {
-            $('.select2-selection').focus();
-        },
-        handleEnter: function() {
-            this.$emit('enter')
+            $('.select2-selection', $(this.$refs.container)).focus();
         },
     }
 

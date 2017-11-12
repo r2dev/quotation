@@ -23,6 +23,22 @@
                             <input type="submit" value="change"/>
                         </form>
                     @endif
+                    @if ($quote->customer_confirmed == false || Auth::user()->permission >= 3)
+                        <form action="{{route('quotes.change_style', ['id' => $quote->id])}}" method="post">
+                            {{csrf_field()}}
+                            <select name="style_id">
+                                <option value="" selected disabled hidden>Choose here</option>
+                                @foreach ($styles as $index=>$style)
+                                    @if ($quote->style_id == $index)
+                                        <option value="{{$index}}" selected>{{$style}}</option>
+                                    @else
+                                        <option value="{{$index}}">{{$style}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            <input type="submit" value="change"/>
+                        </form>
+                        @endif
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -135,11 +151,12 @@
                     </div>
 
                     @if ($quote->customer_confirmed == false)
-                        <form action="{{route('quotes.add_products', ['id' => $quote->id])}}" method="post">
+                        <form action="{{route('quotes.add_products', ['id' => $quote->id])}}" method="post" id="extend-form">
                             {{csrf_field()}}
                             <extendable-form-table
                                     :products="{{$products}}"
                                     :styles='@json($styles)'
+                                    :set-material="{{$quote->style_id}}"
                             >
                             </extendable-form-table>
                         </form>
