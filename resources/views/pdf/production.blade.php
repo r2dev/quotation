@@ -396,17 +396,24 @@
             <td>X</td>
             <td colspan="2" class="border-right">{{$product->pivot->height}}</td>
             <td>{{$product->pivot->quantity}}</td>
+            <?php
+                if ($product->pivot->adjustment == "0") {
+                    $profile_size = $product->profile_size;
+                } else {
+                    $profile_size = $product->pivot->adjustment;
+                }
+            ?>
             @if ($product->frame === 0)
                 @if ($product->df === 0)
-                    <td colspan="2">{{calculate_width($product->pivot->width, $product->profile_size, 2, $product->rule)}}</td>
+                    <td colspan="2">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
                     <td colspan="2">X</td>
-                    <td colspan="2">{{calculate_width($product->pivot->height, $product->profile_size, 2, $product->rule)}}</td>
+                    <td colspan="2">{{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}</td>
                 @else
                     <td colspan="2">
-                        {{calculate_width($product->pivot->height, $product->profile_size, 2, $product->rule)}}
+                        {{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}
                     </td>
                     <td colspan="2">X</td>
-                    <td colspan="2">{{calculate_width($product->pivot->width, $product->profile_size, 2, $product->rule)}}</td>
+                    <td colspan="2">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
                 @endif
             @else
                 <td colspan="6"></td>

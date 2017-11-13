@@ -2,7 +2,7 @@
 <div ref="container">
     <select ref="select" v-model="select" :name="name" :tabindex="tabindex">
         <option value=""></option>
-        <option v-for="(value, index) in resource" :key="index" :value="value.id">{{value.design}}</option>
+        <option v-for="(value, index) in resource" :key="index" :value="value[valuePath]">{{value[displayPath]}}</option>
     </select>
     </div>
 </template>
@@ -28,6 +28,7 @@ export default {
 
         $(input).on('select2:select', function(e) {
             that.select = e.params.data.id
+            that.$emit('change', that.select)
         })
     },
     data: function() {
@@ -43,6 +44,12 @@ export default {
         resource: {
             type: Array,
             default: function() { return []; }
+        },
+        valuePath: {
+            type: String
+        },
+        displayPath: {
+            type: String
         },
         tabindex: {
             type: Number,

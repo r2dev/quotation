@@ -43,6 +43,8 @@ Route::post('/quotes/{id}/print_invoice', 'QuoteController@print_invoice')->name
 
 Route::post('/quotes/{id}/change_profile_size', 'QuoteController@change_profile_size')->name('quotes.change_profile_size');
 
+Route::post('/quotes/{id}/update_product_profile_size', 'QuoteController@update_product_profile_size')->name('quotes.update_product_profile_size');
+
 Route::post('/quotes/{id}/change_company', 'QuoteController@change_company')->name('quotes.change_company');
 
 Route::post('/quotes/{id}/change_style', 'QuoteController@change_style')->name('quotes.change_style');

@@ -10,20 +10,18 @@
                     @if ($quote->customer_confirmed == false && Auth::user()->permission >= 3)
                         <form action="{{route('quotes.change_company', ['id' => $quote->id])}}" method="post">
                             {{csrf_field()}}
-                            <select name="company">
-                                <option value="" selected disabled hidden>Choose here</option>
-                                @foreach ($customers as $customer)
-                                    @if ($quote->customer_id == $customer->id)
-                                        <option value="{{$customer->id}}" selected>{{$customer->name}} </option>
-                                    @else
-                                        <option value="{{$customer->id}}">{{$customer->name}} </option>
-                                    @endif
-                                @endforeach
-                            </select>
+                            <advanced-select
+                                    :resource="{{$customers}}"
+                                    :name="'company'"
+                                    :value="'{{$quote->customer_id}}'"
+                                    value-path="id"
+                                    display-path="name"
+                            ></advanced-select>
+
                             <input type="submit" value="change"/>
                         </form>
                     @endif
-                    @if ($quote->customer_confirmed == false || Auth::user()->permission >= 3)
+                    @if ($quote->customer_confirmed == false)
                         <form action="{{route('quotes.change_style', ['id' => $quote->id])}}" method="post">
                             {{csrf_field()}}
                             <select name="style_id">
@@ -46,13 +44,13 @@
                                 <th>name</th>
                                 <th>quantity</th>
                                 <th>price</th>
-                                <th>style</th>
+                                <th>Material</th>
                                 <th>width</th>
                                 <th>height</th>
                                 <th>lite</th>
                                 <th>area</th>
                                 <th>amount</th>
-                                @if ($quote->customer_confirmed == false)
+                                @if ($quote->customer_confirmed == false || Auth::user()->permission >= 3)
                                     <th>action</th>
                                 @endif
                             </tr>
@@ -120,19 +118,28 @@
                                             @endif
                                         @endif
                                     </td>
-                                    @if ($quote->customer_confirmed == false)
+
                                         <td>
-
-                                            <form action="{{route('quotes.remove_product_from_quote', ['id' => $quote->id])}}"
-                                                  method="post">
-                                                {{csrf_field()}}
-                                                {{method_field('DELETE')}}
-                                                <input type="submit" value="remove"/>
-                                                <input type="hidden" value="{{$product->pivot->id}}" name="pq_id">
-                                            </form>
-
+                                            @if ($quote->customer_confirmed == false)
+                                                <form action="{{route('quotes.remove_product_from_quote', ['id' => $quote->id])}}"
+                                                      method="post">
+                                                    {{csrf_field()}}
+                                                    {{method_field('DELETE')}}
+                                                    <input type="submit" value="remove"/>
+                                                    <input type="hidden" value="{{$product->pivot->id}}" name="pq_id">
+                                                </form>
+                                            @endif
+                                            @if (Auth::user()->permission >= 3 && $quote->customer_confirmed == true)
+                                                <form action="{{route('quotes.update_product_profile_size', ['id' => $quote->id]) }}" method="post">
+                                                    {{csrf_field()}}
+                                                    <input type="hidden" value="{{$product->pivot->id}}" name="pq_id">
+                                                    <super-input :value="'{{$product->pivot->adjustment}}'" :name="'adjustment'"></super-input>
+                                                    <input type="submit" value="update" />
+                                                </form>
+                                                @endif
                                         </td>
-                                    @endif
+
+
                                 </tr>
                                 @if (!$undefined)
                                     <?php $sum += $amount ?>

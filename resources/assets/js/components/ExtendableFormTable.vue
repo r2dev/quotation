@@ -41,6 +41,8 @@
                         :tabindex="n + index * 5"
                         :name="'product[' + index + '][design]'"
                         :value="passValue"
+                        value-path="id"
+                        display-path="design"
                     />
                     <input type="hidden" :name="'product[' + index + '][style]'" :value="setMaterial"/>
                 </td>

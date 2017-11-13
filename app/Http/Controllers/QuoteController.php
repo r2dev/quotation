@@ -165,12 +165,24 @@ class QuoteController extends Controller
 
     public function update_price(Request $request, $id, $product_id, $style_id)
     {
+//        $request->validate([
+//            'value' => 'required|numeric',
+//
+//        ]);
         $quote = Quote::findOrFail($id);
 //        $quote->products()->updateExistingPivot($pid, ['price' => $request->value]);
 //        $products = QuoteProduct::with('products')->where('quote_id', $id)->where('id', $pid)->get();
         if ($quote->customer_confirmed == true && $quote->staff_confirmed == false && Auth::user()->permission >= 3) {
             DB::table('quote_product')->where('quote_id', $id)->where('product_id', $product_id)->where('style_id', $style_id)->update(array('price' => $request->value));
         }
+        return redirect(route('quotes.edit', ['id' => $id]));
+    }
+
+    public function update_product_profile_size(Request $request, $id)
+    {
+        //only permission >= 3
+
+        DB::table('quote_product')->where('id', $request->pq_id)->update(array('adjustment' => $request->adjustment));
         return redirect(route('quotes.edit', ['id' => $id]));
     }
 
