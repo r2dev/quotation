@@ -1,6 +1,6 @@
 <template>
     <span>
-        <input type="text" v-model="message" :placeholder="placeholder" :tabindex="tabindex" @blur="handleBlur" @keyup.enter="handleEnter" ref="input">
+        <input type="text" v-model="message" :placeholder="placeholder" :tabindex="tabindex" @blur="handleBlur" @keydown.enter.prevent="handleEnter" ref="input" class="form-control">
         <input type="hidden" :value="trueValue" :name="name">
     </span>
 </template>

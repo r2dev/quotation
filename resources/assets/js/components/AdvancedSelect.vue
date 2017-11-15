@@ -1,22 +1,24 @@
 <template>
-<div ref="container">
+<span ref="container">
     <select ref="select" v-model="select" :name="name" :tabindex="tabindex">
         <option value=""></option>
         <option v-for="(value, index) in resource" :key="index" :value="value[valuePath]">{{value[displayPath]}}</option>
     </select>
-    </div>
+    </span>
 </template>
 
 <script>
 import '../vendor/select2.js';
 import '../vendor/select2.min.css';
+import '../vendor/select2-bootstrap.min.css';
 export default {
     mounted: function() {
         const that = this
         const input = $(this.$refs.select)
         const container = $(this.$refs.container)
         input.select2({
-            placeholder: 'Choose A Product'
+            placeholder: this.placeholder,
+            theme: 'bootstrap'
         })
         $('.select2-selection', container).on('keypress', function(e) {
             if (e.keyCode === 13) {
@@ -60,6 +62,10 @@ export default {
             default: ''
         },
         name: {
+            type: String,
+            default: ''
+        },
+        placeholder: {
             type: String,
             default: ''
         }

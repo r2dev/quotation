@@ -8,7 +8,9 @@
             <div class="container-fluid">
                 <div class="row">
                     @if ($quote->customer_confirmed == false && Auth::user()->permission >= 3)
-                        <form action="{{route('quotes.change_company', ['id' => $quote->id])}}" method="post">
+                        <form action="{{route('quotes.change_company', ['id' => $quote->id])}}" method="post" class="form-inline">
+                            <div class="form-group">
+                                <label>Customer</label>
                             {{csrf_field()}}
                             <advanced-select
                                     :resource="{{$customers}}"
@@ -16,15 +18,19 @@
                                     :value="'{{$quote->customer_id}}'"
                                     value-path="id"
                                     display-path="name"
+                                    :placeholder="'choose a customer'"
                             ></advanced-select>
 
-                            <input type="submit" value="change"/>
+                            <input type="submit" value="change" class="btn btn-default"/>
+                            </div>
                         </form>
                     @endif
                     @if ($quote->customer_confirmed == false)
-                        <form action="{{route('quotes.change_style', ['id' => $quote->id])}}" method="post">
+                        <form action="{{route('quotes.change_style', ['id' => $quote->id])}}" method="post" class="form-inline">
+                            <div class="form-group">
+                                <label for="material_select">Material</label>
                             {{csrf_field()}}
-                            <select name="style_id">
+                            <select name="style_id" class="form-control" id="material_select">
                                 <option value="" selected disabled hidden>Choose here</option>
                                 @foreach ($styles as $index=>$style)
                                     @if ($quote->style_id == $index)
@@ -34,11 +40,12 @@
                                     @endif
                                 @endforeach
                             </select>
-                            <input type="submit" value="change"/>
+                            </div>
+                            <input type="submit" value="change" class="btn btn-default"/>
                         </form>
                         @endif
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table table-bordered">
                             <thead>
                             <tr>
                                 <th>name</th>
@@ -64,7 +71,7 @@
                                     <td>{{$product->pivot->quantity}}</td>
                                     @if ($quote->customer_confirmed == true)
                                         @if ($product->pivot->price != 0)
-                                            <td>{{number_format($product->pivot->price, 2)}}</td>
+                                            <td>${{number_format($product->pivot->price, 2)}}</td>
                                         @else
                                             <?php $undefined = true ?>
                                             @if (Auth::user()->permission >= 3)
@@ -109,10 +116,10 @@
                                         @else
                                             @if ($product['price_'. $product->pivot->style_id] != 0)
                                                 <?php $amount = ($unit_area * $product['price_' . $product->pivot->style_id] + $product->pivot->lite * 8) * $product->pivot->quantity; ?>
-                                                {{number_format($amount, 2)}}
+                                                ${{number_format($amount, 2)}}
                                             @elseif ($product->pivot->price != 0)
                                                 <?php $amount = ($unit_area * $product->pivot->price + $product->pivot->lite * 8) * $product->pivot->quantity; ?>
-                                                {{number_format($amount, 2)}}
+                                                ${{number_format($amount, 2)}}
                                             @else
                                                 undefined
                                             @endif
@@ -125,7 +132,7 @@
                                                       method="post">
                                                     {{csrf_field()}}
                                                     {{method_field('DELETE')}}
-                                                    <input type="submit" value="remove"/>
+                                                    <input type="submit" value="remove" class="btn btn-danger"/>
                                                     <input type="hidden" value="{{$product->pivot->id}}" name="pq_id">
                                                 </form>
                                             @endif
@@ -146,9 +153,9 @@
                                 @endif
                             @endforeach
                             <tr>
-                                <td colspan="8"></td>
+                                <th colspan="8">Total</th>
                                 @if (!$undefined)
-                                    <td colspan="2">{{number_format($sum, 2)}}</td>
+                                    <td colspan="2">${{number_format($sum, 2)}}</td>
                                 @else
                                     <td></td>
                                 @endif
@@ -160,16 +167,17 @@
                     @if ($quote->customer_confirmed == false)
                         <form action="{{route('quotes.add_products', ['id' => $quote->id])}}" method="post" id="extend-form">
                             {{csrf_field()}}
+                            <div class="table-responsive">
                             <extendable-form-table
                                     :products="{{$products}}"
                                     :styles='@json($styles)'
                                     :set-material="{{$quote->style_id}}"
                             >
                             </extendable-form-table>
+                            </div>
                         </form>
                     @endif
-
-                    @if (!$undefined)
+                    @if (!$undefined && (Auth::user()->permission >=3 && !is_null($quote->customer_id) || (Auth::user()->permission < 3)))
                         <form action="{{route('quotes.print_quotation', ['id' => $quote->id])}}" method="POST">
                             {{csrf_field()}}
                             <input type="submit" value="print quotation" class="btn btn-primary"/>

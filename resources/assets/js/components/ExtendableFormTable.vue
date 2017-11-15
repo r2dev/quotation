@@ -1,6 +1,7 @@
 <template>
     <div class="table-responsive">
-        <table class="table">
+        <table class="table table-bordered">
+            <tbody>
             <tr>
                 <th>
                     Design
@@ -43,6 +44,7 @@
                         :value="passValue"
                         value-path="id"
                         display-path="design"
+                        :placeholder="'choose a product'"
                     />
                     <input type="hidden" :name="'product[' + index + '][style]'" :value="setMaterial"/>
                 </td>
@@ -68,6 +70,7 @@
                         :name="'product[' + index + '][quantity]'"
                         :ref="'input_' + index + '_' + 1"
                         @keydown.enter.prevent="handleEnter(index, 1)"
+                        class="form-control"
                     >
                 </td>
                 <td>
@@ -99,6 +102,7 @@
                         :name="'product[' + index + '][lite]'" :ref="'input_' + index + '_' + 4"
                         @keydown.enter.prevent="handleEnter(index, 4)"
                         @keydown.tab.prevent="handleEnter(index, 0)"
+                        class="form-control"
                     >    
                     <input
                         v-else
@@ -106,10 +110,12 @@
                         value="0"
                         :tabindex="n + index * 5 + 4"
                         :name="'product[' + index + '][lite]'" :ref="'input_' + index + '_' + 4"
-                        @keydown.enter="handleEnter(index, 4)"
+                        @keydown.enter.prevent="handleEnter(index, 4)"
+                        class="form-control"
                     >
                 </td>
             </tr>
+            </tbody>
         </table>
         <button class="btn btn-primary" type="button" @click="addRows(5)">+</button>
         <input class="btn btn-primary" type="submit" value="submit" />
@@ -173,12 +179,12 @@ export default {
         }
     },
     mounted: function() {
-        $("window").keydown(function(event) {
-            if (event.keyCode == 13) {
-                event.preventDefault();
-                return false;
-            }
-        })
+        // $("window").keydown(function(event) {
+        //     if (event.keyCode == 13) {
+        //         event.preventDefault();
+        //         return false;
+        //     }
+        // })
     }
 
 }
