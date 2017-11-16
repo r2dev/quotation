@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('home');
 });
 
 Auth::routes();
@@ -23,7 +23,16 @@ Route::resource('products', 'ProductController');
 
 Route::resource('quotes', 'QuoteController');
 
-Route::resource('customers', 'CustomerController');
+/**
+ * customer
+ * create a account under specific customer
+ */
+
+Route::resource('customers', 'CustomerController')->middleware('can:create,App\Customer');
+
+Route::post('/customers/{id}/users', 'CustomerController@create_user')->name('customers.add_user')->middleware('can:create,App\Customer');
+
+
 
 Route::post('/quotes/{id}/product', 'QuoteController@add_products_to_quote')->name('quotes.add_products');
 
@@ -51,7 +60,7 @@ Route::post('/quotes/{id}/change_style', 'QuoteController@change_style')->name('
 
 Route::post('/quotes/{id}/price/{product_id}/{style_id}', 'QuoteController@update_price')->name('quotes.update_price');
 
-Route::post('/customers/{id}/users', 'CustomerController@create_user')->name('customers.add_user');
+
 
 
 Route::get('/styles', 'QuoteController@test')->name('styles.store');

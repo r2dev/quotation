@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Providers;
-
+use App\Customer;
+use App\Policies\CustomerPolicy;
 use App\Quote;
 use App\Policies\QuotePolicy;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
@@ -15,7 +16,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Quote::class => QuotePolicy::class
+        Quote::class => QuotePolicy::class,
+        Customer::class => CustomerPolicy::class
     ];
 
     /**
