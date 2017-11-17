@@ -29,6 +29,7 @@ class CreateQuotesTable extends Migration
             $table->integer('customer_id')->unsigned()->nullable();
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->timestamps();
+            $table->timestamp('confirmed_on')->nullable();
         });
     }
 

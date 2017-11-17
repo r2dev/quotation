@@ -71,6 +71,7 @@
                         :ref="'input_' + index + '_' + 1"
                         @keydown.enter.prevent="handleEnter(index, 1)"
                         class="form-control"
+                        min="1"
                     >
                 </td>
                 <td>

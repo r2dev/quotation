@@ -33,7 +33,10 @@ class QuoteController extends Controller
     public function index()
     {
         if (Auth::user()->permission >= 3) {
-            $quotes = Quote::where('customer_confirmed', true)->orWhere('user_id', Auth::user()->id)->paginate(10);
+            $quotes = Quote::where([
+                ['customer_confirmed', true],
+                ['user_id', Auth::user()->id]
+            ])->paginate(10);
         } else {
             $quotes = Auth::user()->quotes()->paginate(10);
         }
