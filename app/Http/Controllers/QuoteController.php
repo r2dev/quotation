@@ -6,6 +6,7 @@ use App\Customer;
 use App\Product;
 use App\Quote;
 use App\QuoteProduct;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,10 +34,9 @@ class QuoteController extends Controller
     public function index()
     {
         if (Auth::user()->permission >= 3) {
-            $quotes = Quote::where([
-                ['customer_confirmed', true],
-                ['user_id', Auth::user()->id]
-            ])->paginate(10);
+            $quotes = Quote::where('customer_confirmed', true)
+                ->orWhere('user_id', Auth::user()->id)
+                ->paginate(10);
         } else {
             $quotes = Auth::user()->quotes()->paginate(10);
         }
@@ -205,6 +205,7 @@ class QuoteController extends Controller
     {
         $quote = Quote::findOrFail($id);
         $quote->customer_confirmed = true;
+        $quote->confirmed_on = Carbon::now();
         $products = QuoteProduct::with('product')->where('quote_id', $id)->get();
 //        $products = $quote->products;
         foreach ($products as $product) {
@@ -286,7 +287,7 @@ class QuoteController extends Controller
         }
         $sum = round($sum, 2);
         $pdf = PDF::loadView('pdf.invoice', compact('quote', 'sum', 'products', '$sum_sqf'));
-        return $pdf->download('invoice_' . $id . '.pdf');
+        return $pdf->stream('invoice_' . $id . '.pdf');
     }
 
     public function print_production($id)
@@ -302,8 +303,10 @@ class QuoteController extends Controller
 
     public function production_confirm($id)
     {
+        //production confirm only when customer has confirmed and the price are all set
         $quote = Quote::find($id);
         $quote->staff_confirmed = true;
+
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }

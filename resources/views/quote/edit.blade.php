@@ -139,9 +139,12 @@
                                             @if (Auth::user()->permission >= 3 && $quote->customer_confirmed == true)
                                                 <form action="{{route('quotes.update_product_profile_size', ['id' => $quote->id]) }}" method="post">
                                                     {{csrf_field()}}
-                                                    <input type="hidden" value="{{$product->pivot->id}}" name="pq_id">
-                                                    <super-input :value="'{{$product->pivot->adjustment}}'" :name="'adjustment'"></super-input>
-                                                    <input type="submit" value="update" />
+                                                    <label>
+                                                        profile size
+                                                        <input type="hidden" value="{{$product->pivot->id}}" name="pq_id">
+                                                        <super-input :value="'{{$product->pivot->adjustment}}'" :name="'adjustment'"></super-input>
+                                                    </label>
+                                                    <input type="submit" value="update" class="btn btn-default"/>
                                                 </form>
                                                 @endif
                                         </td>
@@ -198,7 +201,7 @@
                         </form>
                     @endif
 
-                    @if ($quote->staff_confirmed == false && $quote->customer_confirmed == true && Auth::user()->permission >= 3)
+                    @if (!$undefined && $quote->staff_confirmed == false && $quote->customer_confirmed == true && Auth::user()->permission >= 3)
                         <form action="{{route('quotes.production_confirm', ['id' => $quote->id])}}" method="post">
                             {{csrf_field()}}
                             <input type="submit" value="production confirm" class="btn btn-success"/>

@@ -396,13 +396,24 @@
                 {{ $product->total_area}}
             </td>
             <td>
-                {{number_format($product->unit_price, 2)}}
+                ${{number_format($product->unit_price, 2)}}
             </td>
             <td>
-                {{number_format($product->amount, 2)}}
+                ${{number_format($product->amount, 2)}}
             </td>
         </tr>
     @endforeach
+    <tr>
+        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
+
+    </tr>
     </tbody>
     <tfoot>
     <tr class="no-borders">
@@ -431,7 +442,7 @@
                 <tr>
                     <td >Other Charges</td>
                     <th class="description"></th>
-                    <td class="price"><span class="totals-price"><span class="amount">$ {{$sum}}</span></span></td>
+                    <td class="price"><span class="totals-price"><span class="amount">$0</span></span></td>
                 </tr>
                 <tr>
                     <td >Subtotal</td>
