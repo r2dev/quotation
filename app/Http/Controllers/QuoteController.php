@@ -40,7 +40,7 @@ class QuoteController extends Controller
         } else {
             $quotes = Auth::user()->quotes()->paginate(10);
         }
-        return view('Quote.index', compact('quotes'));
+        return view('quote.index', compact('quotes'));
     }
 
     /**
