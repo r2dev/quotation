@@ -220,7 +220,9 @@
             border-bottom: 1px solid #ccc;
         }
 
-        table.totals th.description,
+        table.totals th.description {
+            width: 40%
+        }
         table.totals td.price {
             width: 50%;
         }
@@ -389,7 +391,11 @@
         <tr>
             <td>{{$product->pivot->quantity}}</td>
             <td>{{$product->design}}</td>
-            <td>{{$product->pivot->lite}}</td>
+            <td>
+                @if($product->pivot->lite != 0)
+                    {{$product->pivot->lite}}
+                @endif
+            </td>
             <td>{{$product->pivot->width}}</td>
             <td>{{$product->pivot->height}}</td>
             <td>
@@ -403,6 +409,7 @@
             </td>
         </tr>
     @endforeach
+    @if ($quote->products->count() < 14)
     <tr>
         <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
         <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
@@ -414,6 +421,7 @@
         <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
 
     </tr>
+    @endif
     </tbody>
     <tfoot>
     <tr class="no-borders">
@@ -431,7 +439,6 @@
                     <td>Discount</td>
                     @if (isset($quote->user->customer))
                         <?php $discount = $quote->user->customer->discount ?>
-
                     @else
                         <?php $discount = $quote->user->discount ?>
                     @endif
