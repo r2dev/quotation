@@ -293,11 +293,16 @@ class QuoteController extends Controller
     public function print_production($id)
     {
         $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
-        $products = $quote->products->sortByDesc(function ($product, $key) {
-            return parse_number($product['pivot']['height']);
+        $groups = array();
+        $temp_groups = $quote->products->groupBy(function($product, $key) {
+            return $product['pivot']['adjustment'];
         });
-//        usort($products, array($this, 'cmp'));
-        $pdf = PDF::loadView('pdf.production', compact('quote', 'products'));
+        foreach ($temp_groups as $key=>$group) {
+            $groups[$key] = $group->sortByDesc(function ($product, $key) {
+                return parse_number($product['pivot']['height']);
+            });
+        }
+        $pdf = PDF::loadView('pdf.production', compact('quote', 'groups'));
         return $pdf->stream('product_' . $id . '.pdf');
     }
 

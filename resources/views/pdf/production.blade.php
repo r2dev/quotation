@@ -329,14 +329,14 @@
         <td colspan="3" class="slim-border align-center">
             <h3>STYLE</h3>
             @isset($quote->style)
-            {{$quote->style}}
+                {{$quote->style}}
             @endif
         </td>
         <td colspan="4" class="slim-border align-center">SPECIES</td>
         <td colspan="3" class="slim-border align-center">
             <h3>PROFILE TYPE</h3>
             @isset($quote->style)
-            {{$quote->style}}
+                {{$quote->style}}
             @endif
         </td>
     </tr>
@@ -388,37 +388,43 @@
         <td colspan="2">PANEL</td>
         <td></td>
     </tr>
-    @foreach( $products as $product)
+    @foreach( $groups as $key => $group)
         <tr>
-            <td>{{$product->pivot->quantity}}</td>
-            <td colspan="3">{{$product->design}}</td>
-            <td colspan="2">{{$product->pivot->width}}</td>
-            <td>X</td>
-            <td colspan="2" class="border-right">{{$product->pivot->height}}</td>
-            <td>{{$product->pivot->quantity}}</td>
-            <?php
+            <td colspan="16">{{$key}}</td>
+        </tr>
+
+        @foreach($group as $product)
+            <tr>
+                <td>{{$product->pivot->quantity}}</td>
+                <td colspan="3">{{$product->design}}</td>
+                <td colspan="2">{{$product->pivot->width}}</td>
+                <td>X</td>
+                <td colspan="2" class="border-right">{{$product->pivot->height}}</td>
+                <td>{{$product->pivot->quantity}}</td>
+                <?php
                 if ($product->pivot->adjustment == "0") {
                     $profile_size = $product->profile_size;
                 } else {
                     $profile_size = $product->pivot->adjustment;
                 }
-            ?>
-            @if ($product->frame === 0)
-                @if ($product->df === 0)
-                    <td colspan="2">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
-                    <td colspan="2">X</td>
-                    <td colspan="2">{{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}</td>
+                ?>
+                @if ($product->frame === 0)
+                    @if ($product->df === 0)
+                        <td colspan="2">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
+                        <td colspan="2">X</td>
+                        <td colspan="2">{{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}</td>
+                    @else
+                        <td colspan="2">
+                            {{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}
+                        </td>
+                        <td colspan="2">X</td>
+                        <td colspan="2">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
+                    @endif
                 @else
-                    <td colspan="2">
-                        {{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}
-                    </td>
-                    <td colspan="2">X</td>
-                    <td colspan="2">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
+                    <td colspan="6"></td>
                 @endif
-            @else
-                <td colspan="6"></td>
-            @endif
-        </tr>
+            </tr>
+        @endforeach
     @endforeach
     <tr>
         <td colspan="9" style="height: <?php echo (20 - $quote->products->count()) * 30 ?>px" class="border-right"></td>
