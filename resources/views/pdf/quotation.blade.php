@@ -340,7 +340,7 @@
                 </tr>
                 <tr class="order-style">
                     <th>Door Style:</th>
-                    <td>Paypal</td>
+                    <td>{{ $quote->door_style }}</td>
                 </tr>
                 <tr>
                     <th>Material & Grade:</th>
@@ -352,13 +352,13 @@
                 </tr>
                 <tr>
                     <th>Lip:</th>
-                    <td>None</td>
+                    <td>{{$quote->lip}}</td>
                 </tr>
                 <tr>
                     <th>
                         Moulding:
                     </th>
-                    <td>None</td>
+                    <td>{{$quote->moulding}}</td>
                 </tr>
                 <tr>
                     <th>Total Sqf:</th>
@@ -366,7 +366,7 @@
                 </tr>
                 <tr>
                     <th>TERMS:</th>
-                    <td>COD</td>
+                    <td>{{$quote->terms}}</td>
                 </tr>
             </table>
         </td>

@@ -42,8 +42,10 @@ Route::middleware('can:create,App\Customer')->group(function() {
     Route::post('/quotes/{id}/update_product_profile_size', 'QuoteController@update_product_profile_size')->name('quotes.update_product_profile_size');
     Route::post('/quotes/{id}/change_company', 'QuoteController@change_company')->name('quotes.change_company');
     Route::post('/quotes/{id}/price/{product_id}/{style_id}', 'QuoteController@update_price')->name('quotes.update_price');
+
 });
 
+Route::post('/quotes/{id}/update_value', 'QuoteController@update_value')->name('quotes.update_value');
 
 Route::post('/quotes/{id}/product', 'QuoteController@add_products_to_quote')->name('quotes.add_products');
 

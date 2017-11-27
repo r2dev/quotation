@@ -44,6 +44,50 @@
                             <input type="submit" value="change" class="btn btn-default"/>
                         </form>
                         @endif
+                        @if(Auth::user()->permission >= 3)
+                            <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post" class="form-inline">
+                                {{csrf_field()}}
+                                <label>Terms
+                                <input type="hidden" name="name" value="terms" />
+                                <input type="text" value="{{$quote->terms}}" name="value" />
+                                <input type="submit" value="update" />
+                                </label>
+                            </form>
+                            <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post" class="form-inline">
+
+                                {{csrf_field()}}
+                                <label>Door Style
+                                <input type="hidden" name="name" value="door_style" />
+                                <input type="text" value="{{$quote->door_style}}" name="value" />
+                                <input type="submit" value="update" />
+                                </label>
+                            </form>
+                        @endif
+                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post" class="form-inline">
+                            {{csrf_field()}}
+                            <label>PO#
+                            <input type="hidden" name="name" value="po" />
+                            <input type="text" value="{{$quote->po}}" name="value" />
+                            <input type="submit" value="update" />
+                            </label>
+                        </form>
+                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post" class="form-inline">
+                            {{csrf_field()}}
+                            <label> moulding
+                            <input type="hidden" name="name" value="moulding" />
+                            <input type="text" value="{{$quote->moulding}}" name="value" />
+                            <input type="submit" value="update" />
+                            </label>
+                        </form>
+                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post" class="form-inline">
+                            {{csrf_field()}}
+                            <label>
+                                panel
+                            <input type="hidden" name="name" value="panel" />
+                            <input type="text" value="{{$quote->panel}}" name="value" />
+                            <input type="submit" value="update" />
+                            </label>
+                        </form>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>

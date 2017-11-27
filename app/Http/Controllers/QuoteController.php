@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use PDF;
 
 
@@ -312,6 +313,17 @@ class QuoteController extends Controller
         $quote = Quote::find($id);
         $quote->staff_confirmed = true;
 
+        $quote->save();
+        return redirect(route('quotes.edit', ['id' => $quote->id]));
+    }
+
+    public function update_value(Request $request, $id) {
+
+        $quote = Quote::findOrFail($id);
+        $request->validate([
+           'name' => ['required', Rule::in(['po', 'terms', 'panel', 'door_style', 'lip', 'moulding'])]
+        ]);
+        $quote[$request->name] = $request->value;
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
