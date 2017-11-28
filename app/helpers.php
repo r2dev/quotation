@@ -5,6 +5,12 @@ function parse_number($str)
     if (preg_match('#(\d+)\s+(\d+)/(\d+)#', $str, $m)) {
         return $m[1] + $m[2] / $m[3];
     }
+    if (preg_match('#(\d+)/(d+)#', $str, $m)) {
+        return $m[1] / $m[2];
+    }
+    if (preg_match('#(\d+)#', $str, $m)) {
+        return $m[1];
+    }
     return 0;
 }
 

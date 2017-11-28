@@ -261,7 +261,8 @@ class QuoteController extends Controller
             $sum_sqf += $unit_area * $product->pivot->quantity;
         }
         $sum = round($sum, 2);
-        $pdf = PDF::loadView('pdf.quotation', compact('quote', 'sum', 'products', '$sum_sqf'));
+        $styles = $this->styles;
+        $pdf = PDF::loadView('pdf.quotation', compact('quote', 'sum', 'products', '$sum_sqf', 'styles'));
         return $pdf->stream('quotation_' . $id . '.pdf');
     }
 
@@ -300,10 +301,14 @@ class QuoteController extends Controller
         });
         foreach ($temp_groups as $key=>$group) {
             $groups[$key] = $group->sortByDesc(function ($product, $key) {
+                if ($product->frame === 1) {
+                    return 10000;
+                }
                 return parse_number($product['pivot']['height']);
             });
         }
-        $pdf = PDF::loadView('pdf.production', compact('quote', 'groups'));
+        $styles = $this->styles;
+        $pdf = PDF::loadView('pdf.production', compact('quote', 'groups', 'styles'));
         return $pdf->stream('product_' . $id . '.pdf');
     }
 

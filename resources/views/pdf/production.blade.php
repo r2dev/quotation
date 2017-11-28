@@ -84,7 +84,13 @@
             width: 100%;
             border: 0;
         }
+        tr.production-row {
+            font-size: 14px;
 
+        }
+        tr.production-row td {
+            text-align: center;
+        }
         tr.no-borders,
         td.no-borders {
             border: 0 !important;
@@ -124,6 +130,9 @@
 
         td.order-data {
             width: 40%;
+        }
+        .text-center {
+            text-align: center;
         }
 
         .packing-slip .billing-address {
@@ -320,24 +329,57 @@
     </tr>
     <tr>
         <td colspan="6" class="slim-border">
-            @if(null !== $quote->user->customer)
-                <h3>{{ $quote->user->customer->name }}</h3>
-                {{ $quote->user->customer->address }}
-                {{ $quote->user->customer->telephone }}
+            @if (isset($quote->user->customer))
+                @if(null !== $quote->user->customer->name)
+                    <h3>{{ $quote->user->customer->name }}</h3><br/>
+                @endif
+                @if (null !== $quote->user->customer->telephone)
+                    {{ $quote->user->customer->telephone }}<br/>
+                @endif
+                @if(null !== $quote->user->customer->fax)
+                    {{ $quote->user->customer->fax }}<br/>
+                @endif
+                @if ( null !== $quote->user->customer->email)
+                    {{ $quote->user->customer->email }}<br/>
+                @endif
+                @if ( null !== $quote->po)
+                    PO# {{ $quote->po }}
+                @endif
 
-            @endif</td>
-        <td colspan="3" class="slim-border align-center">
-            <h3>STYLE</h3>
-            @isset($quote->style)
-                {{$quote->style}}
+            @else
+                @if(null !== $quote->customer->name)
+                    {{ $quote->customer->name }}<br/>
+                @endif
+                @if (null !== $quote->customer->telephone)
+                    {{ $quote->customer->telephone }}<br/>
+                @endif
+                @if(null !== $quote->customer->fax)
+                    {{ $quote->customer->fax }}<br/>
+                @endif
+                @if ( null !== $quote->customer->email)
+                    {{ $quote->customer->email }}<br/>
+                @endif
+                @if ( null !== $quote->po)
+                    PO# {{ $quote->po }}
+                @endif
             @endif
+
+
+
         </td>
-        <td colspan="4" class="slim-border align-center">SPECIES</td>
+
         <td colspan="3" class="slim-border align-center">
-            <h3>PROFILE TYPE</h3>
-            @isset($quote->style)
-                {{$quote->style}}
-            @endif
+            <h3>STYLE</h3><br>
+            {{$quote->door_style}}
+        </td>
+        <td colspan="4" class="slim-border align-center">
+            <h3>SPECIES</h3><br>
+            {{$styles[$quote->style_id]}}
+
+        </td>
+        <td colspan="3" class="slim-border align-center">
+            <h3>PROFILE TYPE</h3><br>
+            {{$styles[$quote->style_id]}}
         </td>
     </tr>
     <tr>
@@ -346,8 +388,8 @@
             {{$quote->id}}
         </td>
         <td rowspan="2" colspan="3" class="slim-border align-center">
-            <h3>Panel</h3>
-            {{$quote->pannel}}
+            <h3>Panel</h3><br>
+            {{$quote->panel}}
         </td>
         <td rowspan="2" colspan="3" class="slim-border align-center">
             <h3>LIP </h3><br>
@@ -371,36 +413,43 @@
     </tr>
     <tr>
         <td colspan="1" class="border-bottom">Qty</td>
-        <td colspan="3" class="border-bottom">Style</td>
+        <td colspan="4" class="border-bottom">Style</td>
         <td colspan="2" class="border-bottom">W</td>
         <td class="border-bottom">in</td>
         <td colspan="2" class="border-bottom">H</td>
         <td class="border-bottom">Qty</td>
         <td colspan="2" class="border-bottom">W</td>
-        <td colspan="2" class="border-bottom">in</td>
+        <td class="border-bottom">in</td>
         <td colspan="2" class="border-bottom">H</td>
     </tr>
     <tr>
         <td></td>
         <td colspan="3">{{$quote->profile_size}}</td>
-        <td colspan="5" class="border-right">PROFILE SIZE</td>
-        <td colspan="4">{{$quote->pannel}}</td>
+        <td colspan="6" class="border-right">PROFILE SIZE</td>
+        <td colspan="3">{{$quote->panel}}</td>
         <td colspan="2">PANEL</td>
         <td></td>
     </tr>
     @foreach( $groups as $key => $group)
+        @if ($key != 0)
         <tr>
-            <td colspan="16">{{$key}}</td>
+            <td colspan="10" class="border-right text-center">{{$key}}</td>
+            <td colspan="5"></td>
         </tr>
+        @endif
 
         @foreach($group as $product)
-            <tr>
+            <tr class="production-row">
                 <td>{{$product->pivot->quantity}}</td>
-                <td colspan="3">{{$product->design}}</td>
+                <td colspan="4">{{$product->design}}</td>
                 <td colspan="2">{{$product->pivot->width}}</td>
                 <td>X</td>
                 <td colspan="2" class="border-right">{{$product->pivot->height}}</td>
-                <td>{{$product->pivot->quantity}}</td>
+                <td>
+                    @if ($product->frame === 0)
+                        {{$product->pivot->quantity}}
+                    @endif
+                </td>
                 <?php
                 if ($product->pivot->adjustment == "0") {
                     $profile_size = $product->profile_size;
@@ -411,13 +460,13 @@
                 @if ($product->frame === 0)
                     @if ($product->df === 0)
                         <td colspan="2">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
-                        <td colspan="2">X</td>
+                        <td colspan="1">X</td>
                         <td colspan="2">{{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}</td>
                     @else
                         <td colspan="2">
                             {{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}
                         </td>
-                        <td colspan="2">X</td>
+                        <td colspan="1">X</td>
                         <td colspan="2">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
                     @endif
                 @else
@@ -427,14 +476,14 @@
         @endforeach
     @endforeach
     <tr>
-        <td colspan="9" style="height: <?php echo (20 - $quote->products->count()) * 30 ?>px" class="border-right"></td>
-        <td colspan="7" style="height: <?php echo (20 - $quote->products->count()) * 30 ?>px"></td>
+        <td colspan="10" style="height: <?php echo (20 - $quote->products->count()) * 30 ?>px" class="border-right"></td>
+        <td colspan="6" style="height: <?php echo (20 - $quote->products->count()) * 30 ?>px"></td>
     </tr>
     <tr>
         <td class="bold-border no-border-right">33</td>
-        <td class="bold-border no-border-left" colspan="8">Total</td>
+        <td class="bold-border no-border-left" colspan="9">Total</td>
         <td class="bold-border no-border-right">31</td>
-        <td class="bold-border no-border-left" colspan="6">Total</td>
+        <td class="bold-border no-border-left" colspan="5">Total</td>
     </tr>
     <tr>
         <td colspan="3">

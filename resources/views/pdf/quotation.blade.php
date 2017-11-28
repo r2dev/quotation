@@ -84,7 +84,13 @@
             width: 100%;
             border: 0;
         }
-
+        table.customer-table {
+            border: 1px solid #000;
+            width: 60%;
+        }
+        tr.product-row {
+            font-size: 14px;
+        }
         tr.no-borders,
         td.no-borders {
             border: 0 !important;
@@ -96,7 +102,7 @@
 
         /* Header */
         table.head {
-            margin-bottom: 12mm;
+            margin-bottom: 8mm;
         }
 
         td.header img {
@@ -124,10 +130,17 @@
 
         td.order-data {
             width: 40%;
+            font-size: 14px;
+            line-height: 16px;
         }
 
         .packing-slip .billing-address {
             width: 60%;
+
+        }
+        .address {
+            font-size: 14px;
+            line-height: 16px;
         }
 
         td.order-data table th {
@@ -143,6 +156,7 @@
         .quantity,
         .lite {
             width: 4%;
+            text-align: center;
         }
 
         .width,
@@ -150,7 +164,10 @@
         .total {
             width: 8%;
         }
-
+        .italia {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+        }
         .unit,
         .amount {
             width: 16%;
@@ -206,11 +223,13 @@
 
         .customer-notes {
             margin-top: 5mm;
+            font-size: 15px;
         }
 
         table.totals {
             width: 100%;
             margin-top: 5mm;
+            font-size: 14px;
         }
 
         table.totals th,
@@ -219,12 +238,14 @@
             border-top: 1px solid #ccc;
             border-bottom: 1px solid #ccc;
         }
-
+        table.totals th.title {
+            width: 50%;
+        }
         table.totals th.description {
-            width: 40%
+            width: 20%
         }
         table.totals td.price {
-            width: 50%;
+            width: 30%;
         }
 
         table.totals tr:last-child td,
@@ -267,7 +288,7 @@
         </td>
         <td class="shop-info">
             <div class="shop-name">
-                <h3>Quotation</h3>
+                <h2>Quotation</h2>
             </div>
 
         </td>
@@ -282,7 +303,7 @@
             Fax: 905.475.6640 / 905.475.6041<br/>
             Email: info@galaxydoors.ca<br/>
             @if (isset($quote->user->customer))
-            <table>
+            <table class="customer-table">
                 <tr>
                     <th>Customer</th>
                 </tr>
@@ -300,11 +321,17 @@
                         @if ( null !== $quote->user->customer->email)
                             {{ $quote->user->customer->email }}<br/>
                         @endif
+                        @if ( null !== $quote->po)
+                            PO# {{ $quote->po }}
+                        @endif
                     </td>
+
+
+
                 </tr>
             </table>
             @else
-            <table>
+            <table class="customer-table">
                 <tr>
                     <th>Customer</th>
                 </tr>
@@ -321,6 +348,9 @@
                         @endif
                         @if ( null !== $quote->customer->email)
                             {{ $quote->customer->email }}<br/>
+                        @endif
+                        @if ( null !== $quote->po)
+                            PO# {{ $quote->po }}
                         @endif
                     </td>
                 </tr>
@@ -344,11 +374,7 @@
                 </tr>
                 <tr>
                     <th>Material & Grade:</th>
-                    <td>Maple Paint</td>
-                </tr>
-                <tr>
-                    <th>Porfile Size</th>
-                    <td>2 3/4</td>
+                    <td>{{$styles[$quote->style_id]}}</td>
                 </tr>
                 <tr>
                     <th>Lip:</th>
@@ -375,20 +401,20 @@
 <table class="order-details">
     <thead>
     <tr>
-        <th class="quantity">Quantity</th>
-        <th class="description">description</th>
-        <th class="lite">Lite</th>
-        <th class="width">width</th>
-        <th class="height">height</th>
-        <th class="total">Total Sqf</th>
-        <th class="unit">Unit Price</th>
-        <th class="amount">Amount</th>
+        <th class="quantity" style="text-align: center;">Quantity</th>
+        <th class="description" style="text-align: center;">Description</th>
+        <th class="lite"  style="text-align: center;">Lite</th>
+        <th class="width" style="text-align: center;">Width</th>
+        <th class="height" style="text-align: center;">Height</th>
+        <th class="total" style="text-align: center;">Total Sqf</th>
+        <th class="unit" style="text-align: center;">Unit Price</th>
+        <th class="amount" style="text-align: center;">Amount</th>
     </tr>
     </thead>
     <tbody>
 
     @foreach( $quote->products as $product)
-        <tr>
+        <tr class="product-row">
             <td>{{$product->pivot->quantity}}</td>
             <td>{{$product->design}}</td>
             <td>
@@ -409,16 +435,16 @@
             </td>
         </tr>
     @endforeach
-    @if ($quote->products->count() < 14)
+    @if ($quote->products->count() < 13)
     <tr>
-        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (14 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
 
     </tr>
     @endif
@@ -428,7 +454,7 @@
         <td class="no-borders" colspan="5">
             <div class="customer-notes">
                 Excepted Completion Time: Flat panel 10 days, Raised panel and MD 14 days.<br>
-                Please Verify and sign below to confirm the order
+                <span class="italia">Please Verify and sign below to confirm the order</span>
             </div>
         </td>
 
@@ -436,7 +462,7 @@
             <table class="totals">
                 <tfoot>
                 <tr >
-                    <td>Discount</td>
+                    <th class="title">Discount</th>
                     @if (isset($quote->user->customer))
                         <?php $discount = $quote->user->customer->discount ?>
                     @else
@@ -447,24 +473,24 @@
 
                 </tr>
                 <tr>
-                    <td >Other Charges</td>
+                    <th class="title">Other Charges</th>
                     <th class="description"></th>
                     <td class="price"><span class="totals-price"><span class="amount">$0</span></span></td>
                 </tr>
                 <tr>
-                    <td >Subtotal</td>
+                    <th class="title">Subtotal</th>
                     <th class="description"></th>
-                    <td class="price"><span class="totals-price"><span class="amount">$ {{round($sum / 100 * (100 - $discount), 2)}}</span></span></td>
+                    <td class="price"><span class="totals-price"><span class="amount">${{round($sum / 100 * (100 - $discount), 2)}}</span></span></td>
                 </tr>
                 <tr>
-                    <td>HST (# 816451504)</td>
+                    <th class="title">HST(# 816451504)</th>
                     <th class="description"></th>
-                    <td class="price"><span class="totals-price"><span class="amount">$ {{round($sum / 100 * (100 - $discount) * 0.13, 2)}}</span></span></td>
+                    <td class="price"><span class="totals-price"><span class="amount">${{round($sum / 100 * (100 - $discount) * 0.13, 2)}}</span></span></td>
                 </tr>
                 <tr class="order_total">
-                    <td>Total</td>
+                    <th class="title">Total</th>
                     <th class="description"></th>
-                    <td class="price"><span class="totals-price"><span class="amount">$ {{round($sum / 100 * (100 - $discount) * 1.13, 2)}}</span></span></td>
+                    <td class="price"><span class="totals-price"><span class="amount">${{round($sum / 100 * (100 - $discount) * 1.13, 2)}}</span></span></td>
                 </tr>
 
                 </tfoot>
