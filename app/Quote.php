@@ -25,7 +25,7 @@ class Quote extends Model
         return $this
             ->belongsToMany('App\Product', 'quote_product')
             ->withTimestamps()
-            ->withPivot('quantity', 'width', 'height', 'lite', 'style', 'price', 'id', 'style_id', 'adjustment')
+            ->withPivot('quantity', 'width', 'height', 'lite', 'style', 'price', 'id', 'style_id', 'adjustment', 'adjustment_lr')
             ->using('App\QuoteProduct');
     }
 }

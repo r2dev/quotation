@@ -169,13 +169,8 @@ class QuoteController extends Controller
 
     public function update_price(Request $request, $id, $product_id, $style_id)
     {
-//        $request->validate([
-//            'value' => 'required|numeric',
-//
-//        ]);
         $quote = Quote::findOrFail($id);
-//        $quote->products()->updateExistingPivot($pid, ['price' => $request->value]);
-//        $products = QuoteProduct::with('products')->where('quote_id', $id)->where('id', $pid)->get();
+
         if ($quote->customer_confirmed == true && $quote->staff_confirmed == false && Auth::user()->permission >= 3) {
             DB::table('quote_product')->where('quote_id', $id)->where('product_id', $product_id)->where('style_id', $style_id)->update(array('price' => $request->value));
         }
@@ -185,8 +180,12 @@ class QuoteController extends Controller
     public function update_product_profile_size(Request $request, $id)
     {
         //only permission >= 3
-
-        DB::table('quote_product')->where('id', $request->pq_id)->update(array('adjustment' => $request->adjustment));
+        if ($request->type == 'tb') {
+            DB::table('quote_product')->where('id', $request->pq_id)->update(array('adjustment' => $request->value));
+        } else {
+            DB::table('quote_product')->where('id', $request->pq_id)->update(array('adjustment_lr' => $request->value));
+        }
+        
         return redirect(route('quotes.edit', ['id' => $id]));
     }
 
@@ -297,8 +296,22 @@ class QuoteController extends Controller
         $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
         $groups = array();
         $temp_groups = $quote->products->groupBy(function($product, $key) {
-            return $product['pivot']['adjustment'];
+            if ($product['pivot']['adjustment'] == 0 && $product['pivot']['adjustment_lr'] == 0) {
+                return "0";
+            }
+            if ($product['pivot']['adjustment'] != 0 && $product['pivot']['adjustment_lr'] == 0) {
+                return $product['pivot']['adjustment'] . '  TB';
+            }
+            else if ($product['pivot']['adjustment'] == 0 && $product['pivot']['adjustment_lr'] != 0){
+                return $product['pivot']['adjustment_lr'] . '  LR';
+            }
+            else if ($product['pivot']['adjustment'] != 0 && $product['pivot']['adjustment_lr'] != 0 && $product['pivot']['adjustment'] == $product['pivot']['adjustment_lr']) {
+                return $product['pivot']['adjustment'];
+            } else {
+                return 'unknown profile size';
+            }
         });
+        dd($temp_groups);
         foreach ($temp_groups as $key=>$group) {
             $groups[$key] = $group->sortByDesc(function ($product, $key) {
                 if ($product->frame === 1) {
@@ -328,12 +341,8 @@ class QuoteController extends Controller
         $request->validate([
            'name' => ['required', Rule::in(['po', 'terms', 'panel', 'door_style', 'lip', 'moulding'])]
         ]);
-        $quote[$request->name] = $request->value;
+        $quote[$request->name] = $request->value ?: '';
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
-
-
-
-
 }
