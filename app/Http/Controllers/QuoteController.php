@@ -295,9 +295,9 @@ class QuoteController extends Controller
     {
         $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
         $groups = array();
-        $temp_groups = $quote->products->groupBy(function($product, $key) {
+        $temp_groups = $quote->products->groupBy(function($product) {
             if ($product['pivot']['adjustment'] == 0 && $product['pivot']['adjustment_lr'] == 0) {
-                return "0";
+                return 0;
             }
             if ($product['pivot']['adjustment'] != 0 && $product['pivot']['adjustment_lr'] == 0) {
                 return $product['pivot']['adjustment'] . '  TB';
@@ -310,8 +310,7 @@ class QuoteController extends Controller
             } else {
                 return 'unknown profile size';
             }
-        });
-        dd($temp_groups);
+        })->reverse();
         foreach ($temp_groups as $key=>$group) {
             $groups[$key] = $group->sortByDesc(function ($product, $key) {
                 if ($product->frame === 1) {
