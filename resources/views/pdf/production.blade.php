@@ -534,9 +534,9 @@
         @endforeach
     @endforeach
     <tr>
-        <td colspan="10" style="height: <?php echo (20 - $quote->products->count()) * 30 ?>px"
+        <td colspan="10" style="height: <?php echo (18 - $quote->products->count()) * 30 ?>px"
             class="border-right"></td>
-        <td colspan="6" style="height: <?php echo (20 - $quote->products->count()) * 30 ?>px"></td>
+        <td colspan="6" style="height: <?php echo (18 - $quote->products->count()) * 30 ?>px"></td>
     </tr>
     <tr>
         <td class="bold-border no-border-right">
