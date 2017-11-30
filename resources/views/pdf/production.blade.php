@@ -84,13 +84,12 @@
             width: 100%;
             border: 0;
         }
+
         tr.production-row {
             font-size: 14px;
 
         }
-        tr.production-row td {
-            text-align: center;
-        }
+
         tr.no-borders,
         td.no-borders {
             border: 0 !important;
@@ -131,6 +130,7 @@
         td.order-data {
             width: 40%;
         }
+
         .text-center {
             text-align: center;
         }
@@ -169,23 +169,22 @@
             width: 16%;
         }
 
-        .order-details tr {
+        .production-details tr.production-row {
             page-break-inside: always;
             page-break-after: auto;
         }
 
-        .order-details td,
-        .order-details th {
-            border: 1px #ccc solid;
+        .production-details tr.production-row td,
+        .production-details tr.production-row th {
             padding: 0.375em;
         }
 
-        .order-details th {
+        .production-details tr.production-row th {
             font-weight: bold;
             text-align: left;
         }
 
-        .order-details thead th {
+        .production-details thead tr.production-row th {
             border-color: black;
         }
 
@@ -289,12 +288,29 @@
             border-bottom: 2px solid #000;
         }
 
+        .border-top {
+            border-top: 2px solid #000;
+        }
+
         .no-border-left {
             border-left: 0;
         }
 
         .no-border-right {
             border-right: 0;
+        }
+
+        h3.table-title {
+
+            font-size: 15px;
+        }
+
+        h3.head-table-title {
+            margin-top: 3px;
+            font-size: 14px;
+        }
+        h3.sign-title {
+            font-size: 14px;
         }
     </style>
 </head>
@@ -308,7 +324,7 @@
     </tr>
 </table>
 
-<table style="width: 100%">
+<table style="width: 100%" class="production-details">
     <tr>
         <td class="sixteen"></td>
         <td class="sixteen"></td>
@@ -348,7 +364,7 @@
 
             @else
                 @if(null !== $quote->customer->name)
-                    {{ $quote->customer->name }}<br/>
+                    <h3>{{ $quote->customer->name }}</h3><br/>
                 @endif
                 @if (null !== $quote->customer->telephone)
                     {{ $quote->customer->telephone }}<br/>
@@ -365,20 +381,19 @@
             @endif
 
 
-
         </td>
 
         <td colspan="3" class="slim-border align-center">
-            <h3>STYLE</h3><br>
+            <h3 class="head-table-title">STYLE</h3><br>
             {{$quote->door_style}}
         </td>
         <td colspan="4" class="slim-border align-center">
-            <h3>SPECIES</h3><br>
+            <h3 class="head-table-title">SPECIES</h3><br>
             {{$styles[$quote->style_id]}}
 
         </td>
         <td colspan="3" class="slim-border align-center">
-            <h3>PROFILE TYPE</h3><br>
+            <h3 class="head-table-title">PROFILE TYPE</h3><br>
             {{$styles[$quote->style_id]}}
         </td>
     </tr>
@@ -388,19 +403,19 @@
             {{$quote->id}}
         </td>
         <td rowspan="2" colspan="3" class="slim-border align-center">
-            <h3>Panel</h3><br>
+            <h3 class="head-table-title">Panel</h3><br>
             {{$quote->panel}}
         </td>
         <td rowspan="2" colspan="3" class="slim-border align-center">
-            <h3>LIP </h3><br>
+            <h3 class="head-table-title">LIP </h3><br>
             {{$quote->lip}}
         </td>
         <td rowspan="2" colspan="1" class="slim-border align-center">
-            <h3>Moulding</h3> <br>
+            <h3 class="head-table-title">Moulding</h3> <br>
             {{$quote->moulding}}
         </td>
         <td rowspan="2" colspan="3" class="slim-border align-center">
-            <h3>PROFILE SIZE</h3>
+            <h3 class="head-table-title">PROFILE SIZE</h3>
             {{$quote->profile_size}}
         </td>
     </tr>
@@ -408,43 +423,83 @@
         <td colspan="6" class="slim-border">Order #:</td>
     </tr>
     <tr>
-        <td colspan="9" class="align-center">DOOR SIZE</td>
-        <td colspan="7" class="align-center">PANEL SIZE</td>
+        <td colspan="9" class="align-center">
+            <h3 class="head-table-title">DOOR SIZE</h3>
+        </td>
+        <td colspan="7" class="align-center">
+            <h3 class="head-table-title">
+                PANEL SIZE
+            </h3>
+        </td>
     </tr>
     <tr>
-        <td colspan="1" class="border-bottom">Qty</td>
-        <td colspan="4" class="border-bottom">Style</td>
-        <td colspan="2" class="border-bottom">W</td>
-        <td class="border-bottom">in</td>
-        <td colspan="2" class="border-bottom">H</td>
-        <td class="border-bottom">Qty</td>
-        <td colspan="2" class="border-bottom">W</td>
-        <td class="border-bottom">in</td>
-        <td colspan="2" class="border-bottom">H</td>
+        <td colspan="1" class="border-bottom">
+            <h3 class="table-title">Qty</h3>
+        </td>
+        <td colspan="4" class="border-bottom">
+            <h3 class="table-title">Style</h3>
+        </td>
+        <td colspan="2" class="border-bottom text-center">
+            <h3 class="table-title">W</h3>
+        </td>
+        <td class="border-bottom text-center">
+            <h3 class="table-title">in</h3>
+        </td>
+        <td colspan="2" class="border-bottom text-center">
+            <h3 class="table-title">H</h3>
+        </td>
+        <td class="border-bottom">
+            <h3 class="table-title">Qty</h3>
+        </td>
+        <td colspan="2" class="border-bottom text-center">
+            <h3 class="table-title">W</h3>
+        </td>
+        <td class="border-bottom text-center">
+            <h3 class="table-title">in</h3>
+        </td>
+        <td colspan="2" class="border-bottom text-center">
+            <h3 class="table-title">H</h3>
+        </td>
     </tr>
     <tr>
         <td></td>
-        <td colspan="3">{{$quote->profile_size}}</td>
-        <td colspan="6" class="border-right">PROFILE SIZE</td>
-        <td colspan="3">{{$quote->panel}}</td>
-        <td colspan="2">PANEL</td>
+        <td colspan="3">
+            <h3 class=" head-table-title">
+                {{$quote->profile_size}}
+            </h3>
+        </td>
+        <td colspan="6" class="border-right">
+            <h3 class="head-table-title">
+                PROFILE SIZE
+            </h3>
+        </td>
+        <td colspan="3">
+            <h3 class="head-table-title">
+                {{$quote->panel}}
+            </h3>
+        </td>
+        <td colspan="2">
+            <h3 class="head-table-title">
+                PANEL
+            </h3>
+        </td>
         <td></td>
     </tr>
     @foreach( $groups as $key => $group)
         @if ($key != 0)
-        <tr>
-            <td colspan="10" class="border-right text-center">{{$key}}</td>
-            <td colspan="5"></td>
-        </tr>
+            <tr class="production-row">
+                <td colspan="10" class="border-right text-center">{{$key}}</td>
+                <td colspan="5"></td>
+            </tr>
         @endif
 
         @foreach($group as $product)
             <tr class="production-row">
                 <td>{{$product->pivot->quantity}}</td>
                 <td colspan="4">{{$product->design}}</td>
-                <td colspan="2">{{$product->pivot->width}}</td>
-                <td>X</td>
-                <td colspan="2" class="border-right">{{$product->pivot->height}}</td>
+                <td colspan="2" class="text-center">{{$product->pivot->width}}</td>
+                <td class="text-center">X</td>
+                <td colspan="2" class="border-right text-center">{{$product->pivot->height}}</td>
                 <td>
                     @if ($product->frame === 0)
                         {{$product->pivot->quantity}}
@@ -459,15 +514,18 @@
                 ?>
                 @if ($product->frame === 0)
                     @if ($product->df === 0)
-                        <td colspan="2">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
-                        <td colspan="1">X</td>
-                        <td colspan="2">{{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}</td>
+                        <td colspan="2"
+                            class="text-center">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
+                        <td colspan="1" class="text-center">X</td>
+                        <td colspan="2"
+                            class="text-center">{{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}</td>
                     @else
-                        <td colspan="2">
+                        <td colspan="2" class="text-center">
                             {{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}
                         </td>
-                        <td colspan="1">X</td>
-                        <td colspan="2">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
+                        <td colspan="1" class="text-center">X</td>
+                        <td colspan="2"
+                            class="text-center">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
                     @endif
                 @else
                     <td colspan="6"></td>
@@ -476,42 +534,45 @@
         @endforeach
     @endforeach
     <tr>
-        <td colspan="10" style="height: <?php echo (20 - $quote->products->count()) * 30 ?>px" class="border-right"></td>
+        <td colspan="10" style="height: <?php echo (20 - $quote->products->count()) * 30 ?>px"
+            class="border-right"></td>
         <td colspan="6" style="height: <?php echo (20 - $quote->products->count()) * 30 ?>px"></td>
     </tr>
     <tr>
-        <td class="bold-border no-border-right">33</td>
-        <td class="bold-border no-border-left" colspan="9">Total</td>
-        <td class="bold-border no-border-right">31</td>
-        <td class="bold-border no-border-left" colspan="5">Total</td>
+        <td class="bold-border no-border-right">
+            <h3 class="head-table-title">{{$sum_total}}</h3>
+        </td>
+        <td class="bold-border no-border-left" colspan="9">
+            <h3 class="head-table-title">Total</h3></td>
+        <td class="bold-border no-border-right">
+            <h3 class="head-table-title">{{$sum_total - $sum_frame}}</h3></td>
+        <td class="bold-border no-border-left" colspan="5"><h3 class="head-table-title">Total</h3></td>
     </tr>
-    <tr>
-        <td colspan="3">
-            <h3>
+    <tr >
+        <td colspan="10" style="height: 35px;">
+            <h3 class="sign-title">
                 ASSEMBLY DATE:
             </h3>
         </td>
-        <td colspan="6"></td>
-        <td colspan="3">
-            <h3>
+
+        <td colspan="6" style="height: 35px;">
+            <h3 class="sign-title">
                 Entered by:
             </h3>
         </td>
-        <td colspan="4"></td>
     </tr>
     <tr>
-        <td colspan="3">
-            <h3>
+        <td colspan="10" style="height: 35px;">
+            <h3 class="sign-title">
                 REQUIRED DATE:
             </h3>
         </td>
-        <td colspan="6"></td>
-        <td colspan="3"><h3>Reviewd by:</h3></td>
-        <td colspan="4"></td>
+
+        <td colspan="6"><h3 class="sign-title" style="height: 35px;">Reviewd by:</h3></td>
     </tr>
     <tr>
-        <td colspan="9"><h3>Received: </h3></td>
-        <td colspan="7"><h3>Date: </h3></td>
+        <td colspan="10"><h3 class="sign-title">Received: </h3></td>
+        <td colspan="6"><h3 class="sign-title">Date: </h3></td>
     </tr>
 </table>
 </body>

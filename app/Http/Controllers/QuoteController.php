@@ -295,6 +295,9 @@ class QuoteController extends Controller
     {
         $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
         $groups = array();
+        $sum_total = 0;
+        $sum_frame = 0;
+
         $temp_groups = $quote->products->groupBy(function($product) {
             if ($product['pivot']['adjustment'] == 0 && $product['pivot']['adjustment_lr'] == 0) {
                 return 0;
@@ -310,17 +313,19 @@ class QuoteController extends Controller
             } else {
                 return 'unknown profile size';
             }
-        })->reverse();
+        });
         foreach ($temp_groups as $key=>$group) {
-            $groups[$key] = $group->sortByDesc(function ($product, $key) {
+            $groups[$key] = $group->sortByDesc(function ($product, $key) use(&$sum_total, &$sum_frame) {
+                $sum_total = $sum_total + $product['pivot']['quantity'];
                 if ($product->frame === 1) {
+                    $sum_frame = $sum_frame + $product['pivot']['quantity'];
                     return 10000;
                 }
                 return parse_number($product['pivot']['height']);
             });
         }
         $styles = $this->styles;
-        $pdf = PDF::loadView('pdf.production', compact('quote', 'groups', 'styles'));
+        $pdf = PDF::loadView('pdf.production', compact('quote', 'groups', 'styles', 'sum_total', 'sum_frame'));
         return $pdf->stream('product_' . $id . '.pdf');
     }
 
