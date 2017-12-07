@@ -26,7 +26,7 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         //
-        $limit = 10;
+        $limit = 20;
         if (isset($request->limit) && is_numeric($request->limit)) {
             $limit = intval($request->limit);
         }
@@ -56,7 +56,7 @@ class CustomerController extends Controller
             $customer->name = $request->name;
         }
         $customer->save();
-        return redirect('/customers');
+        return redirect(route('customers.edit', ['id' => $customer->id]));
     }
 
     /**

@@ -7,25 +7,7 @@
         <div class="panel-body">
             <div class="container-fluid">
                 <div class="row">
-                    @if ($quote->customer_confirmed == false && Auth::user()->permission >= 3)
-                        <form action="{{route('quotes.change_company', ['id' => $quote->id])}}" method="post"
-                              class="form-inline">
-                            <div class="form-group">
-                                <label>Customer</label>
-                                {{csrf_field()}}
-                                <advanced-select
-                                        :resource="{{$customers}}"
-                                        :name="'company'"
-                                        :value="'{{$quote->customer_id}}'"
-                                        value-path="id"
-                                        display-path="name"
-                                        :placeholder="'choose a customer'"
-                                ></advanced-select>
 
-                                <input type="submit" value="change" class="btn btn-default"/>
-                            </div>
-                        </form>
-                    @endif
                     @if ($quote->customer_confirmed == false)
                         <form action="{{route('quotes.change_style', ['id' => $quote->id])}}" method="post"
                               class="form-inline">
@@ -45,56 +27,18 @@
                             </div>
                             <input type="submit" value="change" class="btn btn-default"/>
                         </form>
-                    @endif
-                    @if(Auth::user()->permission >= 3)
                         <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
                               class="form-inline">
                             {{csrf_field()}}
-                            <label>Terms
-                                <input type="hidden" name="name" value="terms"/>
-                                <input type="text" value="{{$quote->terms}}" name="value"/>
-                                <input type="submit" value="update"/>
-                            </label>
-                        </form>
-                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
-                              class="form-inline">
-
-                            {{csrf_field()}}
-                            <label>Door Style
-                                <input type="hidden" name="name" value="door_style"/>
-                                <input type="text" value="{{$quote->door_style}}" name="value"/>
-                                <input type="submit" value="update"/>
-                            </label>
-                        </form>
-                    @endif
-                    <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
-                          class="form-inline">
-                        {{csrf_field()}}
-                        <label>PO#
+                            <label>PO#</label>
                             <input type="hidden" name="name" value="po"/>
-                            <input type="text" value="{{$quote->po}}" name="value"/>
-                            <input type="submit" value="update"/>
-                        </label>
-                    </form>
-                    <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
-                          class="form-inline">
-                        {{csrf_field()}}
-                        <label> moulding
-                            <input type="hidden" name="name" value="moulding"/>
-                            <input type="text" value="{{$quote->moulding}}" name="value"/>
-                            <input type="submit" value="update"/>
-                        </label>
-                    </form>
-                    <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
-                          class="form-inline">
-                        {{csrf_field()}}
-                        <label>
-                            panel
-                            <input type="hidden" name="name" value="panel"/>
-                            <input type="text" value="{{$quote->panel}}" name="value"/>
-                            <input type="submit" value="update"/>
-                        </label>
-                    </form>
+                            <input type="text" value="{{$quote->po}}" name="value" class="form-control"/>
+                            <input type="submit" value="update" class="btn btn-default"/>
+
+                        </form>
+                    @endif
+
+
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -260,6 +204,100 @@
                             </div>
                         </form>
                     @endif
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    @if(Auth::user()->permission >= 3)
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Basic Information Update <span style="color: red;">(Admin only)</span>
+            </div>
+            <div class="panel-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        @if ($quote->customer_confirmed == false)
+                            <form action="{{route('quotes.change_company', ['id' => $quote->id])}}" method="post"
+                                  class="form-inline">
+                                <div class="form-group">
+                                    <label>Customer</label>
+                                    {{csrf_field()}}
+                                    <advanced-select
+                                            :resource="{{$customers}}"
+                                            :name="'company'"
+                                            :value="'{{$quote->customer_id}}'"
+                                            value-path="id"
+                                            display-path="name"
+                                            :placeholder="'choose a customer'"
+                                    ></advanced-select>
+
+                                    <input type="submit" value="change" class="btn btn-default"/>
+                                </div>
+                            </form>
+                        @endif
+                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
+                              class="form-inline">
+                            {{csrf_field()}}
+                            <div class="form-group">
+                                <label>Terms</label>
+                                <input type="hidden" name="name" value="terms"/>
+                                <input type="text" value="{{$quote->terms}}" name="value" class="form-control"/>
+                                <input type="submit" value="update" class="btn btn-default"/>
+
+                            </div>
+                        </form>
+                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
+                              class="form-inline">
+
+                            {{csrf_field()}}
+                            <label>Door Style</label>
+                            <input type="hidden" name="name" value="door_style"/>
+                            <input type="text" value="{{$quote->door_style}}" name="value" class="form-control"/>
+                            <input type="submit" value="update" class="btn btn-default"/>
+
+                        </form>
+
+                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
+                              class="form-inline">
+                            {{csrf_field()}}
+                            <label> Moulding</label>
+                            <input type="hidden" name="name" value="moulding"/>
+                            <input type="text" value="{{$quote->moulding}}" name="value" class="form-control"/>
+                            <input type="submit" value="update" class="btn btn-default"/>
+
+                        </form>
+                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
+                              class="form-inline">
+                            {{csrf_field()}}
+                            <label>
+                                panel
+                            </label>
+                            <input type="hidden" name="name" value="panel"/>
+                            <input type="text" value="{{$quote->panel}}" name="value" class="form-control"/>
+                            <input type="submit" value="update" class="btn btn-default"/>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Action
+        </div>
+        <div class="panel-body">
+            <div class="container-fluid">
+                <div class="row">
                     @if (!$undefined && (Auth::user()->permission >=3 && !is_null($quote->customer_id) || (Auth::user()->permission < 3)))
                         <form action="{{route('quotes.print_quotation', ['id' => $quote->id])}}" method="POST">
                             {{csrf_field()}}
@@ -304,6 +342,5 @@
             </div>
         </div>
     </div>
-
 
 @endsection

@@ -5,11 +5,11 @@
         <div class="panel-body">
             <div class="container-fluid">
                 {{--<div class="row">--}}
-                    {{--<select>--}}
-                        {{--<option value="10" selected="{{$limit == '10'}}">10</option>--}}
-                        {{--<option value="30" selected="{{$limit == '30'}}">30</option>--}}
-                        {{--<option value="50" selected="{{$limit == '50'}}">50</option>--}}
-                    {{--</select>--}}
+                {{--<select>--}}
+                {{--<option value="10" selected="{{$limit == '10'}}">10</option>--}}
+                {{--<option value="30" selected="{{$limit == '30'}}">30</option>--}}
+                {{--<option value="50" selected="{{$limit == '50'}}">50</option>--}}
+                {{--</select>--}}
                 {{--</div>--}}
                 <div class="row">
                     <table class="table table-bordered table-hover">
@@ -32,10 +32,15 @@
                                 </td>
 
                                 <td>
-                                    <form action="{{route('customers.destroy', ['id' => $customer->id])}}" method="POST">
+                                    <button type="button" class="btn btn-info">Update</button>
+                                    <form action="{{route('customers.destroy', ['id' => $customer->id])}}"
+                                          method="POST"
+                                          class="form-inline"
+                                          style="display: inline-block"
+                                    >
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" value="delete" class="btn btn-danger"/>
+                                        <input type="submit" value="Delete" class="btn btn-danger"/>
                                     </form>
                                 </td>
                             </tr>
@@ -44,12 +49,25 @@
                     </table>
                     {{ $customers->appends(['limit' => $limit])->links() }}
                 </div>
+            </div>
+        </div>
+    </div>
 
-                {{--<form action="{{route('customers.index')}}" method="post">--}}
-                    {{--{{ csrf_field() }}--}}
-                    {{--<label>name<input name="name" type="text"/></label>--}}
-                    {{--<input type="submit" value="submit">--}}
-                {{--</form>--}}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Add customer</div>
+        <div class="panel-body">
+            <div class="container-fluid">
+                <form action="{{route('customers.index')}}" method="post" class="form-inline">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input name="name" type="text" class="form-control"/>
+                        <input type="submit" value="submit" class="btn btn-default">
+                    </div>
+                </form>
+
+
             </div>
         </div>
     </div>
@@ -57,10 +75,10 @@
 
 @section('js')
     <script>
-    jQuery(document).ready(function ($) {
-        $(".clickable").click(function () {
-        window.location = $(this).data("href");
+        jQuery(document).ready(function ($) {
+            $(".clickable").click(function () {
+                window.location = $(this).data("href");
+            });
         });
-    });
     </script>
 @endsection

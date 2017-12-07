@@ -63,25 +63,37 @@
                         </table>
                     </div>
                     {!! $products->appends(['limit' => $limit])->links() !!}
-                    <div class="row">
-                        <div class="col-sm-12 col">
-                            @if (Auth::user()->permission >= 3)
-                                <form action="{{route('products.store')}}" method="POST">
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Add Product</div>
+        <div class="panel-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12 col">
+                        @if (Auth::user()->permission >= 3)
+                            <form action="{{route('products.store')}}" method="POST">
+                                <div class="form-group">
+                                    <label for="design_name">Design Name</label>
+                                    <input type="text" name="design" id="design_name" class="form-control">
+                                    {{csrf_field()}}
+                                </div>
+                                @foreach ($styles as $index => $style)
                                     <div class="form-group">
-                                        <label for="design_name">Design Name</label>
-                                        <input type="text" name="design" id="design_name" class="form-control">
-                                        {{csrf_field()}}
+                                        <label for="{{$style}}">{{$style}}</label>
+                                        <input type="text" name="price[{{$index}}]" id="{{$style}}" class="form-control">
                                     </div>
-                                    @foreach ($styles as $index => $style)
-                                        <div class="form-group">
-                                            <label for="{{$style}}">{{$style}}</label>
-                                            <input type="text" name="price[{{$index}}]" id="{{$style}}" class="form-control">
-                                        </div>
-                                    @endforeach
-                                    <button class="btn btn-default">Submit</button>
-                                </form>
-                            @endif
-                        </div>
+                                @endforeach
+                                <button class="btn btn-default">Submit</button>
+                            </form>
+                        @endif
                     </div>
                 </div>
 
