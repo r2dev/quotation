@@ -401,6 +401,7 @@
 <table class="order-details">
     <thead>
     <tr>
+        <th></th>
         <th class="quantity" style="text-align: center;">Quantity</th>
         <th class="description" style="text-align: center;">Description</th>
         <th class="lite"  style="text-align: center;">Lite</th>
@@ -413,8 +414,10 @@
     </thead>
     <tbody>
 
-    @foreach( $quote->products as $product)
+    @foreach( $quote->products as $index => $product)
+
         <tr class="product-row">
+            <td>{{$index}}</td>
             <td>{{$product->pivot->quantity}}</td>
             <td>{{$product->design}}</td>
             <td>
@@ -476,6 +479,11 @@
                     <th class="title">Other Charges</th>
                     <th class="description"></th>
                     <td class="price"><span class="totals-price"><span class="amount">$0</span></span></td>
+                </tr>
+                <tr>
+                    <th class="title">Deposit</th>
+                    <th class="description"></th>
+                    <td class="price"><span class="totals-price"><span class="amount">${{round($quote->deposit, 2)}}</span></span></td>
                 </tr>
                 <tr>
                     <th class="title">Subtotal</th>

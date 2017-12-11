@@ -213,7 +213,6 @@
 
 
     @if(Auth::user()->permission >= 3)
-
         <div class="panel panel-default">
             <div class="panel-heading">
                 Basic Information Update <span style="color: red;">(Admin only)</span>
@@ -240,6 +239,19 @@
                                 </div>
                             </form>
                         @endif
+
+                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
+                              class="form-inline">
+                            {{csrf_field()}}
+                            <div class="form-group">
+                                <label>Deposit</label>
+                                <input type="hidden" name="name" value="deposit"/>
+                                <input type="text" value="{{$quote->deposit}}" name="value" class="form-control"/>
+                                <input type="submit" value="update" class="btn btn-default"/>
+
+                            </div>
+                        </form>
+
                         <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
                               class="form-inline">
                             {{csrf_field()}}

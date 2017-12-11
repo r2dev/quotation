@@ -309,7 +309,7 @@ class QuoteController extends Controller
                 return $product['pivot']['adjustment_lr'] . '  LR';
             }
             else if ($product['pivot']['adjustment'] != 0 && $product['pivot']['adjustment_lr'] != 0 && $product['pivot']['adjustment'] == $product['pivot']['adjustment_lr']) {
-                return $product['pivot']['adjustment'];
+                return $product['pivot']['adjustment'] . ' PROFILE SIZE';
             } else {
                 return 'unknown profile size';
             }
@@ -343,7 +343,7 @@ class QuoteController extends Controller
 
         $quote = Quote::findOrFail($id);
         $request->validate([
-           'name' => ['required', Rule::in(['po', 'terms', 'panel', 'door_style', 'lip', 'moulding'])]
+           'name' => ['required', Rule::in(['po', 'terms', 'panel', 'door_style', 'lip', 'moulding', 'deposit'])]
         ]);
         $quote[$request->name] = $request->value ?: '';
         $quote->save();
