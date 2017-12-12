@@ -239,7 +239,28 @@
                                 </div>
                             </form>
                         @endif
+                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
+                              class="form-inline">
+                            {{csrf_field()}}
+                            <div class="form-group">
+                                <label>Invoice #</label>
+                                <input type="hidden" name="name" value="invoice_id"/>
+                                <input type="text" value="{{$quote->invoice_id}}" name="value" class="form-control"/>
+                                <input type="submit" value="update" class="btn btn-default"/>
 
+                            </div>
+                        </form>
+                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
+                              class="form-inline">
+                            {{csrf_field()}}
+                            <div class="form-group">
+                                <label>Order #</label>
+                                <input type="hidden" name="name" value="order_id"/>
+                                <input type="text" value="{{$quote->order_id}}" name="value" class="form-control"/>
+                                <input type="submit" value="update" class="btn btn-default"/>
+
+                            </div>
+                        </form>
                         <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
                               class="form-inline">
                             {{csrf_field()}}
@@ -290,7 +311,16 @@
                                 Panel
                             </label>
                             <input type="hidden" name="name" value="panel"/>
-                            <input type="text" value="{{$quote->panel}}" name="value" class="form-control"/>
+                            <select name="value" class="form-control">
+
+                                @foreach($panel as $p)
+                                    @if ($p == $quote->panel)
+                                        <option value="{{$p}}" selected>{{$p}}</option>
+                                    @else
+                                        <option value="{{$p}}">{{$p}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                             <input type="submit" value="update" class="btn btn-default"/>
 
                         </form>
@@ -310,7 +340,7 @@
         <div class="panel-body">
             <div class="container-fluid">
                 <div class="row">
-                    @if (!$undefined && (Auth::user()->permission >=3 && !is_null($quote->customer_id) || (Auth::user()->permission < 3)))
+                    @if (!$undefined)
                         <form action="{{route('quotes.print_quotation', ['id' => $quote->id])}}" method="POST">
                             {{csrf_field()}}
                             <input type="submit" value="print quotation" class="btn btn-primary"/>
@@ -342,6 +372,10 @@
                         <form action="{{route('quotes.print_invoice', ['id' => $quote->id])}}" method="post">
                             {{csrf_field()}}
                             <input type="submit" value="print invoice" class="btn btn-primary"/>
+                        </form>
+                        <form action="{{route('quotes.print_sale_order', ['id' => $quote->id])}}" method="post">
+                            {{csrf_field()}}
+                            <input type="submit" value="print sale order" class="btn btn-primary"/>
                         </form>
                     @endif
                     @if ($quote->staff_confirmed == true && $quote->customer_confirmed == true)

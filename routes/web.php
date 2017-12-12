@@ -59,6 +59,8 @@ Route::post('/quotes/{id}/print_production', 'QuoteController@print_production')
 
 Route::post('/quotes/{id}/print_invoice', 'QuoteController@print_invoice')->name('quotes.print_invoice');
 
+Route::post('/quotes/{id}/print_sale_order', 'QuoteController@print_sale_order')->name('quotes.print_sale_order');
+
 Route::post('/quotes/{id}/change_profile_size', 'QuoteController@change_profile_size')->name('quotes.change_profile_size');
 
 Route::post('/quotes/{id}/change_style', 'QuoteController@change_style')->name('quotes.change_style');

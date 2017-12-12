@@ -83,7 +83,8 @@ class QuoteController extends Controller
         }
         $quote_products = $quote->products;
         $styles = $this->styles;
-        return view('quote.edit', compact('quote', 'quote_products', 'products', 'styles', 'customers'));
+        $panel = $this->panel;
+        return view('quote.edit', compact('quote', 'quote_products', 'products', 'styles', 'customers', 'panel'));
 
     }
 
@@ -205,7 +206,7 @@ class QuoteController extends Controller
     {
         $quote = Quote::findOrFail($id);
         $quote->customer_confirmed = true;
-        $quote->confirmed_on = Carbon::now();
+
         $products = QuoteProduct::with('product')->where('quote_id', $id)->get();
 //        $products = $quote->products;
         foreach ($products as $product) {
@@ -234,6 +235,7 @@ class QuoteController extends Controller
     {
         $quote = Quote::findOrFail($id);
         $quote->staff_confirmed = false;
+
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
@@ -273,6 +275,7 @@ class QuoteController extends Controller
         $sum = 0;
         $sum_sqf = 0;
         $products = array();
+        $total_quantity = 0;
         foreach ($quote->products as $product) {
             $unit_area = total_area($product->pivot->width, $product->pivot->height);
             if ($quote->customer_confirmed == true) {
@@ -287,11 +290,41 @@ class QuoteController extends Controller
             array_push($products, $product);
             $sum += $amount;
             $sum_sqf += $unit_area * $product->pivot->quantity;
+            $total_quantity += $product->pivot->quantity;
         }
         $sum = round($sum, 2);
         $styles = $this->styles;
-        $pdf = PDF::loadView('pdf.invoice', compact('quote', 'sum', 'products', '$sum_sqf', 'styles'));
+        $pdf = PDF::loadView('pdf.invoice', compact('quote', 'sum', 'products', 'sum_sqf', 'styles', 'total_quantity'));
         return $pdf->stream('invoice_' . $id . '.pdf');
+    }
+    
+    public function print_sale_order($id)
+    {
+        $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
+        $sum = 0;
+        $sum_sqf = 0;
+        $products = array();
+        $total_quantity = 0;
+        foreach ($quote->products as $product) {
+            $unit_area = total_area($product->pivot->width, $product->pivot->height);
+            if ($quote->customer_confirmed == true) {
+                $unit_price = ($unit_area * $product->pivot->price + $product->pivot->lite * 8);
+            } else {
+                $unit_price = ($unit_area * $product['price_' . $product->pivot->style_id] + $product->pivot->lite * 8);
+            }
+            $amount = $unit_price * $product->pivot->quantity;
+            $product->total_area = $unit_area * $product->pivot->quantity;
+            $product->unit_price = $unit_price;
+            $product->amount = $amount;
+            array_push($products, $product);
+            $sum += $amount;
+            $sum_sqf += $unit_area * $product->pivot->quantity;
+            $total_quantity += $product->pivot->quantity;
+        }
+        $sum = round($sum, 2);
+        $styles = $this->styles;
+        $pdf = PDF::loadView('pdf.sale_order', compact('quote', 'sum', 'products', 'sum_sqf', 'styles', 'total_quantity'));
+        return $pdf->stream('sale_order_' . $id . '.pdf');
     }
 
     public function print_production($id)
@@ -337,7 +370,14 @@ class QuoteController extends Controller
         //production confirm only when customer has confirmed and the price are all set
         $quote = Quote::find($id);
         $quote->staff_confirmed = true;
-
+        $quote->confirmed_on = Carbon::now();
+        if (isset($quote->user->customer)) {
+            $quote->discount = $quote->user->customer->discount;
+            $quote->cash = $quote->user->customer->cash;
+        } else {
+            $quote->discount = $quote->customer->discount;
+            $quote->cash = $quote->customer->cash;
+        }
         $quote->save();
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
@@ -346,7 +386,7 @@ class QuoteController extends Controller
 
         $quote = Quote::findOrFail($id);
         $request->validate([
-           'name' => ['required', Rule::in(['po', 'terms', 'panel', 'door_style', 'lip', 'moulding', 'deposit'])]
+           'name' => ['required', Rule::in(['po', 'terms', 'panel', 'door_style', 'lip', 'moulding', 'deposit', 'invoice_id', 'order_id'])]
         ]);
         $quote[$request->name] = $request->value ?: '';
         $quote->save();

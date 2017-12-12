@@ -366,7 +366,7 @@
                 </tr>
                 <tr class="order-date">
                     <th>Quotation Date:</th>
-                    <td>{{ $quote->created_at }}</td>
+                    <td>{{ $quote->confirmed_on }}</td>
                 </tr>
                 <tr class="order-style">
                     <th>Door Style:</th>
@@ -401,7 +401,7 @@
 <table class="order-details">
     <thead>
     <tr>
-        <th style="width: 2px;"></th>
+        <th style="width: 2px; border: 0;"></th>
         <th class="quantity" style="text-align: center;">Quantity</th>
         <th class="description" style="text-align: center;">Description</th>
         <th class="lite"  style="text-align: center;">Lite</th>
@@ -417,7 +417,7 @@
     @foreach( $quote->products as $index => $product)
 
         <tr class="product-row">
-            <td>{{$index + 1}}</td>
+            <td style="border: 0;">{{$index + 1}}</td>
             <td>{{$product->pivot->quantity}}</td>
             <td>{{$product->design}}</td>
             <td>
@@ -438,10 +438,10 @@
             </td>
         </tr>
     @endforeach
-    <?php $alignment = 12 ?>
+    <?php $alignment = 11 ?>
     @if ($quote->products->count() < $alignment)
     <tr>
-        <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px"></td>
+        <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px; border: 0;"></td>
         <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px" ></td>
         <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px" ></td>
         <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px" ></td>
@@ -454,7 +454,7 @@
     </tr>
     @endif
     <tr>
-        <td></td>
+        <td style="border: 0;"></td>
         <td colspan="5">{{$total_quantity}}</td>
         <td colspan="2">{{$sum_sqf}}</td>
         <td colspan="1">${{$sum}}</td>

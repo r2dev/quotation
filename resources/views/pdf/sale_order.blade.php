@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Invoice</title>
+    <title>Sale Order</title>
     <style type="text/css">
 
         @page {
@@ -284,11 +284,11 @@
 <table class="head container">
     <tr>
         <td class="header">
-            GALAXY DOORS LTD
+
         </td>
         <td class="shop-info">
             <div class="shop-name">
-                <h2>Invoice</h2>
+                <h2>Sales Order</h2>
             </div>
 
         </td>
@@ -298,10 +298,10 @@
 <table class="order-data-addresses">
     <tr>
         <td class="address billing-address">
-            40 Ferrier st Unit B Markham On L3R 2Z5<br/>
-            Tel; 905.475.0880 / 905.475.0887<br/>
-            Fax: 905.475.6640 / 905.475.6041<br/>
-            Email: info@galaxydoors.ca<br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
             @if (isset($quote->user->customer))
                 <table class="customer-table">
                     <tr>
@@ -361,11 +361,11 @@
         <td class="order-data">
             <table>
                 <tr class="order-number">
-                    <th>Invoice #:</th>
-                    <td>{{ $quote->invoice_id }}</td>
+                    <th>Order #:</th>
+                    <td>{{ $quote->order_id }}</td>
                 </tr>
                 <tr class="order-number">
-                    <th>Invoice Date:</th>
+                    <th>Date:</th>
                     <td>{{ $quote->confirmed_on }}</td>
                 </tr>
                 <tr class="order-number">
@@ -457,16 +457,17 @@
         <td colspan="5">{{$total_quantity}}</td>
         <td colspan="2">{{$sum_sqf}}</td>
         <td colspan="1">${{$sum}}</td>
+
     </tr>
     </tbody>
     <tfoot>
     <tr class="no-borders">
         <td class="no-borders" colspan="5">
             <div class="customer-notes">
-                INVOICE DUE AND PAYABLE UPON RECEIPT<br>
-                <span class="italia">We reserve the right to apply a service charge of 2% </span> <br/>
-                <span class="italia">per month on all outstanding invoices over 30 days.  </span> <br />
-                <span class="italia">Deposits are non-refundable. </span>
+                <br>
+                <span class="italia"></span> <br/>
+                <span class="italia">Deposits are non-refundable.</span> <br />
+                <span class="italia"></span>
             </div>
         </td>
 
@@ -475,7 +476,7 @@
                 <tfoot>
                 <tr >
                     <th class="title">Discount</th>
-                    <?php $discount = $quote->discount ?>
+                    <?php $discount = $quote->cash ?>
                     <th class="description">{{ $discount }}%</th>
                     <td class="price">${{round($sum / 100 * $discount, 2)}}</td>
 
@@ -486,20 +487,11 @@
                     <td class="price"><span class="totals-price"><span class="amount">$0</span></span></td>
                 </tr>
                 <tr>
-                    <th class="title">Subtotal</th>
-                    <th class="description"></th>
-                    <td class="price"><span class="totals-price"><span class="amount">${{round($sum / 100 * (100 - $discount), 2)}}</span></span></td>
-                </tr>
-                <tr>
-                    <th class="title">HST(# 816451504)</th>
-                    <th class="description"></th>
-                    <td class="price"><span class="totals-price"><span class="amount">${{round($sum / 100 * (100 - $discount) * 0.13, 2)}}</span></span></td>
-                </tr>
-                <tr class="order_total">
                     <th class="title">Total</th>
                     <th class="description"></th>
-                    <td class="price"><span class="totals-price"><span class="amount">${{round($sum / 100 * (100 - $discount) * 1.13, 2)}}</span></span></td>
+                    <td class="price"><span class="totals-price"><span class="amount">${{round($sum, 2)}}</span></span></td>
                 </tr>
+
                 <tr class="order_total">
                     <th class="title">Deposit</th>
                     <th class="description"></th>
@@ -508,8 +500,9 @@
                 <tr class="order_total">
                     <th class="title">Balance Due</th>
                     <th class="description"></th>
-                    <td class="price"><span class="totals-price"><span class="amount">${{round($sum / 100 * (100 - $discount) * 1.13 - $quote->deposit, 2)}}</span></span></td>
+                    <td class="price"><span class="totals-price"><span class="amount">${{round($sum - $quote->deposit, 2)}}</span></span></td>
                 </tr>
+
                 </tfoot>
             </table>
         </td>

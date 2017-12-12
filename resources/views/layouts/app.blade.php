@@ -60,8 +60,10 @@
                                                      document.getElementById('logout-form').submit();">
                                         Logout
                                     </a>
+                                    @if (Auth::user()->permission >= 3)
                                     <a href="{{ route('customers.index') }}">Customer</a>
                                     <a href="{{ route('products.index') }}">Products</a>
+                                    @endif
                                     <a href="{{ route('quotes.index') }}">Quotes</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                           style="display: none;">
