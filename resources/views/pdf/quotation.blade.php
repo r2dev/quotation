@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Invoice</title>
+    <title>Quotation</title>
     <style type="text/css">
 
         @page {
@@ -388,7 +388,7 @@
                 </tr>
                 <tr>
                     <th>Total Sqf:</th>
-                    <td>{{$sum}}</td>
+                    <td>{{$sum_sqf}}</td>
                 </tr>
                 <tr>
                     <th>TERMS:</th>
@@ -401,7 +401,7 @@
 <table class="order-details">
     <thead>
     <tr>
-        <th></th>
+        <th style="width: 2px;"></th>
         <th class="quantity" style="text-align: center;">Quantity</th>
         <th class="description" style="text-align: center;">Description</th>
         <th class="lite"  style="text-align: center;">Lite</th>
@@ -417,7 +417,7 @@
     @foreach( $quote->products as $index => $product)
 
         <tr class="product-row">
-            <td>{{$index}}</td>
+            <td>{{$index + 1}}</td>
             <td>{{$product->pivot->quantity}}</td>
             <td>{{$product->design}}</td>
             <td>
@@ -438,23 +438,33 @@
             </td>
         </tr>
     @endforeach
-    @if ($quote->products->count() < 13)
+    <?php $alignment = 12 ?>
+    @if ($quote->products->count() < $alignment)
     <tr>
-        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
-        <td style="height: <?php echo (13 - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px"></td>
+        <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px" ></td>
+        <td style="height: <?php echo ($alignment - $quote->products->count()) * 30 ?>px" ></td>
 
     </tr>
     @endif
+    <tr>
+        <td></td>
+        <td colspan="5">{{$total_quantity}}</td>
+        <td colspan="2">{{$sum_sqf}}</td>
+        <td colspan="1">${{$sum}}</td>
+
+    </tr>
     </tbody>
     <tfoot>
     <tr class="no-borders">
-        <td class="no-borders" colspan="5">
+
+        <td class="no-borders" colspan="6">
             <div class="customer-notes">
                 Excepted Completion Time: Flat panel 10 days, Raised panel and MD 14 days.<br>
                 <span class="italia">Please Verify and sign below to confirm the order</span>

@@ -361,6 +361,14 @@
         <td class="order-data">
             <table>
                 <tr class="order-number">
+                    <th>Invoice #:</th>
+                    <td>{{ $quote->id }}</td>
+                </tr>
+                <tr class="order-number">
+                    <th>Invoice Date:</th>
+                    <td>{{ $quote->id }}</td>
+                </tr>
+                <tr class="order-number">
                     <th>Quotation #:</th>
                     <td>{{ $quote->id }}</td>
                 </tr>
@@ -453,8 +461,10 @@
     <tr class="no-borders">
         <td class="no-borders" colspan="5">
             <div class="customer-notes">
-                Excepted Completion Time: Flat panel 10 days, Raised panel and MD 14 days.<br>
-                <span class="italia">Please Verify and sign below to confirm the order</span>
+                INVOICE DUE AND PAYABLE UPON RECEIPT<br>
+                <span class="italia">We reserve the right to apply a service charge of 2% </span> <br/>
+                <span class="italia">per month on all outstanding invoices over 30 days.  </span> <br />
+                <span class="italia">Deposits are non-refundable. </span>
             </div>
         </td>
 

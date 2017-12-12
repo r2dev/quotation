@@ -22,7 +22,7 @@ class CreateQuotesTable extends Migration
             $table->string('style_id')->default('0');
             $table->string('panel')->default('');
             $table->string('po')->default('');
-            $table->string('door_style')->default('');
+            $table->string('door_style')->default('Maple Select');
             $table->string('lip')->default('NONE');
             $table->string('moulding')->default('NONE');
             $table->boolean('customer_confirmed')->default(false);

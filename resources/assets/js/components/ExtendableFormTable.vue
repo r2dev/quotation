@@ -72,6 +72,7 @@
                         @keydown.enter.prevent="handleEnter(index, 1)"
                         class="form-control"
                         min="1"
+                        @focus="$event.target.select()"
                     >
                 </td>
                 <td>
@@ -104,6 +105,7 @@
                         @keydown.enter.prevent="handleEnter(index, 4)"
                         @keydown.tab.prevent="handleEnter(index, 0)"
                         class="form-control"
+                        @focus="$event.target.select()"
                     >    
                     <input
                         v-else
@@ -113,6 +115,7 @@
                         :name="'product[' + index + '][lite]'" :ref="'input_' + index + '_' + 4"
                         @keydown.enter.prevent="handleEnter(index, 4)"
                         class="form-control"
+                        @focus="$event.target.select()"
                     >
                 </td>
             </tr>

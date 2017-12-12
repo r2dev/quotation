@@ -243,6 +243,7 @@ class QuoteController extends Controller
         $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
         $sum = 0;
         $sum_sqf = 0;
+        $total_quantity = 0;
         $products = array();
         foreach ($quote->products as $product) {
             $unit_area = total_area($product->pivot->width, $product->pivot->height);
@@ -258,10 +259,11 @@ class QuoteController extends Controller
             array_push($products, $product);
             $sum += $amount;
             $sum_sqf += $unit_area * $product->pivot->quantity;
+            $total_quantity += $product->pivot->quantity;
         }
         $sum = round($sum, 2);
         $styles = $this->styles;
-        $pdf = PDF::loadView('pdf.quotation', compact('quote', 'sum', 'products', '$sum_sqf', 'styles'));
+        $pdf = PDF::loadView('pdf.quotation', compact('quote', 'sum', 'products', 'sum_sqf', 'styles', 'total_quantity'));
         return $pdf->stream('quotation_' . $id . '.pdf');
     }
 
@@ -287,7 +289,8 @@ class QuoteController extends Controller
             $sum_sqf += $unit_area * $product->pivot->quantity;
         }
         $sum = round($sum, 2);
-        $pdf = PDF::loadView('pdf.invoice', compact('quote', 'sum', 'products', '$sum_sqf'));
+        $styles = $this->styles;
+        $pdf = PDF::loadView('pdf.invoice', compact('quote', 'sum', 'products', '$sum_sqf', 'styles'));
         return $pdf->stream('invoice_' . $id . '.pdf');
     }
 

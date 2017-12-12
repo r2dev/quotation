@@ -287,7 +287,7 @@
                               class="form-inline">
                             {{csrf_field()}}
                             <label>
-                                panel
+                                Panel
                             </label>
                             <input type="hidden" name="name" value="panel"/>
                             <input type="text" value="{{$quote->panel}}" name="value" class="form-control"/>

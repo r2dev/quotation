@@ -1,6 +1,12 @@
 <template>
     <span>
-        <input type="text" v-model="message" :placeholder="placeholder" :tabindex="tabindex" @blur="handleBlur" @keydown.enter.prevent="handleEnter" ref="input" class="form-control">
+        <input type="text"
+               v-model="message" :placeholder="placeholder"
+               :tabindex="tabindex" @blur="handleBlur"
+               @keydown.enter.prevent="handleEnter" ref="input"
+               class="form-control"
+               @focus="$event.target.select()"
+        >
         <input type="hidden" :value="trueValue" :name="name">
     </span>
 </template>
