@@ -9,6 +9,14 @@
                 <div class="row">
 
                     @if ($quote->customer_confirmed == false)
+                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
+                              class="form-inline">
+                            {{csrf_field()}}
+                            <label>PO#</label>
+                            <input type="hidden" name="name" value="po"/>
+                            <input type="text" value="{{$quote->po}}" name="value" class="form-control"/>
+                            <input type="submit" value="update" class="btn btn-default"/>
+                        </form>
                         <form action="{{route('quotes.change_style', ['id' => $quote->id])}}" method="post"
                               class="form-inline">
                             <div class="form-group">
@@ -24,18 +32,31 @@
                                         @endif
                                     @endforeach
                                 </select>
+
+
                             </div>
                             <input type="submit" value="change" class="btn btn-default"/>
                         </form>
-                        <form action="{{route('quotes.update_value', ['id' => $quote->id])}}" method="post"
-                              class="form-inline">
-                            {{csrf_field()}}
-                            <label>PO#</label>
-                            <input type="hidden" name="name" value="po"/>
-                            <input type="text" value="{{$quote->po}}" name="value" class="form-control"/>
-                            <input type="submit" value="update" class="btn btn-default"/>
 
+                        <form
+                                action="{{route('quotes.change_default_panel', ['id' => $quote->id])}}"
+                                method="post" class="form-inline"
+                        >
+                            <label for="panel_select">Default Panel</label>
+                            {{csrf_field()}}
+                            <select name="panel_id" class="from-control" id="panel_select">
+                                <option value="" selected disabled hidden>Choose here</option>
+                                @foreach($panel as $index => $p)
+                                    @if ($quote->panel == $index)
+                                        <option value="{{$index}}" selected>{{$panel[$index]}}</option>
+                                    @else
+                                        <option value="{{$index}}">{{$panel[$index]}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            <input type="submit" value="change" class="btn btn-default" />
                         </form>
+
                     @endif
 
 
@@ -199,6 +220,8 @@
                                         :products="{{$products}}"
                                         :styles='@json($styles)'
                                         :set-material="{{$quote->style_id}}"
+                                        :set-panel="{{$quote->panel}}"
+                                        :panels='@json($panel)'
                                 >
                                 </extendable-form-table>
                             </div>

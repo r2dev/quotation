@@ -22,7 +22,7 @@ class CreateQuotesTable extends Migration
             $table->string('order_id')->default('');
             $table->string('terms')->default('30% Deposit COD');
             $table->string('style_id')->default('0');
-            $table->string('panel')->default('');
+            $table->integer('panel')->default(0);
             $table->string('po')->default('');
             $table->string('door_style')->default('');
             $table->string('lip')->default('NONE');

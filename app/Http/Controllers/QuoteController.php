@@ -135,6 +135,23 @@ class QuoteController extends Controller
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
+    public function change_default_panel(Request $request, $id)
+    {
+        $quote = Quote::findOrFail($id);
+        if ($quote->customer_confirmed == false) {
+            DB::table('quote_product')->where('quote_id', $id)->where('default_panel', true)->update(
+                array(
+                    'panel_id' =>  $request->panel_id
+                )
+            );
+            $quote->panel = $request->panel_id;
+            $quote->save();
+            $request->session()->flash('status', 'update default panel success!');
+
+        }
+        return redirect(route('quotes.edit', ['id'  =>  $quote->id]));
+    }
+
     public function add_products_to_quote(Request $request, $id)
     {
         $quote = Quote::findOrFail($id);
@@ -148,8 +165,13 @@ class QuoteController extends Controller
                     'width' => 'required',
                     'height' => 'required',
                     'lite' => 'required|min:0|numeric',
+                    'panel_id' =>  'required'
                 ]);
                 if ($validator->passes()) {
+                    $default = true;
+                    if ($product['panel_id'] !== $quote->panel) {
+                        $default = false;
+                    }
                     array_push($attachResult, array(
                         'product_id' => $product['design'],
                         'quote_id' => $id,
@@ -157,7 +179,9 @@ class QuoteController extends Controller
                         'quantity' => $product['quantity'],
                         'width' => $product['width'],
                         'height' => $product['height'],
-                        'lite' => $product['lite']
+                        'lite' => $product['lite'],
+                        'panel_id'  =>  $product['panel_id'],
+                        'default_panel' =>  $default
                     ));
                 }
             }
@@ -208,9 +232,7 @@ class QuoteController extends Controller
         $quote->customer_confirmed = true;
 
         $products = QuoteProduct::with('product')->where('quote_id', $id)->get();
-//        $products = $quote->products;
         foreach ($products as $product) {
-//            dd($product->style_id);
             if ($product->product['price_' . $product->style_id] != 0) {
                 DB::table('quote_product')->where('id', $product->id)->update(array('price' => $product->product['price_' . $product->style_id]));
             }
@@ -382,8 +404,8 @@ class QuoteController extends Controller
         return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
-    public function update_value(Request $request, $id) {
-
+    public function update_value(Request $request, $id)
+    {
         $quote = Quote::findOrFail($id);
         $request->validate([
            'name' => ['required', Rule::in(['po', 'terms', 'panel', 'door_style', 'lip', 'moulding', 'deposit', 'invoice_id', 'order_id'])]

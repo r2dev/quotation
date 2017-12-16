@@ -47,6 +47,7 @@
                         :placeholder="'choose a product'"
                     />
                     <input type="hidden" :name="'product[' + index + '][style]'" :value="setMaterial"/>
+                    <input type="hidden" :name="'product[' + index + '][panel_id]'" :value="setPanel" />
                 </td>
                 <!--<td>
                     <select
@@ -117,7 +118,9 @@
                         class="form-control"
                         @focus="$event.target.select()"
                     >
+
                 </td>
+
             </tr>
             </tbody>
         </table>
@@ -180,15 +183,13 @@ export default {
         },
         setMaterial: {
             type: Number
+        },
+        panels: {
+            type: Array
+        },
+        setPanel: {
+            type: Number
         }
-    },
-    mounted: function() {
-        // $("window").keydown(function(event) {
-        //     if (event.keyCode == 13) {
-        //         event.preventDefault();
-        //         return false;
-        //     }
-        // })
     }
 
 }

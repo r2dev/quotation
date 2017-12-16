@@ -45,6 +45,8 @@ Route::middleware('can:create,App\Customer')->group(function() {
 
 });
 
+Route::post('/quotes/{id}/update_default_panel', 'QuoteController@change_default_panel')->name('quotes.change_default_panel');
+
 Route::post('/quotes/{id}/update_value', 'QuoteController@update_value')->name('quotes.update_value');
 
 Route::post('/quotes/{id}/product', 'QuoteController@add_products_to_quote')->name('quotes.add_products');
