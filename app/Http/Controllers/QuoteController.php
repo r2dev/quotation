@@ -126,8 +126,10 @@ class QuoteController extends Controller
     {
         $quote = Quote::findOrFail($id);
         if ($quote->customer_confirmed == false) {
-            //@todo update pivot table price and style (no test)
-            DB::table('quote_product')->where('quote_id', $id)->where('style_id','<>', $request->style_id)->update(array('price' => 0, 'style_id' => $request->style_id));
+            DB::table('quote_product')
+                ->where('quote_id', $id)
+                ->where('style_id','<>', $request->style_id)
+                ->update(array('price' => 0, 'style_id' => $request->style_id));
             $quote->style_id = $request->style_id;
             $quote->save();
             $request->session()->flash('status', 'update material success');
@@ -139,11 +141,14 @@ class QuoteController extends Controller
     {
         $quote = Quote::findOrFail($id);
         if ($quote->customer_confirmed == false) {
-            DB::table('quote_product')->where('quote_id', $id)->where('default_panel', true)->update(
-                array(
-                    'panel_id' =>  $request->panel_id
-                )
-            );
+            DB::table('quote_product')
+                ->where('quote_id', $id)
+                ->where('default_panel', true)
+                ->update(
+                    array(
+                        'panel_id' =>  $request->panel_id
+                    )
+                );
             $quote->panel = $request->panel_id;
             $quote->save();
             $request->session()->flash('status', 'update default panel success!');
@@ -169,7 +174,7 @@ class QuoteController extends Controller
                 ]);
                 if ($validator->passes()) {
                     $default = true;
-                    if ($product['panel_id'] !== $quote->panel) {
+                    if ($product['panel_id'] != $quote->panel) {
                         $default = false;
                     }
                     array_push($attachResult, array(
