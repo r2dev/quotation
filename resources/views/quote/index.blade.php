@@ -8,6 +8,7 @@
                         <thead>
                         <tr>
                             <td>#</td>
+                            <td>po</td>
                             <td>client confirmed</td>
                             <td>staff confirmed</td>
                             <td>updated at</td>
@@ -19,6 +20,9 @@
                             <tr class="clickable{{($quote->customer_confirmed && $quote->staff_confirmed)? ' success': ''}}" data-href="{{route('quotes.edit', [ 'id' => $quote->id])}}">
                                 <td>
                                     <a href="{{route('quotes.edit', [ 'id' => $quote->id])}}">{{$quote->id}}</a>
+                                </td>
+                                <td>
+                                    {{$quote->po}}
                                 </td>
                                 <td>
                                     @if($quote->customer_confirmed)

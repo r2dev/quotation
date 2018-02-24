@@ -13,7 +13,10 @@ window.Vue = require("vue");
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+Vue.component(
+  "changeable-element",
+  require("./components/ChangeableElement.vue")
+);
 Vue.component("super-input", require("./components/SuperInput.vue"));
 Vue.component("changeable-row", require("./components/ChangeableRow.vue"));
 Vue.component(
@@ -21,6 +24,7 @@ Vue.component(
   require("./components/ExtendableFormTable.vue")
 );
 Vue.component("advanced-select", require("./components/AdvancedSelect.vue"));
+
 
 const app = new Vue({
   el: "#app"

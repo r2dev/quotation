@@ -212,11 +212,15 @@ class QuoteController extends Controller
         //only permission >= 3
         if ($request->type == 'tb') {
             DB::table('quote_product')->where('id', $request->pq_id)->update(array('adjustment' => $request->value));
-        } else {
+            return redirect(route('quotes.edit', ['id' => $id]));
+        } else if ($request->type == 'lr') {
+            dd($id, $request->pq_id);
             DB::table('quote_product')->where('id', $request->pq_id)->update(array('adjustment_lr' => $request->value));
+            return redirect(route('quotes.edit', ['id' => $id]));
+        } else {
+            DB::table('quote_product')->where('id', $request->pq_id)->update(array($request->type => $request->value));
+            return response()->json(array($request->type => $request->value));
         }
-        
-        return redirect(route('quotes.edit', ['id' => $id]));
     }
 
     public function remove_product_from_quote(Request $request, $id)

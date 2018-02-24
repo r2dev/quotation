@@ -25,7 +25,7 @@ export default {
     },
     props: {
         value: {
-            type: String,
+            type: [String, Number],
             default: ''
         },
         name: {
@@ -60,7 +60,6 @@ export default {
                 if (temp.n === 0) {
                     return 0;
                 } else if (Math.floor(temp.n / temp.d) < 1) {
-
                     return temp.n + '/' + temp.d;
                 } else if (temp.d === 1) {
                     return temp.n;

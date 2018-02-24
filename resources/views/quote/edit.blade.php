@@ -84,7 +84,20 @@
                             @foreach ($quote_products as $product)
                                 <tr>
                                     <td>{{$product->design}}</td>
-                                    <td>{{$product->pivot->quantity}}</td>
+                                    <td>
+                                        @if ($quote->customer_confirmed == true && Auth::user()->permission >= 3)
+                                            <changeable-element
+                                                    value="{{$product->pivot->quantity}}"
+                                                    type="quantity"
+                                                    update_url="{{route('quotes.update_product_profile_size', ['id' => $quote->id])}}"
+                                                    :pq_id="{{$product->pivot->id}}"
+                                            />
+                                        @else
+                                            {{$product->pivot->quantity}}
+                                        @endif
+
+
+                                    </td>
                                     @if ($quote->customer_confirmed == true)
                                         @if ($product->pivot->price != 0)
                                             <td>${{number_format($product->pivot->price, 2)}}</td>
@@ -114,8 +127,31 @@
                                         @endif
                                     @endif
                                     <td>{{$styles[$product->pivot->style_id]}}</td>
-                                    <td>{{$product->pivot->width}}</td>
-                                    <td>{{$product->pivot->height}}</td>
+                                    <td>
+                                        @if ($quote->customer_confirmed == true && Auth::user()->permission >= 3)
+                                            <changeable-element
+                                                    value="{{$product->pivot->width}}"
+                                                    type="width"
+                                                    update_url="{{route('quotes.update_product_profile_size', ['id' => $quote->id])}}"
+                                                    :pq_id="{{$product->pivot->id}}"
+                                            />
+                                        @else
+                                            {{$product->pivot->width}}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($quote->customer_confirmed == true && Auth::user()->permission >= 3)
+                                            <changeable-element
+                                                    value="{{$product->pivot->height}}"
+                                                    type="height"
+                                                    update_url="{{route('quotes.update_product_profile_size', ['id' => $quote->id])}}"
+                                                    :pq_id="{{$product->pivot->id}}"
+                                            />
+                                        @else
+                                            {{$product->pivot->height}}
+                                        @endif
+
+                                    </td>
                                     <td>{{$product->pivot->lite}}</td>
                                     <td>
                                         <?php $unit_area = total_area($product->pivot->width, $product->pivot->height) ?>
