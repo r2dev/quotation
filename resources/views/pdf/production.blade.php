@@ -497,9 +497,21 @@
             <tr class="production-row">
                 <td>{{$product->pivot->quantity}}</td>
                 <td colspan="4">{{$product->design}}</td>
-                <td colspan="2" class="text-center">{{$product->pivot->width}}</td>
+                <td colspan="2" class="text-center">
+                    @if ($quote->decimal)
+                        {{parse_number($product->pivot->width)}}
+                    @else
+                        {{$product->pivot->width}}
+                    @endif
+                </td>
                 <td class="text-center">X</td>
-                <td colspan="2" class="border-right text-center">{{$product->pivot->height}}</td>
+                <td colspan="2" class="border-right text-center">
+                    @if ($quote->decimal)
+                        {{parse_number($product->pivot->height)}}
+                    @else
+                        {{$product->pivot->height}}
+                    @endif
+                </td>
                 <td>
                     @if ($product->frame === 0)
                         {{$product->pivot->quantity}}
@@ -515,17 +527,41 @@
                 @if ($product->frame === 0)
                     @if ($product->df === 0)
                         <td colspan="2"
-                            class="text-center">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
-                        <td colspan="1" class="text-center">X</td>
-                        <td colspan="2"
-                            class="text-center">{{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}</td>
-                    @else
-                        <td colspan="2" class="text-center">
-                            {{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}
+                            class="text-center">
+                            @if ($quote->decimal)
+                                {{parse_number(calculate_width($product->pivot->width, $profile_size, 2, $product->rule))}}
+                            @else
+                                {{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}
+                            @endif
+
                         </td>
                         <td colspan="1" class="text-center">X</td>
                         <td colspan="2"
-                            class="text-center">{{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}</td>
+                            class="text-center">
+                            @if ($quote->decimal)
+                                {{parse_number(calculate_width($product->pivot->height, $profile_size, 2, $product->rule))}}
+                            @else
+                                {{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}
+                            @endif
+
+                        </td>
+                    @else
+                        <td colspan="2" class="text-center">
+                            @if ($quote->decimal)
+                                {{parse_number(calculate_width($product->pivot->height, $profile_size, 2, $product->rule))}}
+                            @else
+                                {{calculate_width($product->pivot->height, $profile_size, 2, $product->rule)}}
+                            @endif
+                        </td>
+                        <td colspan="1" class="text-center">X</td>
+                        <td colspan="2"
+                            class="text-center">
+                            @if ($quote->decimal)
+                                {{parse_number(calculate_width($product->pivot->width, $profile_size, 2, $product->rule))}}
+                            @else
+                                {{calculate_width($product->pivot->width, $profile_size, 2, $product->rule)}}
+                            @endif
+                        </td>
                     @endif
                 @else
                     <td colspan="6"></td>

@@ -57,6 +57,10 @@ Route::post('/quotes/{id}/client_confirm', 'QuoteController@client_confirm')->na
 
 Route::post('/quotes/{id}/print_quotation', 'QuoteController@print_quotation')->name('quotes.print_quotation');
 
+Route::get('/quotes/{id}/toggle_deliver', 'QuoteController@toggle_deliver')->name('quotes.toggle_deliver');
+Route::get('/quotes/{id}/toggle_pay', 'QuoteController@toggle_pay')->name('quotes.toggle_pay');
+Route::get('/quotes/{id}/toggle_decimal', 'QuoteController@toggle_decimal')->name('quotes.toggle_decimal');
+
 Route::post('/quotes/{id}/print_production', 'QuoteController@print_production')->name('quotes.print_production');
 
 Route::post('/quotes/{id}/print_invoice', 'QuoteController@print_invoice')->name('quotes.print_invoice');

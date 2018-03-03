@@ -4,13 +4,30 @@
         <div class="panel-body">
             <div class="container-fluid">
                 <div class="row">
+                    <form method="get" action="{{route('quotes.index')}}">
+                    <select name="type">
+                        <option value="po">po#</option>
+                        <option value="invoice_id">invoce#</option>
+                        <option value="order_id">order#</option>
+                    </select>
+                    <input name="like" type="search"/>
+                    <input type="submit" value="Search"/>
+                    </form>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
                     <table class="table table-hover table-bordered">
                         <thead>
                         <tr>
                             <td>#</td>
                             <td>po</td>
-                            <td>client confirmed</td>
+                            <td>invoice#</td>
+                            <td>order#</td>
+                            <td>client confirmed</td>ss
                             <td>staff confirmed</td>
+                            <td>Delivered</td>
+                            <td>Paid</td>
                             <td>updated at</td>
                             {{--<td>action</td>--}}
                         </tr>
@@ -25,14 +42,39 @@
                                     {{$quote->po}}
                                 </td>
                                 <td>
+                                    {{$quote->invoice_id}}
+                                </td>
+                                <td>
+                                    {{$quote->order_id}}
+                                </td>
+                                <td>
                                     @if($quote->customer_confirmed)
                                         <span class="glyphicon glyphicon-ok" aria-hidden="true" title="customer confirmed"></span>
+                                    @else
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true" title="not paid"></span>
                                     @endif
 
                                 </td>
                                 <td>
                                     @if($quote->staff_confirmed)
                                         <span class="glyphicon glyphicon-ok" aria-hidden="true" title="staff confirmed"></span>
+                                    @else
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true" title="not paid"></span>
+                                    @endif
+                                </td>
+                                <td id="toggle-deliver" data-href="{{route('quotes.toggle_deliver', [ 'id' => $quote->id])}}">
+
+                                    @if($quote->delivered)
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true" title="delivered"></span>
+                                    @else
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true" title="not delivered"></span>
+                                    @endif
+                                </td>
+                                <td id="toggle-pay" data-href="{{route('quotes.toggle_pay', [ 'id' => $quote->id])}}">
+                                    @if($quote->paid)
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true" title="paid" ></span>
+                                    @else
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true" title="not paid"></span>
                                     @endif
                                 </td>
                                 <td>
@@ -57,10 +99,23 @@
 
 @section('js')
     <script>
-        jQuery(document).ready(function ($) {
-            $(".clickable").click(function () {
-                window.location = $(this).data("href");
+        $(document).ready(function () {
+            $(".clickable").click(function (e) {
+                e.stopPropagation()
+                var href = $(this).data("href")
+                if (href.length > 0) {
+                    window.location = href;
+                }
             });
+        });
+
+        $('#toggle-deliver, #toggle-pay').click(function(e) {
+            //toggle flash
+            e.stopPropagation()
+            var href = $(this).data('href');
+            if (href.length > 0) {
+                window.location = href;
+            };
         });
     </script>
 @endsection

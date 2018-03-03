@@ -425,10 +425,25 @@
                     {{$product->pivot->lite}}
                 @endif
             </td>
-            <td>{{$product->pivot->width}}</td>
-            <td>{{$product->pivot->height}}</td>
             <td>
-                {{ $product->total_area}}
+                @if ($quote->decimal)
+                    {{parse_number($product->pivot->width)}}
+                @else
+                    {{$product->pivot->width}}
+                @endif
+
+            </td>
+            <td>
+                @if ($quote->decimal)
+                    {{parse_number($product->pivot->height)}}
+                @else
+                    {{$product->pivot->height}}
+                @endif
+            </td>
+            <td>
+
+                {{$product->total_area}}
+
             </td>
             <td>
                 ${{number_format($product->unit_price, 2)}}

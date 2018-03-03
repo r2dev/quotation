@@ -29,7 +29,10 @@ class CreateQuotesTable extends Migration
             $table->string('moulding')->default('NONE');
             $table->boolean('customer_confirmed')->default(false);
             $table->boolean('staff_confirmed')->default(false);
+            $table->boolean('paid')->default(false);
+            $table->boolean('delivered')->default(false);
             $table->boolean('cm')->default(false);
+            $table->boolean('decimal')->default(false);
             $table->integer('customer_id')->unsigned()->nullable();
             $table->decimal('deposit', 9, 4)->default(0);
             $table->foreign('customer_id')->references('id')->on('customers');

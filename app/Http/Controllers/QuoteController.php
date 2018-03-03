@@ -32,14 +32,25 @@ class QuoteController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
+
         if (Auth::user()->permission >= 3) {
-            $quotes = Quote::where('customer_confirmed', true)
-                ->orWhere('user_id', Auth::user()->id)
-                ->paginate(10);
+            if (isset($request->type) && isset($request->like)) {
+                $quotes = Quote::where([[$request->type, 'LIKE', '%' . $request->like . '%']])
+                    ->paginate(10);
+            } else {
+                $quotes = Quote::where('customer_confirmed', true)
+                    ->orWhere('user_id', Auth::user()->id)
+                    ->paginate(10);
+            }
+
         } else {
-            $quotes = Auth::user()->quotes()->paginate(10);
+            if (isset($request->type) && isset($request->like)) {
+                $quotes = Auth::user()->quotes()->where($request->type, 'LIKE', '%' . $request->like . '%')->paginate(10);
+            } else {
+                $quotes = Auth::user()->quotes()->paginate(10);
+            }
         }
         return view('quote.index', compact('quotes'));
     }
@@ -128,7 +139,7 @@ class QuoteController extends Controller
         if ($quote->customer_confirmed == false) {
             DB::table('quote_product')
                 ->where('quote_id', $id)
-                ->where('style_id','<>', $request->style_id)
+                ->where('style_id', '<>', $request->style_id)
                 ->update(array('price' => 0, 'style_id' => $request->style_id));
             $quote->style_id = $request->style_id;
             $quote->save();
@@ -146,7 +157,7 @@ class QuoteController extends Controller
                 ->where('default_panel', true)
                 ->update(
                     array(
-                        'panel_id' =>  $request->panel_id
+                        'panel_id' => $request->panel_id
                     )
                 );
             $quote->panel = $request->panel_id;
@@ -154,7 +165,30 @@ class QuoteController extends Controller
             $request->session()->flash('status', 'update default panel success!');
 
         }
-        return redirect(route('quotes.edit', ['id'  =>  $quote->id]));
+        return redirect(route('quotes.edit', ['id' => $quote->id]));
+    }
+
+    public function toggle_deliver(Request $request, $id)
+    {
+        $quote = Quote::findOrFail($id);
+        $quote->delivered = !$quote->delivered;
+        $quote->save();
+        return redirect(route('quotes.index'));
+    }
+
+    public function toggle_pay(Request $request, $id)
+    {
+        $quote = Quote::findOrFail($id);
+        $quote->paid = !$quote->paid;
+        $quote->save();
+        return redirect(route('quotes.index'));
+    }
+    public function toggle_decimal(Request $request, $id)
+    {
+        $quote = Quote::findOrFail($id);
+        $quote->decimal = !$quote->decimal;
+        $quote->save();
+        return redirect(route('quotes.edit', ['id' => $quote->id]));
     }
 
     public function add_products_to_quote(Request $request, $id)
@@ -170,7 +204,7 @@ class QuoteController extends Controller
                     'width' => 'required',
                     'height' => 'required',
                     'lite' => 'required|min:0|numeric',
-                    'panel_id' =>  'required'
+                    'panel_id' => 'required'
                 ]);
                 if ($validator->passes()) {
                     $default = true;
@@ -185,8 +219,8 @@ class QuoteController extends Controller
                         'width' => $product['width'],
                         'height' => $product['height'],
                         'lite' => $product['lite'],
-                        'panel_id'  =>  $product['panel_id'],
-                        'default_panel' =>  $default
+                        'panel_id' => $product['panel_id'],
+                        'default_panel' => $default
                     ));
                 }
             }
@@ -328,7 +362,7 @@ class QuoteController extends Controller
         $pdf = PDF::loadView('pdf.invoice', compact('quote', 'sum', 'products', 'sum_sqf', 'styles', 'total_quantity'));
         return $pdf->stream('invoice_' . $id . '.pdf');
     }
-    
+
     public function print_sale_order($id)
     {
         $quote = Quote::with(['user', 'user.customer'])->findOrFail($id);
@@ -365,24 +399,22 @@ class QuoteController extends Controller
         $sum_total = 0;
         $sum_frame = 0;
 
-        $temp_groups = $quote->products->groupBy(function($product) {
+        $temp_groups = $quote->products->groupBy(function ($product) {
             if ($product['pivot']['adjustment'] == 0 && $product['pivot']['adjustment_lr'] == 0) {
                 return 0;
             }
             if ($product['pivot']['adjustment'] != 0 && $product['pivot']['adjustment_lr'] == 0) {
                 return $product['pivot']['adjustment'] . '  TB';
-            }
-            else if ($product['pivot']['adjustment'] == 0 && $product['pivot']['adjustment_lr'] != 0){
+            } else if ($product['pivot']['adjustment'] == 0 && $product['pivot']['adjustment_lr'] != 0) {
                 return $product['pivot']['adjustment_lr'] . '  LR';
-            }
-            else if ($product['pivot']['adjustment'] != 0 && $product['pivot']['adjustment_lr'] != 0 && $product['pivot']['adjustment'] == $product['pivot']['adjustment_lr']) {
+            } else if ($product['pivot']['adjustment'] != 0 && $product['pivot']['adjustment_lr'] != 0 && $product['pivot']['adjustment'] == $product['pivot']['adjustment_lr']) {
                 return $product['pivot']['adjustment'] . ' PROFILE SIZE';
             } else {
                 return 'unknown profile size';
             }
         });
-        foreach ($temp_groups as $key=>$group) {
-            $groups[$key] = $group->sortByDesc(function ($product, $key) use(&$sum_total, &$sum_frame) {
+        foreach ($temp_groups as $key => $group) {
+            $groups[$key] = $group->sortByDesc(function ($product, $key) use (&$sum_total, &$sum_frame) {
                 $sum_total = $sum_total + $product['pivot']['quantity'];
                 if ($product->frame === 1) {
                     $sum_frame = $sum_frame + $product['pivot']['quantity'];
@@ -417,7 +449,7 @@ class QuoteController extends Controller
     {
         $quote = Quote::findOrFail($id);
         $request->validate([
-           'name' => ['required', Rule::in(['po', 'terms', 'panel', 'door_style', 'lip', 'moulding', 'deposit', 'invoice_id', 'order_id'])]
+            'name' => ['required', Rule::in(['po', 'terms', 'panel', 'door_style', 'lip', 'moulding', 'deposit', 'invoice_id', 'order_id'])]
         ]);
         $quote[$request->name] = $request->value ?: '';
         $quote->save();

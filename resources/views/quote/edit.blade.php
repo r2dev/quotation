@@ -3,6 +3,13 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             Quote #{{$quote->id}}
+            <a class="btn btn-default" href="{{route('quotes.toggle_decimal', ['id' => $quote->id])}}">
+                @if ($quote->decimal)
+                    fraction
+                @else
+                    decimal
+                @endif
+            </a>
         </div>
         <div class="panel-body">
             <div class="container-fluid">
@@ -136,7 +143,11 @@
                                                     :pq_id="{{$product->pivot->id}}"
                                             />
                                         @else
-                                            {{$product->pivot->width}}
+                                            @if ($quote->decimal)
+                                                {{parse_number($product->pivot->width)}}
+                                            @else
+                                                {{$product->pivot->width}}
+                                            @endif
                                         @endif
                                     </td>
                                     <td>
@@ -148,7 +159,11 @@
                                                     :pq_id="{{$product->pivot->id}}"
                                             />
                                         @else
-                                            {{$product->pivot->height}}
+                                            @if ($quote->decimal)
+                                                {{parse_number($product->pivot->height)}}
+                                            @else
+                                                {{$product->pivot->height}}
+                                            @endif
                                         @endif
 
                                     </td>

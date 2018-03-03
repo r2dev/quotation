@@ -150,4 +150,41 @@
             </div>
         </div>
     </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Customer Quotes
+        </div>
+        <div class="panel-body">
+            <div class="container-fluid">
+                <div class="row">
+                   <table class="table">
+                   <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($quotes as $quote)
+                            <tr class="clickable" data-href="{{route('quotes.edit', [ 'id' => $quote->id])}}">
+                                <td>{{$quote->id}}</td>
+                                <td></td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('js')
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".clickable").click(function () {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
 @endsection

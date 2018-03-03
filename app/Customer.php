@@ -14,6 +14,10 @@ class Customer extends Model
     {
         return $this->hasMany('App\User');
     }
+    public function quotes()
+    {
+        return $this->hasManyThrough('App\Quote', 'App\User');
+    }
 
     protected $dates = ['deleted_at'];
 }
